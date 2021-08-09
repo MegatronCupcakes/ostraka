@@ -1,0 +1,21 @@
+type Post {
+    _id: ID!
+    postedByTag: String
+    postedBy: String
+    postedById: String
+    postedByProfilePic: String
+    type: String
+    images: [String]
+    url: String
+    caption: [String]
+    tags: [String]
+    mentions: [String]
+    likes: [String]
+    dislikes: [String]
+    comments: [String]
+}
+
+type Query {
+    getPost (id: ID!): Post
+    getPosts: [Post]
+}

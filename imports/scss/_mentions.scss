@@ -1,0 +1,28 @@
+.mentions {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    padding-top: 1rem;
+}
+
+.mention {
+    -webkit-flex: none;
+    flex: none;
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 0.7rem;
+    display: block;
+    background-color: #bbc1c7;
+    text-decoration: none;
+    text-shadow: 1px;
+    padding: 0.3rem 0.5rem;
+    margin: 0rem 0.5rem 0.5rem 0.0rem;
+    border-radius: 3px;
+    color: #fff;
+}
+
+.mentionInPost {
+    color: #bbc1c7;
+    font-weight: bold;
+}

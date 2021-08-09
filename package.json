@@ -1,0 +1,38 @@
+{
+  "name": "Ostraka",
+  "private": true,
+  "scripts": {
+    "start": "meteor run",
+    "test": "meteor test --once --driver-package meteortesting:mocha",
+    "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
+    "visualize": "meteor --production --extra-packages bundle-visualizer"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.1.5",
+    "@babel/runtime": "^7.11.2",
+    "@popperjs/core": "^2.9.2",
+    "adblock-detect-react": "^1.0.4",
+    "apollo-boost": "^0.4.9",
+    "apollo-server-express": "^2.17.0",
+    "bootstrap": "^5.0.2",
+    "bootstrap-icons": "^1.5.0",
+    "check-password-strength": "^2.0.3",
+    "cors-anywhere": "^0.4.4",
+    "exif-stripper": "file:../Exif-Stripper",
+    "graphql": "^15.3.0",
+    "meteor-node-stubs": "^1.0.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-tiny-link": "^3.6.1",
+    "rsync": "^0.6.1",
+    "sharp": "^0.28.3",
+    "underscore": "^1.13.1"
+  },
+  "meteor": {
+    "mainModule": {
+      "client": "client/main.jsx",
+      "server": "server/main.js"
+    },
+    "testModule": "tests/main.js"
+  }
+}

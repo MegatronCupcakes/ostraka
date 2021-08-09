@@ -1,0 +1,7 @@
+/* Useful for using contenteditable div instead of input */
+[contenteditable][placeholder]:empty:before {
+  content: attr(placeholder);
+  position: absolute;
+  color: gray;
+  background-color: transparent;
+}
