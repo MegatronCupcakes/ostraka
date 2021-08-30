@@ -1,44 +1,57 @@
 import {Meteor} from 'meteor/meteor';
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {useTracker} from 'meteor/react-meteor-data';
-
+import {useQuery} from '@apollo/client';
+import _ from 'underscore';
+import CommentQuery from '/imports/api/comments/commentQuery';
 import Comment from './comment';
 import LikesContainer from '../likes/likesContainer';
 import NewCommentContainer from './newCommentContainer';
+import {Loading, Error} from '/imports/components/loadingStatus/loadingStatus';
 
 const CommentsContainer = (props) => {
-    const comments = props.comments.map((comment, index) => {
-        return (
-            <div className="comment" key={index}>
-                <div className="row">
-                    <Comment
-                        comment={comment}
-                    />
+
+    const {loading, error, data} = useQuery(CommentQuery, {variables: {parentId: props.parentId}, pollInterval: 1000});
+
+    let comments;
+
+    if(props.parentId && loading){
+        comments = <Loading />
+    } else if(props.parentId && error){
+        comments = <Error />
+    } else if(props.parentId){
+        comments = comments = data.getComments.map((comment, index) => {
+            return (
+                <div className="comment" key={index}>
+                    <div className="">
+                        <Comment
+                            comment={comment}
+                            navStack={props.navStack}
+                        />
+                    </div>
+                    <div className="comment">
+                        <LikesContainer
+                            likedId={comment._id}
+                            likedType="Comment"
+                            userId={comment.userId}
+                            likes={comment.likes}
+                            dislikes={comment.dislikes}
+                        />
+                    </div>
                 </div>
-                <div className="row justify-content-start comment">
-                    <LikesContainer
-                        likedId={comment.commentId}
-                        likedType="Comment"
-                        likes={comment.likes}
-                        dislikes={comment.dislikes}
-                    />
-                    <NewCommentContainer
-                        postId={props.postId}
-                        commentCount={props.comments.length}
-                    />
-                </div>
-            </div>
-        )
-    });
+            )
+        });
+    }
+    const _commentClasses = props.viewSize ? 'comments_' + props.viewSize : 'comments';
     return (
-        <div className="comments">
+        <div className={_commentClasses}>
             {comments}
         </div>
     )
 };
 CommentsContainer.propTypes = {
-    postId: PropTypes.string,
-    comments: PropTypes.array.isRequired
+    parentId: PropTypes.string,
+    viewSize: PropTypes.string,
+    navStack: PropTypes.object.isRequired
 };
 export default CommentsContainer;

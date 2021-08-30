@@ -1,2 +1,1 @@
-//import './cors';
-import './account_routes';
+import './accountRoutes';

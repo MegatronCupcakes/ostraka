@@ -1,12 +1,14 @@
 import {Meteor} from "meteor/meteor";
+import {Random} from 'meteor/random';
 import {Accounts} from 'meteor/accounts-base';
-import { PostCollection } from './postCollection';
+import PostCollection from './postCollection';
+import {TagLookup} from '../tag/tagCollection';
+import MapMentions from '/imports/api/mentions/mapMentions';
 import {check, Match} from 'meteor/check';
 
 Meteor.methods({
-    createPost: function(post){
+    createPost: async function(post){
         this.unblock();
-        const user = Meteor.users.findOne({_id: this.userId});
         check(post, Object);
         check(post.caption, String);
         check(post.url, String);
@@ -16,22 +18,30 @@ Meteor.methods({
         check(post.images, Array);
         check(post.video, String);
 
+        const user = Meteor.users.findOne({_id: this.userId});
+
         // Create Post
+        post.viewId = Random.secret();
         post.postedByTag = user.profile.profileTag;
         post.postedBy = user.profile.firstName + " " + user.profile.lastName;
         post.postedById = user._id;
         post.postedByProfilePic = user.profile.profileImage;
+        post.tagIds = await TagLookup(post.tags, this.userId);
+        post.mentionIds = await MapMentions(post.mentions);
+        post.comments = [];
         post.likes = [];
         post.dislikes = [];
-        post.comments = [];
+        post.sharedBy = [];
+        post.active = true;
+        post.createdAt = new Date();
         _create(post)
         .then((_id) => {
             return (null, _id);
         })
         .catch((error) => {
+            console.log("ERROR:", error);
             return (error, null);
         });
-        return;
     }
 });
 
@@ -45,4 +55,4 @@ const _create = (_document) => {
             }
         });
     })
-}
+};

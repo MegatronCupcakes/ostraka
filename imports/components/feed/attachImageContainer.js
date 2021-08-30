@@ -47,9 +47,7 @@ const AttachImageContainer = (props) => {
         MeteorCall('uploadImages', convertedToBase64)
         .then((newUrls) => {
             // upload was successful.
-            console.log("newUrls:", newUrls);
             props.setPostImages([...props.postImages, ...newUrls]);
-            console.log("postImages:", props.postImages);
             props.setPostType('image');
             setTempQueue([]);
             document.getElementById("attachImageModal").hide();

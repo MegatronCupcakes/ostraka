@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const Likes = (props) => {
     return (
-        <div className="col-2"><i className={props.thumbClass} onClick={props.thumbClick}></i> {props.likes.length}</div>
+        <span style={{paddingRight: "1rem"}}><i className={props.thumbClass} onClick={props.thumbClick}></i> {props.likes.length}</span>
     )
 };
 Likes.propTypes = {

@@ -19,19 +19,15 @@ const NewPost = (props) => {
             postMentions={props.postMentions}
             postTags={props.postTags}
             postImages={props.postImages}
+            navStack={props.navStack}
         />
     );
     if(props.isPosting){
         _newPost = (
             <div style={{width: "100%", backgroundColor: "#f8f9fa"}}>
-                <div className="col-sm-12 col-md-10 offset-md-1 mb-3 ma-3">
+                <div className="col-xs-12 col-sm-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 mb-3 ma-3">
                     <div className="fade-in">
-                        <div className="mb-3 input-group" style={{paddingTop: "1rem"}}>
-                            <div className="col-7" style={{backgroundColor: "white", marginBottom: "1rem", marginRight: "1rem"}}>
-                                <div style={{margin: "0.5rem"}}>
-                                    {_postPreview}
-                                </div>
-                            </div>
+                        <div className="mb-3 input-group" style={{paddingTop: "1rem", paddingBottom: "1rem"}}>
                             <div className="col">
                                 <div style={{width: "100%", paddingTop: "0.5rem", paddingBottom: "0.5rem"}}>
                                     {props.postErrors}
@@ -46,6 +42,11 @@ const NewPost = (props) => {
                                         <div className={props.deleteButtonClass} onClick={props.handleDelete}><i className="bi bi-trash"></i></div>
                                         <div className={props.postButtonClass} style={{marginLeft: "0.5rem"}} onClick={props.handlePost}><i className="bi bi-chat-square-quote"></i></div>
                                     </div>
+                                </div>
+                            </div>
+                            <div className="col-7" style={{backgroundColor: "white", marginBottom: "1rem", marginLeft: "1rem", marginTop: "0.5rem"}}>
+                                <div style={{margin: "0.5rem"}}>
+                                    {_postPreview}
                                 </div>
                             </div>
                         </div>
@@ -77,8 +78,8 @@ const NewPost = (props) => {
         )
     } else {
         _newPost = (
-            <div className="col-sm-12 col-md-6 offset-md-3 mb-3 ma-3">
-                <div className="mb-3 input-group fade-out" style={{paddingTop: "1rem"}}>
+            <div className="col-xs-12 col-sm-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 mb-3 ma-3">
+                <div className="mb-3 input-group fade-out" style={{paddingTop: "1rem", paddingBottom: "1rem"}}>
                     <input className="form-control me-2" placeholder="share something..." aria-label="share something" onFocus={props.postFocus} />
                     <div className={props.postButtonClass} onClick={props.postFocus}><i className="bi bi-chat-square-quote"></i></div>
                 </div>
@@ -91,18 +92,15 @@ const NewPost = (props) => {
 NewPost.propTypes = {
     post: PropTypes.string,
     setPost: PropTypes.func.isRequired,
-
     postType: PropTypes.string.isRequired,
     setPostType: PropTypes.func.isRequired,
     postUrl: PropTypes.string,
     postMentions: PropTypes.array.isRequired,
     postTags: PropTypes.array.isRequired,
-
     postImages: PropTypes.array.isRequired,
     setPostImages: PropTypes.func.isRequired,
     postVideo: PropTypes.string,
     setPostVideo: PropTypes.func.isRequired,
-
     isPosting: PropTypes.bool.isRequired,
     setIsPosting: PropTypes.func.isRequired,
     postFocus: PropTypes.func.isRequired,
@@ -110,9 +108,9 @@ NewPost.propTypes = {
     videoButtonClass: PropTypes.string.isRequired,
     postButtonClass: PropTypes.string.isRequired,
     deleteButtonClass: PropTypes.string.isRequired,
-    handleVideo: PropTypes.func.isRequired,
     handlePost: PropTypes.func.isRequired,
     handleDelete: PropTypes.func.isRequired,
-    postErrors: PropTypes.array.isRequired
+    postErrors: PropTypes.array.isRequired,
+    navStack: PropTypes.object.isRequired
 };
 export default NewPost;

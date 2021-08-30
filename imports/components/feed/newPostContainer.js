@@ -45,19 +45,14 @@ const NewPostContainer = (props) => {
         setCleanPost(cleanPost);
         // if the user has attached images or video, don't override type.
         if(postType !== "image" && postType !== "video") setPostType(type);
-        if(postType !== "image" && postType !== "video") setPostUrl(url);
+        if(url && postType !== "image" && postType !== "video") setPostUrl(url);
         setPostMentions(mentions);
         setPostTags(tags);
         setPostErrors(errors);
     };
 
     const handleOnFocus = () => {
-        console.log("new post focus!");
         setIsPosting(true);
-    };
-
-    const handleVideo = () => {
-        console.log("handle video post");
     };
 
     const cleanUp = () => {
@@ -103,7 +98,7 @@ const NewPostContainer = (props) => {
         .catch((error) => {
             // error ocurred; enable buttons so user can make changes.
             setPostButtonClass(_postEnabled);
-            setDeleteButtonClass(_deleteEnabledsabled);
+            setDeleteButtonClass(_deleteEnabled);
             setImageButtonClass(_imageEnabled);
             setVideoButtonClass(_videoEnabled);
         });
@@ -116,12 +111,10 @@ const NewPostContainer = (props) => {
             postType={postType}
             setPostType={setPostType}
             postUrl={postUrl}
-
             postImages={postImages}
             setPostImages={setPostImages}
             postVideo={postVideo}
             setPostVideo={setPostVideo}
-
             postMentions={postMentions}
             postTags={postTags}
             postFocus={handleOnFocus}
@@ -131,14 +124,14 @@ const NewPostContainer = (props) => {
             videoButtonClass={videoButtonClass}
             postButtonClass={postButtonClass}
             deleteButtonClass={deleteButtonClass}
-            handleVideo={handleVideo}
             handleDelete={handleDelete}
             handlePost={handlePost}
             postErrors={postErrors}
+            navStack={props.navStack}
         />
     )
 };
 NewPostContainer.propTypes = {
-
+    navStack: PropTypes.object.isRequired
 };
 export default NewPostContainer;

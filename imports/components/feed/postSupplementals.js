@@ -1,56 +1,69 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import NewCommentContainer from '../comments/newCommentContainer';
-import CommentsContainer from '../comments/commentsContainer';
-import LikesContainer from '../likes/likesContainer';
-import MentionsContainer from '../mentions/mentionsContainer';
-import TagsContainer from '../tags/tagsContainer';
+import NewCommentContainer from '/imports/components/comments/newCommentContainer';
+import CommentsContainer from '/imports/components/comments/commentsContainer';
+import LikesContainer from '/imports/components/likes/likesContainer';
+import ShareContainer from '/imports/components/share/shareContainer';
 
 const PostSupplementals = (props) => {
+    if(!props.postPreview){
+        return (
+            <>
+                <div className="">
+                    <LikesContainer
+                        likedId={props.post._id}
+                        likedType={props.post.type}
+                        userId={props.post.postedById}
+                        likes={props.post.likes}
+                        dislikes={props.post.dislikes}
+                        postPreview={props.postPreview}
+                    />
+                    <NewCommentContainer
+                        parentId={props.post._id}
+                        parentType={props.post.type}
+                        postedBy={props.post.postedBy}
+                        postedByTag={props.post.postedByTag}
+                        postedById={props.post.postedById}
+                        postedByProfilePic={props.post.postedByProfilePic}
+                        parentText={props.post.caption}
+                        commentCount={props.post.comments.length}
+                        postPreview={props.postPreview}
 
-    return (
-        <>
-            <div className="row justify-content-start">
-                <LikesContainer
-                    likedId={props.postId}
-                    likedType={props.likedType}
-                    likes={props.likes}
-                    dislikes={props.dislikes}
-                />
-                <NewCommentContainer
-                    postId={props.postId}
-                    commentCount={props.comments.length}
-                />
-            </div>
-            <div className="row">
-                <MentionsContainer
-                    postId={props.postId}
-                    mentions={props.mentions}
-                />
-            </div>
-            <div className="row">
-                <TagsContainer
-                    postId={props.postId}
-                    tags={props.tags}
-                />
-            </div>
-            <div className="row">
-                <CommentsContainer
-                    postId={props.postId}
-                    comments={props.comments}
-                />
-            </div>
-        </>
-    );
+                        mentions={props.post.mentions}
+                        mentionIds={props.post.mentionIds}
+                        tags={props.post.tags}
+                        tagIds={props.post.tagIds}
+
+                        navStack={props.navStack}
+                    />
+                    <ShareContainer
+                        post={props.post}
+                        viewSize={props.viewSize}
+                        postPreview={props.postPreview}
+                        navStack={props.navStack}
+                    />
+                </div>
+                <div className="row" style={{paddingTop: "1rem"}}>
+                    <CommentsContainer
+                        parentId={props.post._id}
+                        viewSize={props.viewSize}
+                        postPreview={props.postPreview}
+                        navStack={props.navStack}
+                    />
+                </div>
+            </>
+        );
+    } else {
+        return (
+            <></>
+        )
+    }
 };
 PostSupplementals.propTypes = {
-    postId: PropTypes.string,
-    likedType: PropTypes.string.isRequired,
-    tags: PropTypes.array.isRequired,
-    mentions: PropTypes.array.isRequired,
-    likes: PropTypes.array.isRequired,
-    dislikes: PropTypes.array.isRequired,
-    comments: PropTypes.array.isRequired
+    post: PropTypes.object.isRequired,
+    viewSize: PropTypes.string,
+    postPreview: PropTypes.bool,
+    navStack: PropTypes.object.isRequired
 };
 export default PostSupplementals;

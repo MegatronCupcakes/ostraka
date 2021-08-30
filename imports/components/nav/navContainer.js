@@ -8,6 +8,7 @@ function NavContainer(props){
 
     const handleLogOut = () => {
         props.setNoUserState('Login');
+        props.navStack.reset();
         Meteor.logout();
         props.resetClientStore();
     }
@@ -16,8 +17,12 @@ function NavContainer(props){
         props.setNoUserState(target.id);
     };
 
-    const userOnClick = ({target}) => {
-        props.setNavState(target.id);
+    const navOnClick = ({target}) => {
+        props.navStack.update({navState: target.id, viewContent: null, activeTag: null});
+    };
+
+    const profileOnClick = ({target}) => {
+        props.navStack.update({navState: 'Profile', viewContent: Meteor.userId(), activeTag: null});
     };
 
     const noUserIsActive = (activity) => {
@@ -25,14 +30,16 @@ function NavContainer(props){
     };
 
     const userIsActive = (activity) => {
-        return props.navState === activity ? ' active' : '';
+        return props.navStack.current.navState === activity ? ' active' : '';
     };
 
     if(props.user){
         return (
             <Nav
                 isActive={userIsActive}
-                onClick={userOnClick}
+                navOnClick={navOnClick}
+                profileImage={Meteor.user({fields: {'profile.profileImage': 1}}).profile.profileImage}
+                profileOnClick={profileOnClick}
                 logOut={handleLogOut}
             />
         )
@@ -49,8 +56,7 @@ NavContainer.propTypes = {
     user: PropTypes.object,
     noUserState: PropTypes.string.isRequired,
     setNoUserState: PropTypes.func.isRequired,
-    navState: PropTypes.string.isRequired,
-    setNavState: PropTypes.func.isRequired,
+    navStack: PropTypes.object.isRequired,
     resetClientStore: PropTypes.func.isRequired
 }
 

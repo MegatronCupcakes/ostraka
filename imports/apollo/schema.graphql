@@ -1,5 +1,28 @@
+type Dependency {
+    userId: String
+    sequenceNumber: Int
+}
+
+type Trigger {
+    action: String
+    dependentUser: String
+    dependentRelationship: [Dependency]
+}
+
+type History {
+    _id: ID!
+    userId: String
+    trigger: Trigger
+    description: String
+    appliedValue: Float
+    ruleSet: String
+    active: Boolean
+    createdAt: String
+}
+
 type Post {
     _id: ID!
+    viewId: String!
     postedByTag: String
     postedBy: String
     postedById: String
@@ -7,15 +30,94 @@ type Post {
     type: String
     images: [String]
     url: String
-    caption: [String]
+    caption: String
     tags: [String]
+    tagIds: [String]
     mentions: [String]
+    mentionIds: [String]
     likes: [String]
     dislikes: [String]
     comments: [String]
+    sharedBy: [String]
+    active: Boolean!
+    createdAt: String
 }
 
+type Comment {
+    _id: ID!
+    parentId: String
+    userId: String
+    postedByTag: String
+    postedBy: String
+    postedById: String
+    postedByProfilePic: String
+    comment: String
+    tags: [String]
+    tagIds: [String]
+    mentions: [String]
+    mentionIds: [String]
+    likes: [String]
+    dislikes: [String]
+    comments: [String]
+    active: Boolean!
+    createdAt: String
+}
+
+type User {
+    _id: ID!
+    viewId: String!
+    active: Boolean!
+    profile: UserProfile
+}
+
+type UserProfile {
+    firstName: String
+    lastName: String
+    profileTag: String
+    profileImage: String
+    invitedBy: String
+    invited: [String]
+    followedUsers: [String]
+    followedTopics: [UserTag]
+    reputationScore: Float
+}
+
+type Tag {
+    _id: ID!
+    viewId: String!
+    tag: String!
+    usage: [String]
+    createdBy: String!
+    usedBy: [String]
+    createdAt: String
+    active: Boolean
+}
+
+type UserTag {
+    _id: String!
+    tag: String!
+    createdAt: String!
+    updatedAt: String!
+}
+
+union Topic = Post | Comment
+
+union SharedContent = Tag | Post | User
+
 type Query {
-    getPost (id: ID!): Post
+    getPost (_id: String): Post
     getPosts: [Post]
+    getComment (_id: String): Comment
+    getComments (parentId: String): [Comment]
+    getTaggedPosts (tagId: String): [Post]
+    getUserPosts (postedById: String): [Post]
+    getTaggedComments (tagId: String): [Comment]
+    getUserComments (postedById: String): [Comment]
+    getProfile (_id: String): User
+    getProfiles (_id: [String]): [User]
+    getTopic (tagId: String): [Topic]
+    getTrendingTopics (limit: Int, span: String): [Tag]
+    getTrendingProfiles (limit: Int, span: String): [User]
+
+    getSharedContent (viewId: String): SharedContent
 }
