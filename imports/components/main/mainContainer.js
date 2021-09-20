@@ -20,7 +20,8 @@ import ProfileContainer from '/imports/components/profile/profileContainer';
 import FriendsProfileContainer from '/imports/components/profile/friendsProfileContainer';
 import TrendingProfilesContainer from '/imports/components/profile/trendingProfilesContainer';
 import TrendingTopicsContainer from '/imports/components/topics/trendingTopicsContainer';
-
+import ContentWrapper from '/imports/components/layout/contentWrapper';
+import SettingsContainer from '/imports/components/settings/settingsContainer';
 const cache = new InMemoryCache().restore(window.__APOLLO_STATE__);
 
 MeteorAccountsLink({headerName: 'meteor-login-token'});
@@ -43,7 +44,7 @@ const client = new ApolloClient({
 export default function MainContainer(props){
     const [noUserState, setNoUserState] = useState('Login');
     const [adsBlocked, setAdsBlocked] = useState(false);
-    const [viewingPost, viewId] = _viewingPost(); // [false, null]
+    const [viewingPost, viewId, sharedById, viewType] = _viewingPost(); // [false, null, null]
 
     const adBlockDetected = useDetectAdBlock();
     useEffect(() => {
@@ -62,147 +63,158 @@ export default function MainContainer(props){
 
     const navStack = new ContentNavState(currentUser);
 
-    if(viewingPost){
-        return (
-            <ApolloProvider client={client}>
+    let activity = <Loading />;
+
+    if(!loggingIn){
+        if(viewingPost){
+            activity = (
                 <ViewSharedContentContainer
                     viewId={viewId}
+                    sharedById={sharedById}
+                    viewType={viewType}
                     navStack={navStack}
                     currentUser={currentUser}
                     noUserState={noUserState}
                     setNoUserState={setNoUserState}
                     resetClientStore={resetClientStore}
                 />
-            </ApolloProvider>
-        );
-    } else {
-
-        let activity;
-
-        if(loggingIn){
-            activity = <Loading />;
+            );
+        } else if(!currentUser){
+            activity = (
+                <AccountContainer
+                    noUserState={noUserState}
+                    setNoUserState={setNoUserState}
+                />);
         } else {
-            if(!currentUser){
-                activity = (
-                    <AccountContainer
-                        noUserState={noUserState}
-                        setNoUserState={setNoUserState}
-                    />);
+            // attempt restoration of navStack; does nothing if no saved restore point is found.
+            navStack.restore();
+            // make sure we have our additional user info via subscription
+            Meteor.subscribe('userData');
+            if(adsBlocked){
+                activity = <div className="fade-in">ads blocked.</div>;
             } else {
-                // attempt restoration of navStack; does nothing if no saved restore point is found.
-                navStack.restore();
-                if(adsBlocked){
-                    activity = <div className="fade-in">ads blocked.</div>;
-                } else {
-                    switch(navStack.current.navState){
-                        case 'Loading':
-                            activity = <Loading />;
-                            break;
-                        case 'Feed':
-                            activity = (
-                                <FeedContainer
+                switch(navStack.current.navState){
+                    case 'Loading':
+                        activity = <Loading />;
+                        break;
+                    case 'Feed':
+                        activity = (
+                            <FeedContainer
+                                navStack={navStack}
+                            />
+                        );
+                        break;
+                    case 'Topics':
+                        activity = (
+                            <TopicsContainer
+                                navStack={navStack}
+                            />
+                        );
+                        break;
+                    case 'Profile':
+                        activity = (
+                            <>
+                                <Back
                                     navStack={navStack}
                                 />
-                            );
-                            break;
-                        case 'Topics':
+                                <ProfileContainer
+                                    navStack={navStack}
+                                    viewSize="large"
+                                />
+                            </>
+                        );
+                        break;
+                    case 'Friends':
+                        activity = (
+                            <FriendsProfileContainer
+                                navStack={navStack}
+                                profileIds={_.uniq([...currentUser.followedUsers, ...currentUser.invited, currentUser.invitedBy])}
+                            />
+                        );
+                        break;
+                    case 'Trending Topics':
+                        if(navStack.currentTag){
                             activity = (
                                 <TopicsContainer
                                     navStack={navStack}
                                 />
                             );
-                            break;
-                        case 'Profile':
+                        } else {
                             activity = (
-                                <>
-                                    <Back
-                                        navStack={navStack}
-                                    />
-                                    <ProfileContainer
-                                        navStack={navStack}
-                                        viewSize="large"
-                                    />
-                                </>
-                            );
-                            break;
-                        case 'Friends':
-                            activity = (
-                                <FriendsProfileContainer
-                                    navStack={navStack}
-                                    profileIds={currentUser.profile.followedUsers}
-                                />
-                            );
-                            break;
-                        case 'Trending Topics':
-                            if(navStack.currentTag){
-                                activity = (
-                                    <TopicsContainer
-                                        navStack={navStack}
-                                    />
-                                );
-                            } else {
-                                activity = (
-                                    <TrendingTopicsContainer
-                                        navStack={navStack}
-                                    />
-                                );
-                            }
-                            break;
-                        case 'Trending Users':
-                            activity = (
-                                <TrendingProfilesContainer
+                                <TrendingTopicsContainer
                                     navStack={navStack}
                                 />
                             );
-                            break;
-                        case 'Settings':
-                            activity = <div className="fade-in">settings</div>;
-                            break;
-                        case 'Search':
-                            activity = <div className="fade-in">search results</div>;
-                            break;
-                        case 'PostView':
-                            activity = (
-                                <>
-                                    <Back
-                                        navStack={navStack}
-                                    />
-                                    <PostView
-                                        navStack={navStack}
-                                        viewSize="large"
-                                    />
-                                </>
-                            );
-                            break;
-                        case 'TagView':
-                            activity = (
-                                <>
-                                    <Back
-                                        navStack={navStack}
-                                    />
-                                    <TopicsContainer
-                                        navStack={navStack}
-                                    />
-                                </>
-                            );
+                        }
                         break;
-                    }
+                    case 'Trending Users':
+                        activity = (
+                            <TrendingProfilesContainer
+                                navStack={navStack}
+                            />
+                        );
+                        break;
+                    case 'Settings':
+                        activity = <SettingsContainer />;
+                        break;
+                    case 'Support':
+                        activity = <div className="fade-in">Support</div>;
+                        break;
+                    case 'Search':
+                        activity = <div className="fade-in">search results</div>;
+                        break;
+                    case 'PostView':
+                        activity = (
+                            <>
+                                <Back
+                                    navStack={navStack}
+                                />
+                                <ContentWrapper
+                                    content={(
+                                        <PostView
+                                            navStack={navStack}
+                                            viewSize="large"
+                                        />
+                                    )}
+                                />
+                            </>
+                        );
+                        break;
+                    case 'TagView':
+                        activity = (
+                            <>
+                                <Back
+                                    navStack={navStack}
+                                />
+                                <TopicsContainer
+                                    navStack={navStack}
+                                />
+                            </>
+                        );
+                    break;
                 }
             }
         }
-        return (
-            <ApolloProvider client={client}>
-                <NavContainer
-                    user={currentUser}
-                    noUserState={noUserState}
-                    setNoUserState={setNoUserState}
-                    navStack={navStack}
-                    resetClientStore={resetClientStore}
-                />
-                {activity}
-            </ApolloProvider>
-        );
     }
+    const appContent = viewingPost ? (
+        activity
+    ) : (
+        <>
+            <NavContainer
+                user={currentUser}
+                noUserState={noUserState}
+                setNoUserState={setNoUserState}
+                navStack={navStack}
+                resetClientStore={resetClientStore}
+            />
+            {activity}
+        </>
+    );
+    return (
+        <ApolloProvider client={client}>
+            {appContent}
+        </ApolloProvider>
+    );
 }
 
 const _detectAdBlock = () => {
@@ -218,5 +230,14 @@ const _detectAdBlock = () => {
 };
 
 const _viewingPost = () => {
-    return window.location.href.indexOf("view") > -1 ? [true, window.location.href.substr(window.location.href.indexOf("?") + 1)] : [false, null];
+    if(window.location.href.indexOf("view") > -1){
+        const viewString = window.location.href.substr(window.location.href.indexOf("?") + 1);
+        const viewId = viewString.split("&")[0];
+        const sharedById = viewString.split("&")[1];
+        const viewType = viewString.split("&")[2];
+        //console.log("viewId:", viewId, "\nsharedById:", sharedById, "\nviewType:", viewType);
+        return [true, viewId, sharedById, viewType];
+    } else {
+        return [false, null, null, null];
+    }
 }

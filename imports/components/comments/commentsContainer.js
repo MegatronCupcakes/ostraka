@@ -6,6 +6,7 @@ import _ from 'underscore';
 import CommentQuery from '/imports/api/comments/commentQuery';
 import Comment from './comment';
 import LikesContainer from '../likes/likesContainer';
+import ShareContainer from '/imports/components/share/shareContainer';
 import NewCommentContainer from './newCommentContainer';
 import {Loading, Error} from '/imports/components/loadingStatus/loadingStatus';
 
@@ -26,6 +27,8 @@ const CommentsContainer = (props) => {
                     <div className="">
                         <Comment
                             comment={comment}
+                            viewType={props.viewType}
+                            sharedById={props.sharedById}
                             navStack={props.navStack}
                         />
                     </div>
@@ -34,8 +37,17 @@ const CommentsContainer = (props) => {
                             likedId={comment._id}
                             likedType="Comment"
                             userId={comment.userId}
-                            likes={comment.likes}
-                            dislikes={comment.dislikes}
+                            liked={comment.liked}
+                            likeCount={comment.likeCount}
+                            disliked={comment.disliked}
+                            dislikeCount={comment.dislikeCount}
+                        />
+                        <ShareContainer
+                            sharedContent={comment}
+                            sharedType="comment"
+                            viewSize={props.viewSize}
+                            noninteractive={props.noninteractive}
+                            navStack={props.navStack}
                         />
                     </div>
                 </div>
@@ -51,7 +63,10 @@ const CommentsContainer = (props) => {
 };
 CommentsContainer.propTypes = {
     parentId: PropTypes.string,
+    sharedById: PropTypes.string,
+    viewType: PropTypes.string, // "embed" and perhaps other specialized content views.
     viewSize: PropTypes.string,
+    noninteractive: PropTypes.bool,
     navStack: PropTypes.object.isRequired
 };
 export default CommentsContainer;

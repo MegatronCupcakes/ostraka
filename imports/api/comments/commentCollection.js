@@ -14,3 +14,30 @@ const _indexes = [
 IndexCollection(CommentCollection, _indexes);
 
 export default CommentCollection;
+
+export const commentReturnFields = (userId) => {
+    return {
+        _id: 1,
+        parentId: 1,
+        userId: 1,
+        postedByTag: 1,
+        postedBy: 1,
+        postedById: 1,
+        postedByProfilePic: 1,
+        comment: 1,
+        tags: 1,
+        mentions: 1,
+        comments: 1,
+        tagIds: 1,
+        active: 1,
+        mentionIds: 1,
+        viewId: 1,
+        liked: {$in: [userId, "$likes"]},
+        likeCount: {$size: "$likes"},
+        disliked: {$in: [userId, "$dislikes"]},
+        dislikeCount: {$size: "$dislikes"},
+        shared: {$in: [userId, "$sharedBy"]},
+        shareCount: {$size: "$sharedBy"},
+        createdAt: 1
+    };
+};

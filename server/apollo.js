@@ -8,6 +8,7 @@ import {getComments, getTaggedComments, getUserComments} from '/imports/apollo/r
 import {getProfile, getProfiles, getTrendingProfiles} from '/imports/apollo/resolvers/profiles';
 import {getTopic, getTrendingTopics} from '/imports/apollo/resolvers/topics';
 import {getSharedContent} from '/imports/apollo/resolvers/sharedContent';
+import {getUserHistory} from '/imports/apollo/resolvers/history';
 
 const resolvers = {
     Topic: {
@@ -41,7 +42,8 @@ const resolvers = {
         getTopic: getTopic,
         getTrendingTopics: getTrendingTopics,
         getTrendingProfiles: getTrendingProfiles,
-        getSharedContent: getSharedContent
+        getSharedContent: getSharedContent,
+        getUserHistory: getUserHistory
     }
 };
 

@@ -19,9 +19,14 @@ export class ContentNavState {
         return _.last(this._contentState);
     };
     async update(state){
+        //console.log("UPDATE\nsetting:", state, "\nprevious:", _.last(this._contentState));
         const currentState = this._contentState;
         if(!state.tags) state.tags = _getTags(this._currentUser);
-        this._setContentState([...currentState, state]);
+        // prevent the user from filling the navStack with the same state over and over.
+        // this is possible when viewing a profile if the user clicks the profile name/tag again.
+        // in this event it makes the "back" arrow look like it does nothing as the previous state
+        // is the same as the current state.
+        if(!_.isEqual(_.last(this._contentState), state)) this._setContentState([...currentState, state]);
         // redirect if we're navigating away from a sharedView.
         if(window.location.href.includes("view")){
             await this._storage.set([...currentState, state])
@@ -32,9 +37,10 @@ export class ContentNavState {
         }
     };
     back(){
-        this._contentState.pop(); // current state
+        const currentState = this._contentState.pop(); // current state
         const priorState = this._contentState.pop(); // get prior state
-        this.update(priorState ? priorState : _defaultNavState); // restore prior state or default if stack is empty now (as is the case with shared views.)
+        //console.log("BACK\nleaving:", currentState, "\nentering:", priorState);
+        this._setContentState([...this._contentState, priorState ? priorState : _defaultNavState]); // restore prior state or default if stack is empty now (as is the case with shared views.)
     };
 
     reset(){
@@ -78,7 +84,7 @@ export class ContentNavState {
 
 const _getTags = (currentUser) => {
     if(currentUser){
-        let _tags = _.sortBy(currentUser.profile.followedTopics, 'createdAt').reverse().map((_tag, index) => {
+        let _tags = _.sortBy(currentUser.followedTopics, 'createdAt').reverse().map((_tag, index) => {
             _tag.active = false;
             return _tag;
         });

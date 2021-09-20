@@ -22,28 +22,26 @@ const ProfileTopicsContainer = (props) => {
                 let component;
                 switch(item.__typename){
                     case 'Post':
-                    component = (
-                        <PostView
-                            key={index}
-                            viewSize="small"
-                            navStack={props.navStack}
-                            post={item}
-                        />
-                    )
-                    break;
+                        component = (
+                            <PostView
+                                key={index}
+                                viewSize="small"
+                                navStack={props.navStack}
+                                post={item}
+                            />
+                        )
+                        break;
                     case 'Comment':
-                    const goToPost = () => {
-                        props.navStack.update({navState: "PostView", viewContent: item.parentId, activeTag: null});
-                    }
-                    component = (
-                        <TopicViewComment
-                            key={index}
-                            comment={item}
-                            goToPost={goToPost}
-                            navStack={props.navStack}
-                        />
-                    );
-                    break;
+                        component = (
+                            <TopicViewComment
+                                key={index}
+                                comment={item}
+                                viewSize={props.viewSize}
+                                viewType={props.viewType}
+                                navStack={props.navStack}
+                            />
+                        );
+                        break;
                 }
                 return component;
             });
@@ -68,6 +66,8 @@ const ProfileTopicsContainer = (props) => {
 };
 ProfileTopicsContainer.propTypes = {
     navStack: PropTypes.object.isRequired,
-    profileTags: PropTypes.array.isRequired
+    profileTags: PropTypes.array.isRequired,
+    viewSize: PropTypes.string,
+    viewType: PropTypes.string
 };
 export default ProfileTopicsContainer;

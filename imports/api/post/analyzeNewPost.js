@@ -26,11 +26,12 @@ const AnalyzeNewPost = (postString) => {
             url = string;
             type = "link";
         }
-        if(string.length > 1 && string.startsWith('@')){
-            mentions.push(string);
+        const strippedString = _removePunctuation(string);
+        if(strippedString.length > 1 && strippedString.startsWith('@')){
+            mentions.push(strippedString);
         }
-        if(string.length > 1 && string.startsWith('#')){
-            tags.push(string);
+        if(strippedString.length > 1 && strippedString.startsWith('#')){
+            tags.push(strippedString);
         }
     });
     if(url){
@@ -45,3 +46,7 @@ const _clean = (_array) => {
         return string.substring(1);
     });
 };
+
+const _removePunctuation = (string) => {
+    return string.replace(/([.,\/?!$%\^&\*;:{}=\-_`~()\]\[])+$/g, "");
+}

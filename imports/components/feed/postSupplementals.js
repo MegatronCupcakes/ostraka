@@ -7,7 +7,7 @@ import LikesContainer from '/imports/components/likes/likesContainer';
 import ShareContainer from '/imports/components/share/shareContainer';
 
 const PostSupplementals = (props) => {
-    if(!props.postPreview){
+    if(!props.noninteractive){
         return (
             <>
                 <div className="">
@@ -15,9 +15,11 @@ const PostSupplementals = (props) => {
                         likedId={props.post._id}
                         likedType={props.post.type}
                         userId={props.post.postedById}
-                        likes={props.post.likes}
-                        dislikes={props.post.dislikes}
-                        postPreview={props.postPreview}
+                        liked={props.post.liked}
+                        likeCount={props.post.likeCount}
+                        disliked={props.post.disliked}
+                        dislikeCount={props.post.dislikeCount}
+                        noninteractive={props.noninteractive}
                     />
                     <NewCommentContainer
                         parentId={props.post._id}
@@ -28,7 +30,7 @@ const PostSupplementals = (props) => {
                         postedByProfilePic={props.post.postedByProfilePic}
                         parentText={props.post.caption}
                         commentCount={props.post.comments.length}
-                        postPreview={props.postPreview}
+                        noninteractive={props.noninteractive}
 
                         mentions={props.post.mentions}
                         mentionIds={props.post.mentionIds}
@@ -38,17 +40,20 @@ const PostSupplementals = (props) => {
                         navStack={props.navStack}
                     />
                     <ShareContainer
-                        post={props.post}
+                        sharedContent={props.post}
+                        sharedType="post"
                         viewSize={props.viewSize}
-                        postPreview={props.postPreview}
+                        noninteractive={props.noninteractive}
                         navStack={props.navStack}
                     />
                 </div>
                 <div className="row" style={{paddingTop: "1rem"}}>
                     <CommentsContainer
                         parentId={props.post._id}
+                        viewType={props.viewType}
+                        sharedById={props.sharedById}
                         viewSize={props.viewSize}
-                        postPreview={props.postPreview}
+                        noninteractive={props.noninteractive}
                         navStack={props.navStack}
                     />
                 </div>
@@ -62,8 +67,10 @@ const PostSupplementals = (props) => {
 };
 PostSupplementals.propTypes = {
     post: PropTypes.object.isRequired,
+    sharedById: PropTypes.string,
+    viewType: PropTypes.string, // "embed" and perhaps other specialized content views.
     viewSize: PropTypes.string,
-    postPreview: PropTypes.bool,
+    noninteractive: PropTypes.bool,
     navStack: PropTypes.object.isRequired
 };
 export default PostSupplementals;

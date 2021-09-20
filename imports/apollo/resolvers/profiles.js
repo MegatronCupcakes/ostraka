@@ -3,13 +3,14 @@ import _ from 'underscore';
 import TimeFrame from '/imports/api/util/timeFrame';
 import PostCollection from '/imports/api/post/postCollection';
 import CommentCollection from '/imports/api/comments/commentCollection';
+import {profileReturnFields} from '/imports/api/profile/profileReturnFields';
 
 export const getProfile = (parent, args, context, info) => {
-    return Meteor.users.findOne({_id: args._id, active: true},{_id: 1, profile:1});
+    return Meteor.users.findOne({_id: args._id, active: true},{fields: profileReturnFields(context.user._id)});
 }
 
 export const getProfiles = (parent, args, context, info) => {
-    return Meteor.users.find({_id: {$in: args.userIds}, active: true},{_id: 1, profile:1}).fetch();
+    return Meteor.users.find({_id: {$in: args.userIds}, active: true},{fields: profileReturnFields(context.user._id)});
 }
 
 export const getTrendingProfiles = async (parent, args, context, info) => {
@@ -69,5 +70,5 @@ export const getTrendingProfiles = async (parent, args, context, info) => {
         return {_id: key, count: countById[key]};
     }), 'count');
     const trendingIds = _.first(sortedCountArray, args.limit).map((item) => {return item._id})
-    return Meteor.users.find({_id: {$in: trendingIds}, active: true}).fetch();
+    return Meteor.users.find({_id: {$in: trendingIds}, active: true}, {fields: profileReturnFields(context.user._id)});
 }

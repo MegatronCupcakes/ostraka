@@ -11,13 +11,13 @@ type Trigger {
 
 type History {
     _id: ID!
-    userId: String
-    trigger: Trigger
+    userId: String!
+    trigger: Trigger!
     description: String
-    appliedValue: Float
-    ruleSet: String
-    active: Boolean
-    createdAt: String
+    appliedValue: Float!
+    ruleSet: String!
+    active: Boolean!
+    createdAt: String!
 }
 
 type Post {
@@ -35,12 +35,15 @@ type Post {
     tagIds: [String]
     mentions: [String]
     mentionIds: [String]
-    likes: [String]
-    dislikes: [String]
     comments: [String]
-    sharedBy: [String]
+    likeCount: Int!
+    dislikeCount: Int!
+    shareCount: Int!
+    liked: Boolean!
+    disliked: Boolean!
+    shared: Boolean!
     active: Boolean!
-    createdAt: String
+    createdAt: String!
 }
 
 type Comment {
@@ -56,11 +59,15 @@ type Comment {
     tagIds: [String]
     mentions: [String]
     mentionIds: [String]
-    likes: [String]
-    dislikes: [String]
     comments: [String]
+    likeCount: Int!
+    dislikeCount: Int!
+    shareCount: Int!
+    liked: Boolean!
+    disliked: Boolean!
+    shared: Boolean!
     active: Boolean!
-    createdAt: String
+    createdAt: String!
 }
 
 type User {
@@ -68,6 +75,17 @@ type User {
     viewId: String!
     active: Boolean!
     profile: UserProfile
+    invitedBy: String
+    invited: [String]
+    followedUsers: [String]
+    followingCount: Int!
+    followedTopics: [UserTag]
+    reputationScore: Float
+    followedByCount: Int!
+    followed: Boolean!
+    shareCount: Int!
+    ostracizeCount: Int!
+    ostracized: Boolean!
 }
 
 type UserProfile {
@@ -75,11 +93,6 @@ type UserProfile {
     lastName: String
     profileTag: String
     profileImage: String
-    invitedBy: String
-    invited: [String]
-    followedUsers: [String]
-    followedTopics: [UserTag]
-    reputationScore: Float
 }
 
 type Tag {
@@ -89,8 +102,9 @@ type Tag {
     usage: [String]
     createdBy: String!
     usedBy: [String]
-    createdAt: String
-    active: Boolean
+    sharedBy: [String]
+    createdAt: String!
+    active: Boolean!
 }
 
 type UserTag {
@@ -102,7 +116,7 @@ type UserTag {
 
 union Topic = Post | Comment
 
-union SharedContent = Tag | Post | User
+union SharedContent = Tag | Post | Comment | User
 
 type Query {
     getPost (_id: String): Post
@@ -114,10 +128,10 @@ type Query {
     getTaggedComments (tagId: String): [Comment]
     getUserComments (postedById: String): [Comment]
     getProfile (_id: String): User
-    getProfiles (_id: [String]): [User]
+    getProfiles (userIds: [String]): [User]
     getTopic (tagId: String): [Topic]
     getTrendingTopics (limit: Int, span: String): [Tag]
     getTrendingProfiles (limit: Int, span: String): [User]
-
-    getSharedContent (viewId: String): SharedContent
+    getSharedContent (viewId: String, sharedById: String): SharedContent
+    getUserHistory (userId: String): [History]
 }

@@ -3,7 +3,7 @@ import {Mongo} from 'meteor/mongo';
 import {Random} from 'meteor/random';
 import _ from 'underscore';
 import IndexCollection from '../util/indexCollection';
-
+import {viewId} from '/imports/api/util/viewId';
 const TagCollection = new Mongo.Collection('tags');
 
 const _indexes = [
@@ -28,17 +28,18 @@ export const TagLookup = (tagArray, userId) => {
                 const _tag = TagCollection.findOne({tag: tag},{_id:1});
                 const _date = new Date();
                 const tagId = _tag ? _tag._id : TagCollection.insert({
-                    viewId: Random.secret(),
+                    viewId: viewId(),
                     tag: tag,
                     active: true,
                     usage: [_date],
                     createdBy: userId,
                     usedBy: [],
+                    sharedBy: [],
                     createdAt: _date
                 });
                 TagCollection.update({_id: tagId},{$addToSet: {usedBy: userId, usage: _date}});
                 // add tag to user's followed topics.
-                const followedTopics = Meteor.users.findOne({_id: userId},{profile: 1}).profile.followedTopics;
+                const followedTopics = Meteor.users.findOne({_id: userId},{profile: 1}).followedTopics;
                 const existingTopic = _.findWhere(followed, {_id: tagId});
                 if(existingTopic){
                     const topicIndex = followedTopics.indexOf(existingTopic);
@@ -53,4 +54,20 @@ export const TagLookup = (tagArray, userId) => {
         }));
         resolve(tagIds);
     });
+}
+
+export const tagReturnFields = (userId) => {
+    return {
+        _id: 1,
+        viewId: 1,
+        tag: 1,
+        createdBy: 1,
+        usedBy: 1,
+        createdAt: 1,
+        active: 1,
+        useCount: {$size: "$usage"},
+        used: {$in: [userId, "$usage"]},
+        shareCount: {$size: "$sharedBy"},
+        shared: {$in: [userId, "$sharedBy"]}
+    }
 }

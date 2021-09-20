@@ -5,16 +5,19 @@ import MultipleProfilesContainer from '/imports/components/profile/multipleProfi
 
 const ProfileProfilesContainer = (props) => {
     if(props.profileIds && props.profileIds.length > 0){
-        <MultipleProfilesContainer
-            navStack={props.navStack}
-            profileIds={props.profileIds}
-        />
+        return (
+            <MultipleProfilesContainer
+                navStack={props.navStack}
+                profileIds={props.profileIds}
+            />
+        );
     } else {
-        return <Empty message="no invited users (yet)"/>;
+        return <Empty message={props.emptyMessage ? props.emptyMessage : "nothing found"}/>;
     }
 };
 ProfileProfilesContainer.propTypes = {
     navStack: PropTypes.object.isRequired,
-    profileIds: PropTypes.array
+    profileIds: PropTypes.array,
+    emptyMessage: PropTypes.string
 };
 export default ProfileProfilesContainer;

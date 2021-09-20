@@ -1,15 +1,15 @@
 import _ from 'underscore';
 import TimeFrame from '/imports/api/util/timeFrame';
-import PostCollection from '/imports/api/post/postCollection';
-import CommentCollection from '/imports/api/comments/commentCollection';
-import TagCollection from '/imports/api/tag/tagCollection';
+import PostCollection, {postReturnFields} from '/imports/api/post/postCollection';
+import CommentCollection, {commentReturnFields} from '/imports/api/comments/commentCollection';
+import TagCollection, {tagReturnFields} from '/imports/api/tag/tagCollection';
 
 export const getTopic = async (parent, args, context, info) => {
-    const posts = PostCollection.find({tagIds: args.tagId, active: true}).map((post) => {
+    const posts = PostCollection.find({tagIds: args.tagId, active: true},{fields: postReturnFields(context.user._id)}).map((post) => {
         post._type = "Post";
         return post;
     });
-    const comments = CommentCollection.find({tagIds: args.tagId, active: true}).map((comment) => {
+    const comments = CommentCollection.find({tagIds: args.tagId, active: true},{fields: commentReturnFields(context.user._id)}).map((comment) => {
         comment._type = "Comment";
         return comment;
     });
@@ -19,7 +19,6 @@ export const getTopic = async (parent, args, context, info) => {
 export const getTrendingTopics = async (parent, args, context, info) => {
     // return tag IdDs for tags with the greatest usage in the last 24hours
     // factor in activity (shares and comments) of posts using these tags.
-    console.log("limit: " + args.limit + " span: " + args.span);
     const [now, then] = TimeFrame(args.span);
     const trending = await new Promise((resolve, reject) => {
         try {
@@ -36,9 +35,6 @@ export const getTrendingTopics = async (parent, args, context, info) => {
     }).catch((error) => {
         console.log("ERROR:", error);
     });
-
-    console.log("trending:", trending);
     const trendingIds = _.sortBy(trending, 'size').map((summary) => {return summary._id});
-    console.log("trendingIds:", trendingIds);
-    return TagCollection.find({_id: {$in: _.first(trendingIds, args.limit)}}).fetch();
+    return TagCollection.find({_id: {$in: _.first(trendingIds, args.limit)}},{fields: tagReturnFields(context.user._id)});
 }

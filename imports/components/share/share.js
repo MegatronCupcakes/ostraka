@@ -1,15 +1,64 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PostView from '/imports/components/feed/postView';
-import ShareSettings from '/imports/components/settings/shareSettings'; // view only; update when shareSettingsContainer is ready.
+import TopicViewComment from '/imports/components/comments/topicViewComment';
+import UserIdentifierWithScore from '/imports/components/profile/userIdentifierWithScore';
+import ShareSettingsContainer from '/imports/components/settings/shareSettingsContainer';
+import {dismissModals} from '/imports/api/util/dismissModals';
 
 const Share = (props) => {
-    const modalId = "shareModal_" + props.post._id;
-    const _shareButton = !props.postPreview && props.registeredUser ? (
-        <span style={{paddingRight: "1rem"}}><i className="bi bi-box-arrow-up" data-bs-toggle="modal" data-bs-target={"#" + modalId}></i> {props.shareCount}</span>
+    const modalId = "shareModal_" + props.sharedContent._id;
+    const _shareCountClasses = props.displaySize ? "share_" + props.displaySize : "share";
+    const _shareButtonClasses = "bi bi-box-arrow-up";
+    const _disabledShareButtonClasses = _shareButtonClasses + " disabled";
+    const _shareButton = !props.noninteractive && props.registeredUser ? (
+        <span className={_shareCountClasses}>{props.shareCount} <i className={_shareButtonClasses} data-bs-toggle="modal" data-bs-target={"#" + modalId}></i></span>
     ) : (
-        <span style={{paddingRight: "1rem"}}><i className="bi bi-box-arrow-up"></i> {props.shareCount}</span>
+        <span className={_shareCountClasses}>{props.shareCount} <i className={_disabledShareButtonClasses}></i></span>
     );
+    let _preview;
+    switch(props.sharedType){
+        case "post":
+            _preview = (
+                <PostView
+                    noninteractive={true}
+                    displaySize={props.displaySize}
+                    post={props.sharedContent}
+                    navStack={props.navStack}
+                />
+            );
+            break;
+        case "comment":
+            _preview = (
+                <TopicViewComment
+                    noninteractive={true}
+                    comment={props.sharedContent}
+                    viewSize={props.viewSize}
+                    viewType={props.viewType}
+                    navStack={props.navStack}
+                />
+            );
+            break;
+        case "tag":
+            _preview = (
+                <div className="tags justify-content-center">
+                    <span className="tag shared">#{props.sharedContent.tag}</span>
+                </div>
+            );
+            break;
+        case "profile":
+            _preview = (
+                <div className="col-xs-12">
+                    <UserIdentifierWithScore
+                        noninteractive={true}
+                        displaySize={props.displaySize}
+                        user={props.sharedContent}
+                        navStack={props.navStack}
+                    />
+                </div>
+            );
+            break;
+    }
     return (
         <>
             {_shareButton}
@@ -22,27 +71,22 @@ const Share = (props) => {
                         </div>
                         <div className="modal-body">
                             <div className="row">
-                                <PostView
-                                    postPreview={true}
-                                    viewSize={props.viewSize}
-                                    post={props.post}
-                                    navStack={props.navStack}
-                                />
+                                {_preview}
                             </div>
                             <div className="row">
                                 <div className="col-xs-12">
-                                    <textarea className="form-control" placeholder="share your thoughts..." aria-label="share something" onChange={props.onChange} />
+                                    <textarea className="form-control" placeholder="share your thoughts..." aria-label="share something" onChange={props.handleCaptionChange} />
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col-xs-12" style={{textAlign: "center", paddingTop: "1rem"}}>
-                                    <ShareSettings />
+                                    <ShareSettingsContainer />
                                 </div>
                             </div>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={props.handleCancel}><i className="bi bi-trash"></i></button>
-                            <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={props.shareContent}><i className="bi bi-box-arrow-up"></i></button>
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={props.handleCancel}><i className="bi bi-x-lg"></i></button>
+                            <button type="button" className="btn btn-primary" onClick={props.shareContent}><i className="bi bi-box-arrow-up"></i></button>
                         </div>
                     </div>
                 </div>
@@ -51,12 +95,17 @@ const Share = (props) => {
     );
 };
 Share.propTypes = {
-    post: PropTypes.object.isRequired,
+    sharedContent: PropTypes.object.isRequired,
+    sharedType: PropTypes.string.isRequired,
+    handleCaptionChange: PropTypes.func.isRequired,
     shareContent: PropTypes.func.isRequired,
     handleCancel: PropTypes.func.isRequired,
     shareCount: PropTypes.number,
+    displaySize: PropTypes.string,
+    noninteractive: PropTypes.bool,
+    registeredUser: PropTypes.bool.isRequired,
+    navStack: PropTypes.object.isRequired,
     viewSize: PropTypes.string,
-    postPreview: PropTypes.bool,
-    navStack: PropTypes.object.isRequired
+    viewType: PropTypes.string
 };
 export default Share;

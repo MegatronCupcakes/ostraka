@@ -2,8 +2,12 @@
     padding-bottom: 2rem;
 }
 
-.postCaption {
+.postRow {
     margin-bottom: 1rem;
+}
+
+.postCaption {
+
 }
 
 .imagePreview {
@@ -15,14 +19,6 @@
 
 .textOnlyPost {
     font-size: large;
-}
-
-.goToPost {
-    color: #bbc1c7;
-    margin: 0.25rem;
-    font-size: 2rem;
-    font-weight: bold;
-    z-index: 100;
 }
 
 .navBack {

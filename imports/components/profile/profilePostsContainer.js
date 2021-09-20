@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import {useQuery} from '@apollo/client';
 import {UserPostsQuery} from '/imports/api/post/postQuery';
 import {Loading, Error, Empty} from '/imports/components/loadingStatus/loadingStatus';
+import SimpleSpacer from '/imports/components/layout/simpleSpacer';
 import PostView from '/imports/components/feed/postView';
 
 const ProfilePostsContainer = (props) => {
     const {loading, error, data} = useQuery(UserPostsQuery, {variables: {postedById: props.userId}, pollInterval: 1000});
-    let content = <div>"Hi!"</div>;
+    let content;
     if(loading){
         content = <Loading />
     } else if(error){
@@ -15,14 +16,14 @@ const ProfilePostsContainer = (props) => {
         console.log("ERROR:", error);
     } else if(data && data.getUserPosts){
         content = data.getUserPosts.map((post, index) => {
-            return (
+            const postView = (
                 <PostView
-                    key={index}
                     viewSize="small"
                     navStack={props.navStack}
                     post={post}
                 />
             );
+            return <SimpleSpacer content={postView} key={index}/>
         });
     }else {
         content = <Empty message="oops, we couldn't find what you're looking for :-("/>;

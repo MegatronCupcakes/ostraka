@@ -28,7 +28,7 @@ export const AttachImage = (props) => {
                 </div>
             </div>
             <div className="modal-footer">
-            <button type="button" className={props.deleteButtonClass} onClick={props.handleCancel} data-bs-dismiss="modal"><i className="bi bi-trash"></i></button>
+            <button type="button" className={props.deleteButtonClass} onClick={props.handleCancel} data-bs-dismiss="modal"><i className="bi bi-x-lg"></i></button>
             <button type="button" className={props.uploadButtonClass} onClick={props.handleUpload} data-bs-dismiss="modal"><i className="bi bi-cloud-arrow-up"></i></button>
             </div>
         </div>

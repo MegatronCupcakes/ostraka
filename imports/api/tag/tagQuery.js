@@ -8,6 +8,7 @@ export const TagFields = gql`
         usage
         createdBy
         usedBy
+        sharedBy
         createdAt
         active
     }

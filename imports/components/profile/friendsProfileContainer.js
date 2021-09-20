@@ -5,10 +5,12 @@ import MultipleProfilesContainer from '/imports/components/profile/multipleProfi
 
 const FriendsProfileContainer = (props) => {
     if(props.profileIds && props.profileIds.length > 0){
-        <MultipleProfilesContainer
-            navStack={props.navStack}
-            profileIds={props.profileIds}
-        />
+        return (
+            <MultipleProfilesContainer
+                navStack={props.navStack}
+                profileIds={props.profileIds}
+            />
+        );
     } else {
         return <Empty message="try following some people..."/>;
     }

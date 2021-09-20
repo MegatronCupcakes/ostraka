@@ -1,10 +1,12 @@
-import { Meteor } from "meteor/meteor";
-import { Accounts } from 'meteor/accounts-base';
-import { check } from 'meteor/check';
+import {Meteor} from "meteor/meteor";
+import {Random} from 'meteor/random';
+import {Accounts} from 'meteor/accounts-base';
+import {check} from 'meteor/check';
 import CommentCollection from './commentCollection';
 import PostCollection from '../post/postCollection';
 import {TagLookup} from '../tag/tagCollection';
 import MapMentions from '/imports/api/mentions/mapMentions';
+import {viewId} from '/imports/api/util/viewId';
 
 Meteor.methods({
     comment: async function(parentId, parentType, comment, tags, mentions){
@@ -18,6 +20,7 @@ Meteor.methods({
         const user = Meteor.users.findOne({_id: this.userId});
 
         _create({
+            viewId: viewId(),
             parentId: parentId,
             parentType: parentType,
             userId: this.userId,
@@ -33,6 +36,7 @@ Meteor.methods({
             likes: [],
             dislikes: [],
             comments: [],
+            sharedBy: [],
             active: true,
             createdAt: new Date()
         })

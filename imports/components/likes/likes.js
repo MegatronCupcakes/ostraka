@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 const Likes = (props) => {
     return (
-        <span style={{paddingRight: "1rem"}}><i className={props.thumbClass} onClick={props.thumbClick}></i> {props.likes.length}</span>
+        <span style={{paddingRight: "1rem"}}>{props.count} <i className={props.thumbClass} onClick={props.thumbClick}></i></span>
     )
 };
 Likes.propTypes = {
     thumbClass: PropTypes.string.isRequired,
-    likes: PropTypes.array.isRequired
+    count: PropTypes.number.isRequired
 };
 export default Likes;

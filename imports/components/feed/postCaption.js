@@ -4,7 +4,7 @@ import TagsAndMentions from '/imports/api/post/tagsAndMentions';
 
 const PostCaption = (props) => {
     return (
-        <div className="postCaption">{TagsAndMentions(props.caption, props.tags, props.tagIds, props.mentions, props.mentionIds, props.navStack)}</div>
+        <div className="postCaption col-12">{TagsAndMentions(props.caption, props.tags, props.tagIds, props.mentions, props.mentionIds, props.navStack, props.viewType, props.sharedById)}</div>
     );
 };
 PostCaption.propTypes = {
@@ -13,6 +13,8 @@ PostCaption.propTypes = {
     tagIds: PropTypes.array.isRequired,
     mentions: PropTypes.array.isRequired,
     mentionIds: PropTypes.array.isRequired,
-    navStack: PropTypes.object.isRequired
+    navStack: PropTypes.object.isRequired,
+    viewType: PropTypes.string,
+    sharedById: PropTypes.string
 };
 export default PostCaption;

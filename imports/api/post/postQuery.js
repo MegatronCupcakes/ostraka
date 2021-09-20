@@ -16,10 +16,13 @@ export const PostFields = gql`
         tagIds
         mentions
         mentionIds
-        likes
-        dislikes
         comments
-        sharedBy
+        likeCount
+        dislikeCount
+        shareCount
+        liked
+        disliked
+        shared        
     }
 `;
 

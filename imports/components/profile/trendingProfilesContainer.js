@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {useQuery} from '@apollo/client';
 import {Loading, Error, Empty} from '/imports/components/loadingStatus/loadingStatus';
 import {TrendingProfilesQuery} from '/imports/api/profile/profileQuery';
-import TrendingProfile from '/imports/components/profile/trendingProfile';
+import UserIdentifierWithScore from '/imports/components/profile/userIdentifierWithScore';
+import ContentWrapper from '/imports/components/layout/contentWrapper';
 
 const TrendingProfilesContainer = (props) => {
     const {loading, error, data} = useQuery(TrendingProfilesQuery, {variables: {limit: 10, span: "year"}, pollInterval: 1000000000});
@@ -15,13 +16,15 @@ const TrendingProfilesContainer = (props) => {
         console.log("ERROR:", error);
     } else if(data && data.getTrendingProfiles){
         content = data.getTrendingProfiles.map((item, index) => {
-            return (
-                <TrendingProfile
-                    key={index}
+            const userIdentifier = (
+                <UserIdentifierWithScore
                     user={item}
+                    noninteractive={true}
+                    displaySize={props.displaySize}
                     navStack={props.navStack}
                 />
             );
+            return <ContentWrapper key={index} content={userIdentifier} />
         });
     }else {
         content = <Empty message="oops, we couldn't find what you're looking for :-("/>;
@@ -29,6 +32,7 @@ const TrendingProfilesContainer = (props) => {
     return content;
 };
 TrendingProfilesContainer.propTypes = {
-    navStack: PropTypes.object.isRequired
+    navStack: PropTypes.object.isRequired,
+    displaySize: PropTypes.string
 };
 export default TrendingProfilesContainer;

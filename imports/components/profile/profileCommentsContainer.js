@@ -13,7 +13,7 @@ const ProfileCommentsContainer = (props) => {
     } else if(error){
         content = <Error />
         console.log("ERROR:", error);
-    } else if(data && data.getUserComments){
+    } else if(data && data.getUserComments && data.getUserComments.length > 0){
         content = data.getUserComments.map((comment, index) => {
             const goToPost = () => {
                 props.navStack.update({navState: "PostView", viewContent: comment.parentId, activeTag: null});
@@ -27,8 +27,8 @@ const ProfileCommentsContainer = (props) => {
                 />
             )
         });
-    }else {
-        content = <Empty message="oops, we couldn't find what you're looking for :-("/>;
+    } else {
+        content = <Empty message="no comments found"/>;
     }
     return content;
 };

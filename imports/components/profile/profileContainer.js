@@ -20,7 +20,7 @@ const ProfileContainer = (props) => {
                 user={_user}
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
-                profileTags={_user.profile.followedTopics ? _user.profile.followedTopics : []}
+                profileTags={_user.followedTopics ? _user.followedTopics : []}
             />
         )
     };

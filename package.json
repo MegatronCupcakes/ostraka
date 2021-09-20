@@ -20,6 +20,7 @@
     "cors-anywhere": "^0.4.4",
     "exif-stripper": "file:../Exif-Stripper",
     "graphql": "^15.3.0",
+    "javascript-color-gradient": "^1.3.2",
     "meteor-node-stubs": "^1.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

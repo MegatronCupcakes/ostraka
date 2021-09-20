@@ -2,12 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {useQuery} from '@apollo/client';
 import _ from 'underscore';
-import Image from './image';
-import Link from './link';
-import Text from './text';
-import Video from './video';
 import {Loading, Error, Empty} from '/imports/components/loadingStatus/loadingStatus';
 import {GetPostById} from '/imports/api/post/postQuery';
+import PostSupplementals from '/imports/components/feed/postSupplementals';
+import UserIdentifier from '/imports/components/profile/userIdentifier';
+import UserIdentifierGoToPost from '/imports/components/profile/userIdentifierGoToPost';
+import PostCaption from '/imports/components/feed/postCaption';
+import Image from '/imports/components/feed/image';
+import Link from '/imports/components/feed/link';
+import Text from '/imports/components/feed/text';
+import Video from '/imports/components/feed/video';
 
 const PostView = (props) => {
 
@@ -20,32 +24,64 @@ const PostView = (props) => {
         } else if(error){
             content = <Error />
         } else if(data && data.getPost){
-            content = _postContent(data.getPost, props);
+            content = postContent(data.getPost, props);
         }else {
             content = <Empty message="oops, something went wrong :-("/>;
         }
     } else {
-        content = _postContent(props.post ? props.post : props.navStack.current.viewContent, props);
+        content = postContent(props.post ? props.post : props.navStack.current.viewContent, props);
     }
-    if(props.viewSize && !props.postPreview){
-        return (
-            <div className="col-xs-12 col-sm-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 mb-3 ma-3">
-                {content}
-            </div>
-        )
-    } else {
-        return content;
-    }
+    return content;
 };
 PostView.propTypes = {
-    postPreview: PropTypes.bool,
-    viewSize: PropTypes.string,
     post: PropTypes.object,
+    noninteractive: PropTypes.bool,
+    viewSize: PropTypes.string,
+    viewType: PropTypes.string, // "embed" and perhaps other specialized content views.
+    sharedById: PropTypes.string,
     navStack: PropTypes.object
 };
 export default PostView;
 
-const _postContent = (post, props) => {
+export const postContent = (post, props) => {
+    const _userIdentifier = props.viewSize !== 'large' ? (
+        <UserIdentifierGoToPost
+            displaySize={post.viewSize}
+            viewType={props.viewType}
+            sharedById={props.sharedById}
+            post={post}
+            noninteractive={props.noninteractive}
+            navStack={props.navStack}
+        />
+    ) : (
+        <UserIdentifier
+            displaySize={post.viewSize}
+            viewType={props.viewType}
+            sharedById={props.sharedById}
+            postedBy={post.postedBy}
+            postedByTag={post.postedByTag}
+            postedById={post.postedById}
+            postedByProfilePic={post.postedByProfilePic}
+            noninteractive={props.noninteractive}
+            navStack={props.navStack}
+        />
+    );
+    const _captionRow = post.type === "text" ? (
+        <></>
+    ) : (
+        <div className="row">
+            <PostCaption
+                caption={post.caption}
+                tags={post.tags}
+                tagIds={post.tagIds}
+                mentions={post.mentions}
+                mentionIds={post.mentionIds}
+                navStack={props.navStack}
+                viewType={props.viewType}
+                sharedById={props.sharedById}
+            />
+        </div>
+    );
     let _content;
     switch(post.type){
         case 'image':
@@ -53,7 +89,9 @@ const _postContent = (post, props) => {
             <Image
                 post={post}
                 viewSize={props.viewSize}
-                postPreview={props.postPreview}
+                viewType={props.viewType}
+                sharedById={props.sharedById}
+                noninteractive={props.noninteractive}
                 navStack={props.navStack}
             />
         );
@@ -63,7 +101,9 @@ const _postContent = (post, props) => {
             <Link
                 post={post}
                 viewSize={props.viewSize}
-                postPreview={props.postPreview}
+                viewType={props.viewType}
+                sharedById={props.sharedById}
+                noninteractive={props.noninteractive}
                 navStack={props.navStack}
             />
         );
@@ -73,7 +113,9 @@ const _postContent = (post, props) => {
             <Text
                 post={post}
                 viewSize={props.viewSize}
-                postPreview={props.postPreview}
+                viewType={props.viewType}
+                sharedById={props.sharedById}
+                noninteractive={props.noninteractive}
                 navStack={props.navStack}
             />
         );
@@ -83,11 +125,35 @@ const _postContent = (post, props) => {
             <Video
                 post={post}
                 viewSize={props.viewSize}
-                postPreview={props.postPreview}
+                viewType={props.viewType}
+                sharedById={props.sharedById}
+                noninteractive={props.noninteractive}
                 navStack={props.navStack}
             />
         );
         break;
     }
-    return _content;
+    return (
+        <div className="fade-in row post">
+            <div className="col-md-6 col-sm-12" style={{paddingBottom: "0.5rem"}}>
+                {_content}
+            </div>
+            <div className="col-md-6 col-sm-12">
+                <div className="row" style={{paddingBottom: "0.5rem"}}>
+                    {_userIdentifier}
+                </div>
+                {_captionRow}
+                <div className="row" style={{paddingBottom: "0.5rem"}}>
+                    <PostSupplementals
+                        post={post}
+                        viewSize={props.viewSize}
+                        noninteractive={props.noninteractive}
+                        navStack={props.navStack}
+                        viewType={props.viewType}
+                        sharedById={props.sharedById}
+                    />
+                </div>
+            </div>
+        </div>
+    )
 }

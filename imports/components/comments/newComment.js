@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TagsAndMentions from '/imports/api/post/tagsAndMentions';
 
-import UserIdentifier from '../feed/userIdentifier';
+import UserIdentifier from '../profile/userIdentifier';
 
 const NewComment = (props) => {
     const modalId = "newCommentModal_" + props.parentId;
-    const _commentButton = (props.parentId || !props.postPreview) && props.registeredUser  ? (
-        <span style={{paddingRight: "1rem"}}><i className="bi bi-chat-square-quote" data-bs-toggle="modal" data-bs-target={"#" + modalId}></i> {props.commentCount}</span>
+    const _commentButton = (props.parentId || !props.noninteractive) && props.registeredUser  ? (
+        <span style={{paddingRight: "1rem"}}>{props.commentCount} <i className="bi bi-chat-square-quote" data-bs-toggle="modal" data-bs-target={"#" + modalId}></i></span>
     ) : (
-        <span style={{paddingRight: "1rem"}}><i className="bi bi-chat-square-quote"></i> {props.commentCount}</span>
+        <span style={{paddingRight: "1rem"}}>{props.commentCount} <i className="bi bi-chat-square-quote"></i></span>
     );
     return (
         <>
@@ -41,7 +41,7 @@ const NewComment = (props) => {
                             </div>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={props.deleteComment}><i className="bi bi-trash"></i></button>
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={props.deleteComment}><i className="bi bi-x-lg"></i></button>
                             <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={props.publishComment}><i className="bi bi-pen"></i></button>
                         </div>
                     </div>
@@ -65,7 +65,7 @@ NewComment.propTypes = {
     onChange: PropTypes.func.isRequired,
     publishComment: PropTypes.func.isRequired,
     deleteComment: PropTypes.func.isRequired,
-    postPreview: PropTypes.bool,
+    noninteractive: PropTypes.bool,
     registeredUser: PropTypes.bool,
     navStack: PropTypes.object.isRequired
 };

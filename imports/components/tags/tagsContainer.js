@@ -17,6 +17,7 @@ const TagsContainer = (props) => {
                 tags={_tags}
                 activeTag={_activeTag}
                 handleTagClick={handleTagClick}
+                navStack={props.navStack}
             />
         );
     } else {

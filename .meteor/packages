@@ -20,6 +20,6 @@ hot-module-replacement@0.3.0  # Update client in development without reloading t
 static-html             # Define static page content in .html files
 apollo                  # Basic Apollo integration for Meteor apps
 swydo:graphql           # Import .graphql files
-accounts-password@2.0.0
+accounts-password@2.0.1
 fourseven:scss
 react-meteor-data

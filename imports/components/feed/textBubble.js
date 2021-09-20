@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 const TextBubble = (props) => {
     return (
         <div className="position-relative" style={{minHeight: '8rem'}}>
-            <div className="blockquote text-center">
+            <div className="blockquote">
                 {props.caption}
             </div>
         </div>

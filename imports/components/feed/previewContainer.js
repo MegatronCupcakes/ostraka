@@ -11,7 +11,7 @@ const PreviewContainer = (props) => {
 
     return (
         <PostView
-            postPreview={true}
+            noninteractive={true}
             post={{
                 caption: props.post,
                 url: props.postUrl,

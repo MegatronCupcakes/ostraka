@@ -1,10 +1,11 @@
-import {Meteor} from 'meteor/meteor';
-import {Random} from 'meteor/random';
+import {Mongo} from 'meteor/mongo';
 import IndexCollection from '../util/indexCollection';
+
+const UserCollection = new Mongo.Collection('users');
 
 const _indexes = [
     {viewId: 1},
     {active: 1}
 ];
 
-IndexCollection(Meteor.users, _indexes);
+IndexCollection(UserCollection, _indexes);

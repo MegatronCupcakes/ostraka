@@ -7,7 +7,7 @@ import AttachVideoContainer from './attachVideoContainer';
 
 const NewPost = (props) => {
     let _newPost;
-    let _postPreview = props.postType === 'text' && props.post.length < 1 ? (
+    let _noninteractive = props.postType === 'text' && props.post.length < 1 ? (
         <div style={{textAlign: "center", marginTop: "4rem", marginBottom: "4rem"}}>
             <div className="text-muted">post preview</div>
         </div>
@@ -39,14 +39,14 @@ const NewPost = (props) => {
                                         <div className={props.videoButtonClass} style={{marginLeft: "0.5rem"}} data-bs-toggle="modal" data-bs-target="#attachVideoModal"><i className="bi bi-camera-video"></i></div>
                                     </div>
                                     <div className="col align-self-end" style={{textAlign: "right"}}>
-                                        <div className={props.deleteButtonClass} onClick={props.handleDelete}><i className="bi bi-trash"></i></div>
+                                        <div className={props.deleteButtonClass} onClick={props.handleDelete}><i className="bi bi-x-lg"></i></div>
                                         <div className={props.postButtonClass} style={{marginLeft: "0.5rem"}} onClick={props.handlePost}><i className="bi bi-chat-square-quote"></i></div>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-7" style={{backgroundColor: "white", marginBottom: "1rem", marginLeft: "1rem", marginTop: "0.5rem"}}>
                                 <div style={{margin: "0.5rem"}}>
-                                    {_postPreview}
+                                    {_noninteractive}
                                 </div>
                             </div>
                         </div>

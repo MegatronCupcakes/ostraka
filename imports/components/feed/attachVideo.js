@@ -35,7 +35,7 @@ const AttachVideo = (props) => {
                 <input type="file" id="attachVideoInput" onChange={handleVideoInput} accept="video/*" />
             </div>
             <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" onClick={props.handleCancel} data-bs-dismiss="modal"><i className="bi bi-trash"></i></button>
+            <button type="button" className="btn btn-secondary" onClick={props.handleCancel} data-bs-dismiss="modal"><i className="bi bi-x-lg"></i></button>
             <button type="button" className="btn btn-primary" onClick={props.handleUpload}><i className="bi bi-cloud-arrow-up"></i></button>
             </div>
         </div>

@@ -2,35 +2,71 @@ import {Meteor} from 'meteor/meteor';
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {useQuery} from '@apollo/client';
+import _ from 'underscore';
 import Share from '/imports/components/share/share';
 
+import ShareContent from '/imports/api/share/client/share';
+
+import AnalyzeNewPost from '/imports/api/post/analyzeNewPost';
+import {getSettings} from '/imports/api/settings/getSettings';
+import {dismissModals} from '/imports/api/util/dismissModals';
+
 const ShareContainer = (props) => {
+    const [post, setPost] = useState("");
+    const [cleanPost, setCleanPost] = useState(post);
+    const [postMentions, setPostMentions] = useState([]);
+    const [postTags, setPostTags] = useState([]);
+    const [postErrors, setPostErrors] = useState([]);
+
+    const handleCaptionChange = ({target}) => {
+        const _post = target.value;
+        setPostErrors([]);
+        const [type, url, mentions, tags, cleanPost, errors] = AnalyzeNewPost(_post);
+        setPost(_post);
+        setCleanPost(cleanPost);
+        setPostMentions(mentions);
+        setPostTags(tags);
+        setPostErrors(errors);
+    };
+
     const shareContent = () => {
         if(Meteor.userId()){
-            console.log("SHARE");
+            const shareSettings = _.clone(getSettings().sharing);
+            const shareToArray = _.filter(_.keys(shareSettings), (key) => {return shareSettings[key]});            
+            ShareContent(props.sharedContent, props.sharedType, shareToArray, cleanPost, postTags, postMentions)
+            .then((shareResults) => {
+                console.log("shareResults:", shareResults);
+            })
+            .catch((error) => {
+                console.log("ERROR:", error);
+            });
+
         }
     };
     const handleCancel = () => {
-        console.log("CANCEL");
+
     };
 
     return (
         <Share
-            post={props.post}
+            sharedContent={props.sharedContent}
+            sharedType={props.sharedType}
+            handleCaptionChange={handleCaptionChange}
             shareContent={shareContent}
             handleCancel={handleCancel}
-            shareCount={props.post.sharedBy.length}
-            postPreview={props.postPreview}
-            viewSize={"small"}
+            shareCount={props.sharedContent.shareCount}
+            noninteractive={props.noninteractive}
+            displaySize={props.displaySize}
             registeredUser={Meteor.userId() ? true : false}
             navStack={props.navStack}
         />
     )
 };
 ShareContainer.propTypes = {
-    post: PropTypes.object.isRequired,
-    postPreview: PropTypes.bool,
-    viewSize: PropTypes.string,
+    sharedContent: PropTypes.object.isRequired,
+    sharedType: PropTypes.string.isRequired,
+    noninteractive: PropTypes.bool,
+    displaySize: PropTypes.string,
     navStack: PropTypes.object.isRequired
 };
 export default ShareContainer;

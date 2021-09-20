@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {useQuery} from '@apollo/client';
 import {MultipleProfilesQuery} from '/imports/api/profile/profileQuery';
 import {Loading, Error} from '/imports/components/loadingStatus/loadingStatus';
-import ScoredProfile from '/imports/components/profile/scoredProfile';
+import ContentWrapper from '/imports/components/layout/contentWrapper';
+import UserIdentifierWithScore from '/imports/components/profile/userIdentifierWithScore';
 
 const MultipleProfilesContainer = (props) => {
     let content;
@@ -14,20 +15,26 @@ const MultipleProfilesContainer = (props) => {
         content = <Error />;
     } else if(data && data.getProfiles.length > 0){
         content = data.getProfiles.map((item, index) => {
-            return (
-                <ScoredProfile
+            const userIdentifier = (
+                <UserIdentifierWithScore
+                    noninteractive={true}
+                    displaySize={props.displaySize}
                     user={item}
                     navStack={props.navStack}
                 />
             );
+            return (
+                <ContentWrapper key={index} content={userIdentifier} />
+            )
         });
     } else {
-        topicContent = <div></div>;
+        content = <div></div>;
     }
-    return {content};
+    return content;
 };
 MultipleProfilesContainer.propTypes = {
     navStack: PropTypes.object.isRequired,
-    profileIds: PropTypes.array
+    profileIds: PropTypes.array,
+    displaySize: PropTypes.string
 };
 export default MultipleProfilesContainer;

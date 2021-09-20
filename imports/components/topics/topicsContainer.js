@@ -6,6 +6,7 @@ import TagsContainer from '../tags/tagsContainer';
 
 import {TopicQuery} from '/imports/api/topic/topicQuery';
 import {Loading, Error, Empty} from '/imports/components/loadingStatus/loadingStatus';
+import ContentWrapper from '/imports/components/layout/contentWrapper';
 import PostView from '/imports/components/feed/postView';
 import TopicViewComment from '/imports/components/comments/topicViewComment';
 
@@ -22,39 +23,41 @@ const TopicsContainer = (props) => {
                 let component;
                 switch(item.__typename){
                     case 'Post':
-                    component = (
-                        <PostView
-                            key={index}
-                            viewSize="small"
-                            postPreview={props.postPreview}
-                            navStack={props.navStack}
-                            post={item}
-                        />
-                    )
-                    break;
+                        component = (
+                            <PostView
+                                post={item}
+                                sharedById={props.sharedById}
+                                viewType={props.viewType}
+                                viewSize="small"
+                                noninteractive={props.noninteractive}
+                                navStack={props.navStack}
+                            />
+                        );
+                        break;
                     case 'Comment':
-                    const goToPost = () => {
-                        props.navStack.update({navState: "PostView", viewContent: item.parentId, activeTag: null});
-                    }
-                    component = (
-                        <TopicViewComment
-                            key={index}
-                            comment={item}
-                            goToPost={goToPost}
-                            postPreview={props.postPreview}
-                            navStack={props.navStack}
-                        />
-                    );
-                    break;
+                        component = (
+                            <TopicViewComment
+                                comment={item}
+                                sharedById={props.sharedById}
+                                viewType={props.viewType}
+                                noninteractive={props.noninteractive}
+                                navStack={props.navStack}
+                                viewSize={props.viewSize}
+                                viewType={props.viewType}
+                            />
+                        );
+                        break;
                 }
-                return component;
+                return (
+                    <ContentWrapper content={component} key={index}/>
+                );
             });
         } else {
-            topicContent = <div></div>;
+            topicContent = <Empty message="oops, nothing found..."/>;
         }
     } else {
         // no tags found...
-        topicContent = <div></div>;
+        topicContent = <Empty message="oops, nothing found..."/>;
     }
 
     return (
@@ -69,7 +72,10 @@ const TopicsContainer = (props) => {
 };
 TopicsContainer.propTypes = {
     tag: PropTypes.object,
-    postPreview: PropTypes.bool,
-    navStack: PropTypes.object.isRequired
+    noninteractive: PropTypes.bool,
+    navStack: PropTypes.object.isRequired,
+    viewSize: PropTypes.string,
+    sharedById: PropTypes.string,
+    viewType: PropTypes.string,
 };
 export default TopicsContainer;

@@ -9,17 +9,22 @@ export const ProfileFields = gql`
             lastName
             profileTag
             profileImage
-            invitedBy
-            invited
-            followedUsers
-            followedTopics {
-                _id
-                tag
-                createdAt
-                updatedAt
-            }
-            reputationScore
         }
+        invitedBy
+        invited
+        followedUsers
+        followed
+        followedTopics {
+            _id
+            tag
+            createdAt
+            updatedAt
+        }
+        reputationScore
+        followedByCount
+        shareCount
+        ostracizeCount
+        ostracized
     }
 `;
 

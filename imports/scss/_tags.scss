@@ -3,6 +3,7 @@
     display: flex;
     -webkit-flex-flow: row wrap;
     flex-flow: row wrap;
+    padding-bottom: 2rem;
 }
 
 .tag {
@@ -25,6 +26,21 @@
     flex: none;
     text-align: center;
     font-size: 0.7rem;
+    display: block;
+    background-color: #9232d1;
+    text-decoration: none;
+    text-shadow: 1px;
+    padding: 0.25rem;
+    margin: 0.25rem;
+    border-radius: 3px;
+    color: #fff;
+}
+
+.tag.shared {
+    -webkit-flex: none;
+    flex: none;
+    text-align: center;
+    font-size: 2rem;
     display: block;
     background-color: #9232d1;
     text-decoration: none;

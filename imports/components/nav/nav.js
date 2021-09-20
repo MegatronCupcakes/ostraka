@@ -36,7 +36,7 @@ export default function Nav(props){
                         </form>
                     </div>
                     <div className="nav-item dropdown navbar-nav" style={{paddingLeft: '1rem'}}>
-                        <a className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">                            
+                        <a className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i className="bi bi-bell">
                                 <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
                                     3
@@ -75,6 +75,7 @@ export default function Nav(props){
                         <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a className="dropdown-item" onClick={props.profileOnClick}>profile</a></li>
                             <li><a className="dropdown-item" onClick={props.navOnClick} id="Settings">settings</a></li>
+                            <li><a className="dropdown-item" onClick={props.navOnClick} id="Support">support</a></li>
                             <li><a className="dropdown-item"  onClick={props.logOut}>log out</a></li>
                         </ul>
                     </div>

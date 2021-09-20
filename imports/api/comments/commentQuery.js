@@ -14,9 +14,13 @@ export const CommentFields = gql`
         tagIds
         mentions
         mentionIds
-        likes
-        dislikes
         comments
+        likeCount
+        dislikeCount
+        shareCount
+        liked
+        disliked
+        shared
     }
 `;
 

@@ -14,11 +14,12 @@ const ProfileTagsContainer = (props) => {
                 tags={props.tags}
                 activeTag={props.activeTag}
                 handleTagClick={handleTagClick}
+                navStack={props.navStack}
             />
         );
     } else {
         return <Empty message="no topics found"/>;
-    }    
+    }
 };
 ProfileTagsContainer.propTypes = {
     navStack: PropTypes.object.isRequired,

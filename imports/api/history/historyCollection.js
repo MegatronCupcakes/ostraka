@@ -1,7 +1,7 @@
 import {Mongo} from 'meteor/mongo';
 import IndexCollection from '/imports/api/util/indexCollection';
 
-const HistoryCollection = new Mongo.Collection('posts');
+const HistoryCollection = new Mongo.Collection('history');
 
 const _indexes = [
     {userId: 1},

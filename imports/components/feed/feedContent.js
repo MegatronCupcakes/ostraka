@@ -1,22 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PostView from './postView';
+import ContentWrapper from '/imports/components/layout/contentWrapper';
 
 const FeedContent = (props) => {
-    const feedContent = props.data.map((post, index) => {
-        return (
+    return props.data.map((post, index) => {
+        const postView = (
             <PostView
-                key={index}
                 post={post}
+                viewSize="small"
                 navStack={props.navStack}
             />
         );
+        return (
+            <ContentWrapper key={index} content={postView}/>
+        );
     });
-    return (
-        <div className="col-xs-12 col-sm-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 mb-3 ma-3">
-            {feedContent}
-        </div>
-    );
 };
 FeedContent.propTypes = {
     navStack: PropTypes.object.isRequired,

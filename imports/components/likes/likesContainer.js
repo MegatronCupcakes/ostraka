@@ -14,8 +14,12 @@ const _disabledLike = _unclickedLike + ' disabled';
 const _disabledDislike = _unclickedDislike + ' disabled';
 
 const LikesContainer = (props) => {
-    const [likeThumbClass, setLikeThumbClass] = useState(!Meteor.userId() || props.userId === Meteor.userId() || props.postPreview ? _disabledLike : (props.likes.indexOf(Meteor.userId()) > -1 ? _clickedLike : _unclickedLike));
-    const [dislikeThumbClass, setDislikeThumbClass] = useState(!Meteor.userId() || props.userId === Meteor.userId() || props.postPreview ? _disabledDislike : (props.dislikes.indexOf(Meteor.userId()) > -1 ? _clickedDislike :_unclickedDislike));
+    const [likeThumbClass, setLikeThumbClass] = useState(
+        !Meteor.userId() || props.userId === Meteor.userId() || props.noninteractive ? _disabledLike : (props.liked ? _clickedLike : _unclickedLike)
+    );
+    const [dislikeThumbClass, setDislikeThumbClass] = useState(
+        !Meteor.userId() || props.userId === Meteor.userId() || props.noninteractive ? _disabledDislike : (props.disliked ? _clickedDislike :_unclickedDislike)
+    );
 
     const handleLikeClick = ({target}) => {
         // new post previews don't contain a likedId (because the post hasn't been posted yet);
@@ -53,12 +57,12 @@ const LikesContainer = (props) => {
     return (
         <>
             <Likes
-                likes={props.likes}
+                count={props.likeCount}
                 thumbClass={likeThumbClass}
                 thumbClick={handleLikeClick}
             />
             <Likes
-                likes={props.dislikes}
+                count={props.dislikeCount}
                 thumbClass={dislikeThumbClass}
                 thumbClick={handleDislikeClick}
             />
@@ -66,11 +70,13 @@ const LikesContainer = (props) => {
     )
 };
 LikesContainer.propTypes = {
-    postPreview: PropTypes.bool,
+    noninteractive: PropTypes.bool,
     userId: PropTypes.string,
     likedId: PropTypes.string,
     likedType: PropTypes.string.isRequired,
-    likes: PropTypes.array.isRequired,
-    dislikes: PropTypes.array.isRequired
+    likeCount: PropTypes.number.isRequired,
+    liked: PropTypes.bool.isRequired,
+    dislikeCount: PropTypes.number.isRequired,
+    disliked: PropTypes.bool.isRequired
 };
 export default LikesContainer;

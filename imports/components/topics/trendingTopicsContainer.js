@@ -17,7 +17,7 @@ const TrendingTopicsContainer = (props) => {
         console.log("data.getTrendingTopics:", data.getTrendingTopics);
         props.navStack.setTags(data.getTrendingTopics);
     } else {
-        content = <div></div>;
+        content = <></>;
     }
     return content;
 };

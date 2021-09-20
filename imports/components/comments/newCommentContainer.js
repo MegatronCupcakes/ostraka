@@ -52,7 +52,7 @@ const NewCommentContainer = (props) => {
             onChange={handleCommentChange}
             publishComment={publishComment}
             deleteComment={deleteComment}
-            postPreview={props.postPreview}
+            noninteractive={props.noninteractive}
             registeredUser={Meteor.userId() ? true : false}
             navStack={props.navStack}
         />
@@ -71,7 +71,7 @@ NewCommentContainer.propTypes = {
     tagIds: PropTypes.array,
     mentions: PropTypes.array,
     mentionIds: PropTypes.array,
-    postPreview: PropTypes.bool,
+    noninteractive: PropTypes.bool,
     navStack: PropTypes.object.isRequired
 };
 export default NewCommentContainer;
