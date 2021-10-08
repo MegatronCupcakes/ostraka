@@ -1,5 +1,8 @@
 .userIdentifier_user {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+}
+.userIdentifier_user.small {
+    font-size: 1rem;
 }
 
 .userIdentifier_tag {
@@ -7,9 +10,27 @@
     color: #bbc1c7;
     font-weight: bold;
 }
+.userIdentifier_tag.small {
+    font-size: 0.75rem;
+}
+
+.userIdentifier_date {
+    font-size: 0.85rem;
+    color: #bbc1c7;
+    font-weight: bold;
+    margin-top: 0.25rem;
+}
+.userIdentifier_date.small {
+    font-size: 0.70rem;
+    margin-top: 0.15rem;
+}
+
 
 .userIdentifier_pic {
     max-width: 6rem;
+}
+.userIdentifier_pic.small {
+    max-width: 4rem;
 }
 
 .goToPost {

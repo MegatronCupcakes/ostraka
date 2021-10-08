@@ -17,6 +17,7 @@ const ShareContainer = (props) => {
     const [postMentions, setPostMentions] = useState([]);
     const [postTags, setPostTags] = useState([]);
     const [postErrors, setPostErrors] = useState([]);
+    const [shareResults, setShareResults] = useState([]);
 
     const handleCaptionChange = ({target}) => {
         const _post = target.value;
@@ -32,10 +33,10 @@ const ShareContainer = (props) => {
     const shareContent = () => {
         if(Meteor.userId()){
             const shareSettings = _.clone(getSettings().sharing);
-            const shareToArray = _.filter(_.keys(shareSettings), (key) => {return shareSettings[key]});            
+            const shareToArray = _.filter(_.keys(shareSettings), (key) => {return shareSettings[key]});
             ShareContent(props.sharedContent, props.sharedType, shareToArray, cleanPost, postTags, postMentions)
-            .then((shareResults) => {
-                console.log("shareResults:", shareResults);
+            .then((_shareResults) => {
+                setShareResults([...shareResults, ..._shareResults]);
             })
             .catch((error) => {
                 console.log("ERROR:", error);
@@ -55,8 +56,9 @@ const ShareContainer = (props) => {
             shareContent={shareContent}
             handleCancel={handleCancel}
             shareCount={props.sharedContent.shareCount}
+            shareResults={shareResults}
             noninteractive={props.noninteractive}
-            displaySize={props.displaySize}
+            displaySize={props.viewSize}
             registeredUser={Meteor.userId() ? true : false}
             navStack={props.navStack}
         />
@@ -66,7 +68,7 @@ ShareContainer.propTypes = {
     sharedContent: PropTypes.object.isRequired,
     sharedType: PropTypes.string.isRequired,
     noninteractive: PropTypes.bool,
-    displaySize: PropTypes.string,
+    viewSize: PropTypes.string,
     navStack: PropTypes.object.isRequired
 };
 export default ShareContainer;

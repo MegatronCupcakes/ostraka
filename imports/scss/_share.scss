@@ -3,9 +3,11 @@
 }
 
 .share_small {
+    /*
     padding-right: 1rem;
     font-size: 1rem;
     color: rgb(197, 181, 242);
+    */
 }
 
 .share_medium {
@@ -18,4 +20,25 @@
     padding-right: 1rem;
     font-size: 3rem;
     color: rgb(197, 181, 242);
+}
+
+.codeView {
+    border: 1px solid #bbc1c7!important;
+    border-radius: 0.3rem;
+    background-color: #f8f9fa;
+}
+.clipBoard {
+    float: right;
+    position: relative;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+}
+.shareResult {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+.shareResultHeader {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-top: 0.5rem;
 }

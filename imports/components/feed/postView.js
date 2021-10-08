@@ -12,13 +12,14 @@ import Image from '/imports/components/feed/image';
 import Link from '/imports/components/feed/link';
 import Text from '/imports/components/feed/text';
 import Video from '/imports/components/feed/video';
+import SharedPost from '/imports/components/feed/sharedPost';
 
 const PostView = (props) => {
-
     let content;
-    // if no post is specified (we only have an ID) then fetch the post via Apollo before displaying
-    if(!props.post && _.isString(props.navStack.current.viewContent)){
-        const {loading, error, data} = useQuery(GetPostById, {variables: {_id: props.navStack.current.viewContent}, pollInterval: 1000});
+    // if no post is specified (we only have an ID) then fetch the post via Apollo before displaying;
+    if(!props.post && (props.sharedContentId || _.isString(props.navStack.current.viewContent))){
+        const lookUpId = props.sharedContentId ? props.sharedContentId : props.navStack.current.viewContent;
+        const {loading, error, data} = useQuery(GetPostById, {variables: {_id: lookUpId}, pollInterval: 1000});
         if(loading){
             content = <Loading />
         } else if(error){
@@ -38,24 +39,27 @@ PostView.propTypes = {
     noninteractive: PropTypes.bool,
     viewSize: PropTypes.string,
     viewType: PropTypes.string, // "embed" and perhaps other specialized content views.
+    sharedContentId: PropTypes.string,
     sharedById: PropTypes.string,
     navStack: PropTypes.object
 };
 export default PostView;
 
 export const postContent = (post, props) => {
+    const frameId = props.viewType === "embed" ? props.post.viewId + props.sharedById : "";
     const _userIdentifier = props.viewSize !== 'large' ? (
         <UserIdentifierGoToPost
-            displaySize={post.viewSize}
+            displaySize={props.viewSize}
             viewType={props.viewType}
             sharedById={props.sharedById}
             post={post}
             noninteractive={props.noninteractive}
             navStack={props.navStack}
+            date={post.createdAt}
         />
     ) : (
         <UserIdentifier
-            displaySize={post.viewSize}
+            displaySize={props.viewSize}
             viewType={props.viewType}
             sharedById={props.sharedById}
             postedBy={post.postedBy}
@@ -64,6 +68,7 @@ export const postContent = (post, props) => {
             postedByProfilePic={post.postedByProfilePic}
             noninteractive={props.noninteractive}
             navStack={props.navStack}
+            date={post.createdAt}
         />
     );
     const _captionRow = post.type === "text" ? (
@@ -71,6 +76,7 @@ export const postContent = (post, props) => {
     ) : (
         <div className="row">
             <PostCaption
+                displaySize={props.viewSize}
                 caption={post.caption}
                 tags={post.tags}
                 tagIds={post.tagIds}
@@ -132,11 +138,25 @@ export const postContent = (post, props) => {
             />
         );
         break;
+        case 'shared':
+        _content = (
+            <SharedPost
+                post={post}
+                viewSize={props.viewSize}
+                viewType={props.viewType}
+                sharedById={props.sharedById}
+                noninteractive={props.noninteractive}
+                navStack={props.navStack}
+            />
+        )
+        break;
     }
     return (
-        <div className="fade-in row post">
-            <div className="col-md-6 col-sm-12" style={{paddingBottom: "0.5rem"}}>
-                {_content}
+        <div id={frameId} className="row">
+            <div className="col-md-6 col-sm-12">
+                <div className={props.sharedContentId ? "fade-in row sharedPost" : "fade-in row post"} style={{paddingBottom: "0.5rem"}}>
+                    {_content}
+                </div>
             </div>
             <div className="col-md-6 col-sm-12">
                 <div className="row" style={{paddingBottom: "0.5rem"}}>

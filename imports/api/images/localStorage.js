@@ -46,8 +46,6 @@ const LocalStoreImages = async (userId, imageUrlArray) => {
                     }
                 });
             }));
-            console.log("userImageDir:", userImageDir);
-            console.log("imageServerPath:", imageServerPath);
             await RsyncFiles(userImageDir, imageServerPath);
             // Remove temp files after rsync.
             await fs.promises.rmdir(userImageDir, {recursive: true});

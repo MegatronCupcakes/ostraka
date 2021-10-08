@@ -6,7 +6,6 @@ import AttachImageContainer from './attachImageContainer';
 import AttachVideoContainer from './attachVideoContainer';
 
 const NewPost = (props) => {
-    let _newPost;
     let _noninteractive = props.postType === 'text' && props.post.length < 1 ? (
         <div style={{textAlign: "center", marginTop: "4rem", marginBottom: "4rem"}}>
             <div className="text-muted">post preview</div>
@@ -23,9 +22,9 @@ const NewPost = (props) => {
         />
     );
     if(props.isPosting){
-        _newPost = (
-            <div style={{width: "100%", backgroundColor: "#f8f9fa"}}>
-                <div className="col-xs-12 col-sm-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 mb-3 ma-3">
+        return (
+            <div className="row">
+                <div className="col-xs-12 col-sm-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2" style={{backgroundColor: "#f8f9fa"}}>
                     <div className="fade-in">
                         <div className="mb-3 input-group" style={{paddingTop: "1rem", paddingBottom: "1rem"}}>
                             <div className="col">
@@ -77,17 +76,17 @@ const NewPost = (props) => {
             </div>
         )
     } else {
-        _newPost = (
-            <div className="col-xs-12 col-sm-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 mb-3 ma-3">
-                <div className="mb-3 input-group fade-out" style={{paddingTop: "1rem", paddingBottom: "1rem"}}>
-                    <input className="form-control me-2" placeholder="share something..." aria-label="share something" onFocus={props.postFocus} />
-                    <div className={props.postButtonClass} onClick={props.postFocus}><i className="bi bi-chat-square-quote"></i></div>
+        return (
+            <div className="row">
+                <div className="col-xs-12 col-sm-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2" style={{paddingLeft: 0, paddingRight: 0}}>
+                    <div className="mb-3 input-group fade-out" style={{paddingTop: "1rem", paddingBottom: "1rem"}}>
+                        <input className="form-control me-2" placeholder="share something..." aria-label="share something" onFocus={props.postFocus} />
+                        <div className={props.postButtonClass} onClick={props.postFocus}><i className="bi bi-chat-square-quote"></i></div>
+                    </div>
                 </div>
             </div>
         )
-    }
-    return _newPost;
-
+    };
 };
 NewPost.propTypes = {
     post: PropTypes.string,

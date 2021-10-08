@@ -22,7 +22,10 @@ export const PostFields = gql`
         shareCount
         liked
         disliked
-        shared        
+        shared
+        sharedContentId
+        sharedById
+        createdAt
     }
 `;
 

@@ -1,5 +1,8 @@
 .post {
-    padding-bottom: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    background-color: #f8f9fa;
+    box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
 }
 
 .postRow {
@@ -7,7 +10,23 @@
 }
 
 .postCaption {
+    font-size: 1rem;
+}
+.postCaption.small {
+    font-size: 0.75rem;
+}
 
+.postTimestamp {
+    font-size: 1rem;
+    color: #bbc1c7;
+    font-weight: bold;
+}
+.postTimestamp.small {
+    font-size: 0.75rem;
+}
+
+.sharedPost {
+    background-color: #f8f9fa;
 }
 
 .imagePreview {
@@ -28,4 +47,11 @@
     font-size: 2rem;
     font-weight: bold;
     z-index: 100;
+}
+
+/* override for react-tiny-link default styles */
+.ecIkKa {
+    border: none !important;
+    box-shadow: none !important;
+    background-color: #f8f9fa;
 }

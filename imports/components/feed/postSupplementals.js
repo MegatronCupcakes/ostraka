@@ -20,6 +20,7 @@ const PostSupplementals = (props) => {
                         disliked={props.post.disliked}
                         dislikeCount={props.post.dislikeCount}
                         noninteractive={props.noninteractive}
+                        viewSize={props.viewSize}
                     />
                     <NewCommentContainer
                         parentId={props.post._id}
@@ -31,13 +32,12 @@ const PostSupplementals = (props) => {
                         parentText={props.post.caption}
                         commentCount={props.post.comments.length}
                         noninteractive={props.noninteractive}
-
                         mentions={props.post.mentions}
                         mentionIds={props.post.mentionIds}
                         tags={props.post.tags}
                         tagIds={props.post.tagIds}
-
                         navStack={props.navStack}
+                        viewSize={props.viewSize}
                     />
                     <ShareContainer
                         sharedContent={props.post}

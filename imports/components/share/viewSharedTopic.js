@@ -1,8 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import TopicsContainer from '/imports/components/topics/topicsContainer';
+import {iframeResizer} from '/imports/api/share/client/share';
 
 const ViewSharedTopic = (props) => {
+    const resizeFrame = iframeResizer(props.tag.viewId, props.sharedById);
+    useEffect(() => {
+        _.defer(() => {
+            resizeFrame();
+        });
+    });
     return (
         <TopicsContainer
             tag={props.tag}

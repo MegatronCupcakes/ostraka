@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Random} from 'meteor/random';
-
 import {goTo} from '/imports/api/navStack/goTo';
 
 
 const Image = (props) => {
-
     const carouselId = Random.id();
     const _handlePostClick = () => {
         goTo(props.post, "post", props.navStack, props.viewType, props.sharedById);

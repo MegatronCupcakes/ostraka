@@ -35,8 +35,44 @@ const UserIdentifierWithScore = (props) => {
                     noninteractive={props.noninteractive}
                     navStack={props.navStack}
                 />
-            </div>            
+            </div>
         </>
+    );
+    const scoreDisplay = props.noninteractive ? (
+        <div style={{paddingRight: "2rem"}}>
+            <Score
+                reputationScore={props.user.reputationScore}
+            />
+        </div>
+    ) : (
+        <div style={{paddingRight: "2rem"}} data-bs-toggle="modal" data-bs-target={"#" + modalId}>
+            <Score
+                reputationScore={props.user.reputationScore}
+            />
+        </div>
+    );
+    const scoreHistoryModal = props.noninteractive ? (
+        <></>
+    ) : (
+        <div className="modal fade" id={modalId} tabIndex="-1" aria-labelledby={modalId + "_Label"} aria-hidden="true">
+            <div className="modal-dialog modal-lg">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title" id={modalId + "_ScoreHistory"}>score history</h5>
+                        <button type="button" className="btn-close dismissModal" aria-label="Close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div className="modal-body">
+                        <ScoreHistoryContainer
+                            userId={props.user._id}
+                            navStack={props.navStack}
+                        />
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal"><i className="bi bi-x-lg"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
     return (
         <div style={{paddingBottom: "1rem"}}>
@@ -50,31 +86,9 @@ const UserIdentifierWithScore = (props) => {
             />
             <div className="d-flex flex-row-reverse bd-highlight" style={{}}>
                 {profileActions}
-                <div style={{paddingRight: "2rem"}} data-bs-toggle="modal" data-bs-target={"#" + modalId}>
-                    <Score
-                        reputationScore={props.user.reputationScore}
-                    />
-                </div>
+                {scoreDisplay}
             </div>
-            <div className="modal fade" id={modalId} tabIndex="-1" aria-labelledby={modalId + "_Label"} aria-hidden="true">
-                <div className="modal-dialog modal-lg">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id={modalId + "_ScoreHistory"}>score history</h5>
-                            <button type="button" className="btn-close dismissModal" aria-label="Close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div className="modal-body">
-                            <ScoreHistoryContainer
-                                userId={props.user._id}
-                                navStack={props.navStack}
-                            />
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal"><i className="bi bi-x-lg"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {scoreHistoryModal}
         </div>
     );
 };

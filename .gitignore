@@ -1,4 +1,4 @@
 node_modules/
 env/
-settings/
+/settings/
 public/images/

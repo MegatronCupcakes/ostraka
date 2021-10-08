@@ -1,8 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
+import _ from 'underscore';
+import {iframeResizer} from '/imports/api/share/client/share';
 import PostView from '/imports/components/feed/postView';
 
 const ViewSharedPost = (props) => {
+    const resizeFrame = iframeResizer(props.post.viewId, props.sharedById);
+    useEffect(() => {
+        _.defer(() => {
+            resizeFrame();
+        });
+    });
     return (
         <PostView
             post={props.post}

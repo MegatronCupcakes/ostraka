@@ -1,8 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import ProfileContainer from '/imports/components/profile/profileContainer';
+import {iframeResizer} from '/imports/api/share/client/share';
 
 const ViewSharedProfile = (props) => {
+    const resizeFrame = iframeResizer(props.user.viewId, props.sharedById);
+    useEffect(() => {
+        _.defer(() => {
+            resizeFrame();
+        });
+    });
     return (
         <ProfileContainer
             user={props.user}

@@ -7,9 +7,9 @@ import UserIdentifier from '../profile/userIdentifier';
 const NewComment = (props) => {
     const modalId = "newCommentModal_" + props.parentId;
     const _commentButton = (props.parentId || !props.noninteractive) && props.registeredUser  ? (
-        <span style={{paddingRight: "1rem"}}>{props.commentCount} <i className="bi bi-chat-square-quote" data-bs-toggle="modal" data-bs-target={"#" + modalId}></i></span>
+        <span className={props.viewSize ? `userAction ${props.viewSize}` : "userAction"}>{props.commentCount} <i className="bi bi-chat-square-quote" data-bs-toggle="tooltip" data-bs-placement="top" title="comment" data-bs-toggle="modal" data-bs-target={"#" + modalId}></i></span>
     ) : (
-        <span style={{paddingRight: "1rem"}}>{props.commentCount} <i className="bi bi-chat-square-quote"></i></span>
+        <span className={props.viewSize ? `userAction ${props.viewSize}` : "userAction"}>{props.commentCount} <i className="bi bi-chat-square-quote" data-bs-toggle="tooltip" data-bs-placement="top" title="comment"></i></span>
     );
     return (
         <>

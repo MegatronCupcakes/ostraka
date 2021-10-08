@@ -21,6 +21,7 @@ export const CommentFields = gql`
         liked
         disliked
         shared
+        createdAt
     }
 `;
 

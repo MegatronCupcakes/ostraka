@@ -60,16 +60,21 @@ const LikesContainer = (props) => {
                 count={props.likeCount}
                 thumbClass={likeThumbClass}
                 thumbClick={handleLikeClick}
+                viewSize={props.viewSize}
+                label="like"
             />
             <Likes
                 count={props.dislikeCount}
                 thumbClass={dislikeThumbClass}
                 thumbClick={handleDislikeClick}
+                viewSize={props.viewSize}
+                label="dislike"
             />
         </>
     )
 };
 LikesContainer.propTypes = {
+    viewSize: PropTypes.string,
     noninteractive: PropTypes.bool,
     userId: PropTypes.string,
     likedId: PropTypes.string,

@@ -13,6 +13,7 @@ import ViewSharedTopic from '/imports/components/share/viewSharedTopic';
 import ViewSharedProfile from '/imports/components/share/viewSharedProfile';
 import ViewSharedComment from '/imports/components/share/viewSharedComment';
 
+
 const ViewSharedContentContainer = (props) => {
     const {loading, error, data} = useQuery(SharedContentQuery, {variables: {viewId: props.viewId, sharedById: props.sharedById}});
     if(loading){

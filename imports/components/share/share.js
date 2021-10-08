@@ -1,31 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {dismissModals} from '/imports/api/util/dismissModals';
 import PostView from '/imports/components/feed/postView';
 import TopicViewComment from '/imports/components/comments/topicViewComment';
 import UserIdentifierWithScore from '/imports/components/profile/userIdentifierWithScore';
 import ShareSettingsContainer from '/imports/components/settings/shareSettingsContainer';
-import {dismissModals} from '/imports/api/util/dismissModals';
+import ShareResult from '/imports/components/share/shareResult';
 
 const Share = (props) => {
     const modalId = "shareModal_" + props.sharedContent._id;
-    const _shareCountClasses = props.displaySize ? "share_" + props.displaySize : "share";
     const _shareButtonClasses = "bi bi-box-arrow-up";
     const _disabledShareButtonClasses = _shareButtonClasses + " disabled";
     const _shareButton = !props.noninteractive && props.registeredUser ? (
-        <span className={_shareCountClasses}>{props.shareCount} <i className={_shareButtonClasses} data-bs-toggle="modal" data-bs-target={"#" + modalId}></i></span>
+        <span className={props.displaySize ? `userAction ${props.displaySize}` : "userAction"}>{props.shareCount} <i className={_shareButtonClasses} data-bs-toggle="tooltip" data-bs-placement="top" title="share" data-bs-toggle="modal" data-bs-target={"#" + modalId}></i></span>
     ) : (
-        <span className={_shareCountClasses}>{props.shareCount} <i className={_disabledShareButtonClasses}></i></span>
+        <span className={props.displaySize ? `userAction ${props.displaySize}` : "userAction"}>{props.shareCount} <i className={_disabledShareButtonClasses} data-bs-toggle="tooltip" data-bs-placement="top" title="share"></i></span>
     );
     let _preview;
     switch(props.sharedType){
         case "post":
             _preview = (
-                <PostView
-                    noninteractive={true}
-                    displaySize={props.displaySize}
-                    post={props.sharedContent}
-                    navStack={props.navStack}
-                />
+                <div className="col-xs-12">
+                    <PostView
+                        noninteractive={true}
+                        displaySize="small"
+                        post={props.sharedContent}
+                        navStack={props.navStack}
+                    />
+                </div>
             );
             break;
         case "comment":
@@ -59,14 +61,23 @@ const Share = (props) => {
             );
             break;
     }
+    const _resultsView = props.shareResults.map((_result, _index) => {
+        return (
+            <ShareResult
+                key={_index}
+                result={_result}
+                navStack={props.navStack}
+            />
+        );
+    });
     return (
         <>
             {_shareButton}
             <div className="modal fade" id={modalId} tabIndex="-1" aria-labelledby={modalId + "_Label"} aria-hidden="true">
-                <div className="modal-dialog modal-lg">
+                <div className="modal-dialog modal-xl">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id={modalId + "_Label"}>share</h5>
+                            <h5 className="modal-title" id={modalId + "_Label"} style={{color: "black"}}>share</h5>
                             <button type="button" className="btn-close dismissModal" onClick={props.handleCancel} aria-label="Close" data-bs-dismiss="modal"></button>
                         </div>
                         <div className="modal-body">
@@ -74,13 +85,18 @@ const Share = (props) => {
                                 {_preview}
                             </div>
                             <div className="row">
-                                <div className="col-xs-12">
+                                <div className="col-xs-12" style={{paddingTop: "1rem"}}>
                                     <textarea className="form-control" placeholder="share your thoughts..." aria-label="share something" onChange={props.handleCaptionChange} />
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col-xs-12" style={{textAlign: "center", paddingTop: "1rem"}}>
+                                <div className="col-xs-12" style={{textAlign: "center", paddingTop: "1rem", marginTop: "1rem", color: "black"}}>
                                     <ShareSettingsContainer />
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-xs-12" style={{paddingTop: "1rem", color: "black"}}>
+                                    {_resultsView}
                                 </div>
                             </div>
                         </div>
@@ -94,6 +110,7 @@ const Share = (props) => {
         </>
     );
 };
+
 Share.propTypes = {
     sharedContent: PropTypes.object.isRequired,
     sharedType: PropTypes.string.isRequired,
@@ -101,6 +118,7 @@ Share.propTypes = {
     shareContent: PropTypes.func.isRequired,
     handleCancel: PropTypes.func.isRequired,
     shareCount: PropTypes.number,
+    shareResults: PropTypes.array.isRequired,
     displaySize: PropTypes.string,
     noninteractive: PropTypes.bool,
     registeredUser: PropTypes.bool.isRequired,

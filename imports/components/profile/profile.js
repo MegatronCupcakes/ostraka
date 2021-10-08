@@ -8,7 +8,6 @@ import ProfilePostsContainer from '/imports/components/profile/profilePostsConta
 import ProfileCommentsContainer from '/imports/components/profile/profileCommentsContainer';
 import ProfileTopicsContainer from '/imports/components/profile/profileTopicsContainer';
 import ProfileProfilesContainer from '/imports/components/profile/profileProfilesContainer';
-import Score from '/imports/components/profile/score';
 
 const _tabClasses = "nav-link profileNav";
 const _activeTabClasses = _tabClasses + " active";

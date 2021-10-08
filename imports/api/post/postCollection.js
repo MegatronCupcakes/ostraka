@@ -71,6 +71,8 @@ export const postReturnFields = (userId) => {
         dislikeCount: {$size: "$dislikes"},
         shared: {$in: [userId, "$sharedBy"]},
         shareCount: {$size: "$sharedBy"},
+        sharedContentId: 1,
+        sharedById: 1,
         createdAt: 1
     };
 };

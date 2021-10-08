@@ -39,6 +39,8 @@ type Post {
     likeCount: Int!
     dislikeCount: Int!
     shareCount: Int!
+    sharedContentId: String
+    sharedById: String
     liked: Boolean!
     disliked: Boolean!
     shared: Boolean!

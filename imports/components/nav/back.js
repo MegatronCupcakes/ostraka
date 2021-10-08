@@ -6,7 +6,7 @@ const Back = (props) => {
         props.navStack.back();
     }
     return (
-        <span className="navBack"><i className="bi bi-arrow-left" onClick={goBack}></i></span>
+        <span className="navBack"><i className="bi bi-arrow-left" onClick={goBack} data-bs-toggle="tooltip" data-bs-placement="top" title="back"></i></span>
     )
 };
 Back.propTypes = {

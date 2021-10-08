@@ -42,18 +42,17 @@ const NewCommentContainer = (props) => {
             postedById={props.postedById}
             postedByTag={props.postedByTag}
             postedByProfilePic={props.postedByProfilePic}
-
             mentions={props.mentions}
             mentionIds={props.mentionIds}
             tags={props.tags}
             tagIds={props.tagIds}
-
             commentCount={props.commentCount}
             onChange={handleCommentChange}
             publishComment={publishComment}
             deleteComment={deleteComment}
             noninteractive={props.noninteractive}
             registeredUser={Meteor.userId() ? true : false}
+            viewSize={props.viewSize}
             navStack={props.navStack}
         />
     );
@@ -72,6 +71,7 @@ NewCommentContainer.propTypes = {
     mentions: PropTypes.array,
     mentionIds: PropTypes.array,
     noninteractive: PropTypes.bool,
+    viewSize: PropTypes.string,
     navStack: PropTypes.object.isRequired
 };
 export default NewCommentContainer;

@@ -15,7 +15,7 @@ const OstracizeContainer = (props) => {
     return (
         <Ostracize
             user={props.user}
-            activeButton={!props.noninteractive && !_.isUndefined(Meteor.userId() && !_.isNull(Meteor.userId()))}
+            activeButton={!props.noninteractive && !_.isUndefined(Meteor.userId()) && !_.isNull(Meteor.userId()) && Meteor.userId() !== props.user._id}
             ostracizeUser={ostracizeUser}
             handleCancel={handleCancel}
             ostracizeCount={props.user.ostracizedBy ? props.user.ostracizedBy.length : 0}
@@ -32,9 +32,3 @@ OstracizeContainer.propTypes = {
     navStack: PropTypes.object.isRequired
 };
 export default OstracizeContainer;
-
- /*
-
- activeButton={!props.noninteractive && Meteor.userId() && Meteor.userId() !== props.user._id}
-
- */

@@ -28,6 +28,7 @@ const CommentsContainer = (props) => {
                         <Comment
                             comment={comment}
                             viewType={props.viewType}
+                            viewSize={props.viewSize}
                             sharedById={props.sharedById}
                             navStack={props.navStack}
                         />
@@ -41,6 +42,7 @@ const CommentsContainer = (props) => {
                             likeCount={comment.likeCount}
                             disliked={comment.disliked}
                             dislikeCount={comment.dislikeCount}
+                            viewSize={props.viewSize}
                         />
                         <ShareContainer
                             sharedContent={comment}

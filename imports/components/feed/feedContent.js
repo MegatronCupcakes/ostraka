@@ -8,7 +8,7 @@ const FeedContent = (props) => {
         const postView = (
             <PostView
                 post={post}
-                viewSize="small"
+                viewSize="medium"
                 navStack={props.navStack}
             />
         );

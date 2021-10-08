@@ -1,8 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import TopicViewComment from '/imports/components/comments/topicViewComment';
+import {iframeResizer} from '/imports/api/share/client/share';
 
 const ViewSharedComment = (props) => {
+    const resizeFrame = iframeResizer(props.comment.viewId, props.sharedById);
+    useEffect(() => {
+        _.defer(() => {
+            resizeFrame();
+        });
+    });
     return (
         <TopicViewComment
             comment={props.comment}
