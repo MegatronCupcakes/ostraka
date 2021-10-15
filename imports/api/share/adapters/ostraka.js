@@ -3,6 +3,7 @@ import PostCollection, {createPost} from '/imports/api/post/postCollection';
 import CommentCollection from '/imports/api/comments/commentCollection';
 import TagCollection from '/imports/api/tag/tagCollection';
 import {createShareUrl} from '/imports/api/share/createShareUrl';
+import {logError} from '/imports/api/errorLogger/errorLogger';
 
 export const ostrakaShare = (userId, sharedId, sharedContentType, shareType, caption, tags, mentions) => {
     return new Promise(async (resolve, reject) => {
@@ -66,6 +67,7 @@ export const ostrakaShare = (userId, sharedId, sharedContentType, shareType, cap
                 post: post
             });
         } catch(error){
+            logError(userId, error, __filename, new Error().stack);
             reject(error);
         }
     });

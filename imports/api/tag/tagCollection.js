@@ -5,6 +5,7 @@ import _ from 'underscore';
 import IndexCollection from '../util/indexCollection';
 import {viewId} from '/imports/api/util/viewId';
 const TagCollection = new Mongo.Collection('tags');
+import {logError} from '/imports/api/errorLogger/errorLogger';
 
 const _indexes = [
     {viewId: 1},
@@ -25,31 +26,35 @@ export const TagLookup = (tagArray, userId) => {
         if(!(tagArray instanceof Array)) tagArray = [tagArray];
         const tagIds = await Promise.all(tagArray.map((tag) => {
             return new Promise((_resolve, _reject) => {
-                const _tag = TagCollection.findOne({tag: tag},{_id:1});
-                const _date = new Date();
-                const tagId = _tag ? _tag._id : TagCollection.insert({
-                    viewId: viewId(),
-                    tag: tag,
-                    active: true,
-                    usage: [_date],
-                    createdBy: userId,
-                    usedBy: [],
-                    sharedBy: [],
-                    createdAt: _date
-                });
-                TagCollection.update({_id: tagId},{$addToSet: {usedBy: userId, usage: _date}});
-                // add tag to user's followed topics.
-                const followedTopics = Meteor.users.findOne({_id: userId},{profile: 1}).followedTopics;
-                const existingTopic = _.findWhere(followed, {_id: tagId});
-                if(existingTopic){
-                    const topicIndex = followedTopics.indexOf(existingTopic);
-                    let updateObject = {}
-                    updateObject["profile.followedTopics." + topicIndex].updatedAt = new Date();
-                    Meteor.users.update({_id: userId},{$set: updateObject});
-                } else {
-                    Meteor.users.update({_id: userId},{$addToSet: {"profile.followedTopics": {_id: tagId, tag: tag, createdAt: new Date(), updatedAt: new Date()}}});
+                try {
+                    const _tag = TagCollection.findOne({tag: tag},{_id:1});
+                    const _date = new Date();
+                    const tagId = _tag ? _tag._id : TagCollection.insert({
+                        viewId: viewId(),
+                        tag: tag,
+                        active: true,
+                        usage: [_date],
+                        createdBy: userId,
+                        usedBy: [],
+                        sharedBy: [],
+                        createdAt: _date
+                    });
+                    TagCollection.update({_id: tagId},{$addToSet: {usedBy: userId, usage: _date}});
+                    // add tag to user's followed topics.
+                    const followedTopics = Meteor.users.findOne({_id: userId},{profile: 1}).followedTopics;
+                    const existingTopic = _.findWhere(followed, {_id: tagId});
+                    if(existingTopic){
+                        const topicIndex = followedTopics.indexOf(existingTopic);
+                        let updateObject = {}
+                        updateObject["profile.followedTopics." + topicIndex].updatedAt = new Date();
+                        Meteor.users.update({_id: userId},{$set: updateObject});
+                    } else {
+                        Meteor.users.update({_id: userId},{$addToSet: {"profile.followedTopics": {_id: tagId, tag: tag, createdAt: new Date(), updatedAt: new Date()}}});
+                    }
+                    _resolve(tagId);
+                } catch(error){
+                    logError(userId, error, __filename, new Error().stack);
                 }
-                _resolve(tagId);
             });
         }));
         resolve(tagIds);

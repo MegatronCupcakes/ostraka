@@ -7,6 +7,7 @@ Returns Promise.
 import fs from 'fs';
 import path from 'path';
 import {Random} from 'meteor/random';
+import {logError} from '/imports/api/errorLogger/errorLogger';
 import RsyncFiles from '../util/rsyncFiles';
 import ResizeImage from './resizeImages';
 
@@ -37,11 +38,13 @@ const LocalStoreImages = async (userId, imageUrlArray) => {
                         const resizedData = await ResizeImage(data)
                             .catch((error) => {
                                 console.error("Image Resize Error:", error);
+                                logError(userId, error, __filename, new Error().stack);
                             });
                         await fs.promises.writeFile(imageTempPath, resizedData, 'base64');
                         imageUrls.push(imageRoot + userId + '/' + imageName);
                         _resolve(imageTempPath);
                     } catch(_error){
+                        logError(userId, _error, __filename, new Error().stack);
                         _reject(_error);
                     }
                 });
@@ -51,6 +54,7 @@ const LocalStoreImages = async (userId, imageUrlArray) => {
             await fs.promises.rmdir(userImageDir, {recursive: true});
             resolve(imageUrls);
         } catch(error){
+            logError(userId, error, __filename, new Error().stack);
             reject(error);
         }
     });

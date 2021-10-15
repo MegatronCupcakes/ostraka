@@ -35,7 +35,7 @@ const RegisterForm = (props) => {
                 </div>
 
                 <div className="mb-3" style={{textAlign: "right"}}>
-                    <div className={props.buttonClasses} onClick={props.registerUser}>register <i className="bi bi-person-plus"></i></div>
+                    <div className={props.buttonClasses} onClick={props.registerUser} data-bs-toggle="tooltip" data-bs-placement="top" title="register"><i className="bi bi-person-plus"></i></div>
                 </div>
             </form>
             <div style={{textAlign: "center"}}>

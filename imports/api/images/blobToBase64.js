@@ -1,3 +1,5 @@
+import {logError} from '/imports/api/errorLogger/clientLogger';
+
 const BlobToBase64 = async (blobArray) => {
     if(!(blobArray instanceof Array)) blobArray = [blobArray];
     return await Promise.all(blobArray.map((blob) => {
@@ -11,6 +13,7 @@ const BlobToBase64 = async (blobArray) => {
                     resolve(reader.result);
                 }
             } catch(error){
+                logError(error, __filename, new Error().stack);
                 reject(error);
             }
         });

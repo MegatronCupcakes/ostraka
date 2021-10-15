@@ -3,3 +3,4 @@ env/
 public/images/
 settings/
 !imports/components/settings/
+!imports/api/settings/

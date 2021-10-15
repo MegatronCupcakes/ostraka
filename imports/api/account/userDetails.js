@@ -12,7 +12,8 @@ Meteor.publish('userData', function () {
               invited: 1,
               followedUsers: 1,
               followedTopics: 1,
-              settings: 1
+              settings: 1,
+              emails: 1
           }
       });
   } else {

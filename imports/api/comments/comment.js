@@ -7,6 +7,7 @@ import PostCollection from '../post/postCollection';
 import {TagLookup} from '../tag/tagCollection';
 import MapMentions from '/imports/api/mentions/mapMentions';
 import {viewId} from '/imports/api/util/viewId';
+import {logError} from '/imports/api/errorLogger/errorLogger';
 
 Meteor.methods({
     comment: async function(parentId, parentType, comment, tags, mentions){
@@ -56,6 +57,7 @@ Meteor.methods({
             return (null, commentId);
         })
         .catch((error) => {
+            logError(error, __filename, new Error().stack);
             return (error, null);
         });
     }

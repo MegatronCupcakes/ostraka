@@ -12,16 +12,24 @@ export const twitterShare = (userId, sharedId, sharedContentType, shareType, cap
 };
 
 Meteor.methods({
-    "getTwitterToken": async function (){
-        const twitterSettings = JSON.parse(process.env.shareSettings).twitter;
-        const twitterClient = new Twitter({
-            consumer_key: twitterSettings.consumer_key,
-            consumer_secret: twitterSettings.consumer_secret,
-            access_token_key: twitterSettings.access_token_key,
-            access_token_secret: twitterSettings.access_token_secret
-        });
-        await twitterClient.post('/oauth/request_token', {oauth_callback: `${process.env.APP_URL}${twitterAuthCallback}`})
+    getTwitterToken: async function (){
+        const userId = this.userId;
+        try {
+            const twitterSettings = JSON.parse(process.env.shareSettings).twitter;
+            const twitterClient = new Twitter({
+                consumer_key: twitterSettings.consumer_key,
+                consumer_secret: twitterSettings.consumer_secret,
+                access_token_key: twitterSettings.access_token_key,
+                access_token_secret: twitterSettings.access_token_secret
+            });
+            await twitterClient.post('/oauth/request_token', {oauth_callback: `${process.env.APP_URL}${twitterAuthCallback}`})
 
+            // unfinished.....
+
+
+        } catch(error){
+            logError(userId, error, __filename, new Error().stack);
+        }
     }
 })
 

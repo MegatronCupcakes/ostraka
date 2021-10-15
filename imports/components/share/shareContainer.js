@@ -58,7 +58,7 @@ const ShareContainer = (props) => {
             shareCount={props.sharedContent.shareCount}
             shareResults={shareResults}
             noninteractive={props.noninteractive}
-            displaySize={props.viewSize}
+            displaySize={props.displaySize}
             registeredUser={Meteor.userId() ? true : false}
             navStack={props.navStack}
         />
@@ -68,7 +68,7 @@ ShareContainer.propTypes = {
     sharedContent: PropTypes.object.isRequired,
     sharedType: PropTypes.string.isRequired,
     noninteractive: PropTypes.bool,
-    viewSize: PropTypes.string,
+    displaySize: PropTypes.string,
     navStack: PropTypes.object.isRequired
 };
 export default ShareContainer;

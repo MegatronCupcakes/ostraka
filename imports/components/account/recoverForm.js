@@ -17,7 +17,7 @@ const RecoverForm = (props) => {
                     <div className="invalid-feedback">invalid email address</div>
                 </div>
                 <div className="mb-3" style={{textAlign: "right"}}>
-                    <div className={props.buttonClasses} onClick={props.recover}>recover <i className="bi bi-life-preserver"></i></div>
+                    <div className={props.buttonClasses} onClick={props.recover} data-bs-toggle="tooltip" data-bs-placement="top" title="recover account"><i className="bi bi-life-preserver"></i></div>
                 </div>
             </form>
             <div style={{textAlign: "center"}}>

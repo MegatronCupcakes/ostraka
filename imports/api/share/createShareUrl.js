@@ -2,6 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import PostCollection from '/imports/api/post/postCollection';
 import CommentCollection from '/imports/api/comments/commentCollection';
 import TagCollection from '/imports/api/tag/tagCollection';
+import {logError} from '/imports/api/errorLogger/errorLogger';
 
 export const createShareUrl = (type, sharedId, sharedById) => {
     return new Promise((resolve, reject) => {
@@ -25,6 +26,7 @@ export const createShareUrl = (type, sharedId, sharedById) => {
             }
             resolve(`${process.env.APP_URL}/view?${sharedViewId}&${sharedByViewId}`);
         } catch(error){
+            logError(sharedById, error, __filename, new Error().stack);
             reject(error);
         }
     });

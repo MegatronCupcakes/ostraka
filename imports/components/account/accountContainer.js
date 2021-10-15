@@ -6,36 +6,42 @@ import RecoverFormContainer from './recoverFormContainer';
 import VerifyFormContainer from './verifyFormContainer';
 
 const AccountContainer = (props) => {
+    let activity;
     switch(props.noUserState){
         case 'Login':
-            return (
+            activity = (
                 <LoginFormContainer
                     noUserState={props.noUserState}
                     setNoUserState={props.setNoUserState}
                 />
             );
+            break;
         case 'Register':
-            return (
+            activity = (
                 <RegisterFormContainer
                     noUserState={props.noUserState}
                     setNoUserState={props.setNoUserState}
                 />
             );
+            break;
         case 'Recover':
-            return (
+            activity = (
                 <RecoverFormContainer
                     noUserState={props.noUserState}
                     setNoUserState={props.setNoUserState}
                 />
             );
+            break;
         case 'Verify':
-            return (
+            activity = (
                 <VerifyFormContainer
                     noUserState={props.noUserState}
                     setNoUserState={props.setNoUserState}
                 />
             );
+            break;
     };
+    return activity;
 };
 AccountContainer.propTypes = {
     noUserState: PropTypes.string.isRequired,

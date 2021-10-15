@@ -6,16 +6,20 @@ import ShareSettings from '/imports/components/settings/shareSettings';
 import {getSettings} from '/imports/api/settings/getSettings';
 
 const ShareSettingsContainer = (props) => {
-    let settings = getSettings();
+    if(Meteor.user()){
+        let settings = getSettings();
 
-    const onSettingChange = ({target}) => {
-        const newValue = !settings.sharing[target.id];
-        MeteorCall('updateShareSettings', target.id, newValue)
-        .catch((error) => {
-            console.log("ERROR:", error);
-        });
-    };
-    return <ShareSettings settings={settings.sharing} shareSettings={Meteor.settings.public.sharing} onChange={onSettingChange}/>
+        const onSettingChange = ({target}) => {
+            const newValue = !settings.sharing[target.id];
+            MeteorCall('updateShareSettings', target.id, newValue)
+            .catch((error) => {
+                console.log("ERROR:", error);
+            });
+        };
+        return <ShareSettings settings={settings.sharing} shareSettings={Meteor.settings.public.sharing} onChange={onSettingChange}/>
+    } else {
+        return <></>;
+    }
 
 };
 ShareSettingsContainer.propTypes = {

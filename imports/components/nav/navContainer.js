@@ -7,10 +7,7 @@ import NoUserNav from './no_user_nav';
 function NavContainer(props){
 
     const handleLogOut = () => {
-        props.setNoUserState('Login');
-        props.navStack.reset();
-        Meteor.logout();
-        props.resetClientStore();
+        props.logOut();
     }
 
     const noUserOnClick = ({target}) => {
@@ -33,7 +30,7 @@ function NavContainer(props){
         return props.navStack.current.navState === activity ? ' active' : '';
     };
 
-    if(props.user){
+    if(Meteor.user()){
         return (
             <Nav
                 isActive={userIsActive}
@@ -57,7 +54,7 @@ NavContainer.propTypes = {
     noUserState: PropTypes.string.isRequired,
     setNoUserState: PropTypes.func.isRequired,
     navStack: PropTypes.object.isRequired,
-    resetClientStore: PropTypes.func.isRequired
+    logOut: PropTypes.func.isRequired
 }
 
 export default NavContainer;

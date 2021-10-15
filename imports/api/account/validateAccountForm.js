@@ -1,4 +1,5 @@
-import { passwordStrength } from 'check-password-strength';
+import {passwordStrength} from 'check-password-strength';
+import {isBad} from '/imports/api/util/isBad';
 
 const passwordStrengthOptions = [
     {
@@ -45,48 +46,63 @@ the value currently undergoing validation must be validated against another form
 export const validateAccountForm = {
     firstInput: (formData, target) => {
         let _valid = (target.value !== null && target.value.length > 0) ? target.value.length > 0 : null;
-        _validationFeedback(_valid, target);
+        return _validationFeedback(_valid, target);
     },
     lastInput: (formData, target) => {
         let _valid = (target.value !== null && target.value.length > 0) ? target.value.length > 0 : null;
-        _validationFeedback(_valid, target);
+        return _validationFeedback(_valid, target);
+    },
+    locationInput: (formDate, target) => {
+        let _valid = (target.value !== null && target.value.length > 0) ? target.value.length > 0 : null;
+        return _validationFeedback(_valid, target);
     },
     emailInput: (formData, target) => {
-        let _valid = (target.value !== null && target.value.length > 0) ? _validateEmail(target.value) : null;
-        _validationFeedback(_valid, target);
+        let _valid = (target.value !== null && target.value.length > 0) ? validateEmail(target.value) : null;
+        return _validationFeedback(_valid, target);
     },
     passwordInput: (formData, target) => {
         let _valid = (target.value !== null && target.value.length > 0) ? testPasswordStrength(target.value) !== 'too weak' : null;
-        _validationFeedback(_valid, target);
+        return _validationFeedback(_valid, target);
     },
     confirmInput: ({password}, target) => {
         let _valid = (password !== null && target.value !== null && target.value.length > 0) ? password === target.value : null;
-        _validationFeedback(_valid, target);
+        return _validationFeedback(_valid, target);
     },
     loginPasswordInput: (formData, target) => {
         // since the password already exists we don't need to validate its strength.
         let _valid = (target.value !== null && target.value.length > 0) ? target.value.length > 0 : null;
-        _validationFeedback(_valid, target);
+        return _validationFeedback(_valid, target);
+    },
+    currentPasswordInput: (formData, target) => {
+        // only used when changing passwords.  Check for zero length input; No need to check strength.
+        let _valid = (target.value !== null && target.value.length > 0) ? target.value.length > 0 : null;
+        return _validationFeedback(_valid, target);
     }
 }
 
 const _validationFeedback = (valid, target) => {
+    let buttonEnabled = false;
     if(valid !== null){
         if(valid){
             target.classList.add("is-valid");
             target.classList.remove("is-invalid");
+            buttonEnabled = true;
         } else {
             target.classList.add("is-invalid");
             target.classList.remove("is-valid");
+            buttonEnabled = false;
         };
     } else {
         // if valid is null it means zero length input; don't show validation feedback.
         target.classList.remove("is-invalid");
         target.classList.remove("is-valid");
+        // prevent the clearing of fields by disabling updates for zero length inputs.
+        buttonEnabled = false;
     }
+    return buttonEnabled;
 }
 
-const _validateEmail = (emailAddress) => {
+export const validateEmail = (emailAddress) => {
     /*
     validation RegEx borrowed from:
     https://github.com/robertsheacole/validateEmail/blob/master/validateEmail.js

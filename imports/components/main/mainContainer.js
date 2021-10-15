@@ -42,157 +42,175 @@ const client = new ApolloClient({
 });
 
 export default function MainContainer(props){
-    const [noUserState, setNoUserState] = useState('Login');
-    const [adsBlocked, setAdsBlocked] = useState(false);
-    const [viewingPost, viewId, sharedById, viewType] = _viewingPost(); // [false, null, null]
+    const currentUser = useTracker(() => Meteor.user(), []);
 
     const adBlockDetected = useDetectAdBlock();
     useEffect(() => {
-        if(adBlockDetected) setAdsBlocked(true);
-    }, []);
-    useEffect(() => {
+        if(adBlockDetected) {
+            setAdsBlocked(true);
+        };
+    }, [currentUser]);
 
-    }, []);
 
+    const [noUserState, setNoUserState] = useState('Login');
+    const [adsBlocked, setAdsBlocked] = useState(false);
+    const [viewingPost, viewId, sharedById, viewType] = _viewingPost();
 
-    const loggingIn = useTracker(() => Meteor.loggingIn(), []);
-    const currentUser = useTracker(() => Meteor.user(), []);
-    const resetClientStore = (currentUser) => {
+    const resetClientStore = async (currentUser) => {
         client.resetStore(); // make all active queries re-run when the log-out process completed
     };
 
-    const navStack = new ContentNavState(currentUser);
+    let navStack = new ContentNavState(currentUser);
+
+    const logOut = () => {
+        Meteor.logout(() => {
+            client.cache.reset();
+            setNoUserState('Login');
+            navStack.reset();
+        });
+    };
 
     let activity = <Loading />;
 
-    if(!loggingIn){
-        if(viewingPost){
+    if(viewingPost){
+        activity = (
+            <ViewSharedContentContainer
+                viewId={viewId}
+                sharedById={sharedById}
+                viewType={viewType}
+                navStack={navStack}
+                currentUser={currentUser}
+                noUserState={noUserState}
+                setNoUserState={setNoUserState}
+                resetClientStore={resetClientStore}
+            />
+        );
+    } else if(!currentUser){
+        activity = (
+            <AccountContainer
+                noUserState={noUserState}
+                setNoUserState={setNoUserState}
+            />);
+    } else {
+        // attempt restoration of navStack; does nothing if no saved restore point is found.
+        navStack.restore();
+        // make sure we have our additional user info via subscription
+        Meteor.subscribe('userData');
+        if(adsBlocked){
             activity = (
-                <ViewSharedContentContainer
-                    viewId={viewId}
-                    sharedById={sharedById}
-                    viewType={viewType}
-                    navStack={navStack}
-                    currentUser={currentUser}
-                    noUserState={noUserState}
-                    setNoUserState={setNoUserState}
-                    resetClientStore={resetClientStore}
+                <ContentWrapper
+                    content={(
+                        <div className="fade-in">ads blocked.</div>
+                    )}
                 />
             );
-        } else if(!currentUser){
-            activity = (
-                <AccountContainer
-                    noUserState={noUserState}
-                    setNoUserState={setNoUserState}
-                />);
         } else {
-            // attempt restoration of navStack; does nothing if no saved restore point is found.
-            navStack.restore();
-            // make sure we have our additional user info via subscription
-            Meteor.subscribe('userData');
-            if(adsBlocked){
-                activity = <div className="fade-in">ads blocked.</div>;
-            } else {
-                switch(navStack.current.navState){
-                    case 'Loading':
-                        activity = <Loading />;
-                        break;
-                    case 'Feed':
-                        activity = (
-                            <FeedContainer
+            switch(navStack.current.navState){
+                case 'Loading':
+                    activity = <Loading />;
+                    break;
+                case 'Feed':
+                    activity = (
+                        <FeedContainer
+                            navStack={navStack}
+                        />
+                    );
+                    break;
+                case 'Topics':
+                    activity = (
+                        <TopicsContainer
+                            navStack={navStack}
+                        />
+                    );
+                    break;
+                case 'Profile':
+                    activity = (
+                        <>
+                            <Back
                                 navStack={navStack}
                             />
-                        );
-                        break;
-                    case 'Topics':
+                            <ProfileContainer
+                                navStack={navStack}
+                                viewSize="large"
+                            />
+                        </>
+                    );
+                    break;
+                case 'Friends':
+                    activity = (
+                        <FriendsProfileContainer
+                            navStack={navStack}
+                            profileIds={_.uniq([...currentUser.followedUsers, ...currentUser.invited, currentUser.invitedBy])}
+                        />
+                    );
+                    break;
+                case 'Trending Topics':
+                    if(navStack.currentTag){
                         activity = (
                             <TopicsContainer
                                 navStack={navStack}
                             />
                         );
-                        break;
-                    case 'Profile':
+                    } else {
                         activity = (
-                            <>
-                                <Back
-                                    navStack={navStack}
-                                />
-                                <ProfileContainer
-                                    navStack={navStack}
-                                    viewSize="large"
-                                />
-                            </>
-                        );
-                        break;
-                    case 'Friends':
-                        activity = (
-                            <FriendsProfileContainer
-                                navStack={navStack}
-                                profileIds={_.uniq([...currentUser.followedUsers, ...currentUser.invited, currentUser.invitedBy])}
-                            />
-                        );
-                        break;
-                    case 'Trending Topics':
-                        if(navStack.currentTag){
-                            activity = (
-                                <TopicsContainer
-                                    navStack={navStack}
-                                />
-                            );
-                        } else {
-                            activity = (
-                                <TrendingTopicsContainer
-                                    navStack={navStack}
-                                />
-                            );
-                        }
-                        break;
-                    case 'Trending Users':
-                        activity = (
-                            <TrendingProfilesContainer
+                            <TrendingTopicsContainer
                                 navStack={navStack}
                             />
                         );
-                        break;
-                    case 'Settings':
-                        activity = <SettingsContainer />;
-                        break;
-                    case 'Support':
-                        activity = <div className="fade-in">Support</div>;
-                        break;
-                    case 'Search':
-                        activity = <div className="fade-in">search results</div>;
-                        break;
-                    case 'PostView':
-                        activity = (
-                            <>
-                                <Back
-                                    navStack={navStack}
-                                />
-                                <ContentWrapper
-                                    content={(
-                                        <PostView
-                                            navStack={navStack}
-                                            viewSize="large"
-                                        />
-                                    )}
-                                />
-                            </>
-                        );
-                        break;
-                    case 'TagView':
-                        activity = (
-                            <>
-                                <Back
-                                    navStack={navStack}
-                                />
-                                <TopicsContainer
-                                    navStack={navStack}
-                                />
-                            </>
-                        );
+                    }
                     break;
-                }
+                case 'Trending Users':
+                    activity = (
+                        <TrendingProfilesContainer
+                            navStack={navStack}
+                        />
+                    );
+                    break;
+                case 'Settings':
+                    activity = (
+                        <>
+                            <Back
+                                navStack={navStack}
+                            />
+                            <SettingsContainer />
+                        </>
+                    );
+                    break;
+                case 'Support':
+                    activity = <div className="fade-in">Support</div>;
+                    break;
+                case 'Search':
+                    activity = <div className="fade-in">search results</div>;
+                    break;
+                case 'PostView':
+                    activity = (
+                        <>
+                            <Back
+                                navStack={navStack}
+                            />
+                            <ContentWrapper
+                                content={(
+                                    <PostView
+                                        navStack={navStack}
+                                        viewSize="large"
+                                    />
+                                )}
+                            />
+                        </>
+                    );
+                    break;
+                case 'TagView':
+                    activity = (
+                        <>
+                            <Back
+                                navStack={navStack}
+                            />
+                            <TopicsContainer
+                                navStack={navStack}
+                            />
+                        </>
+                    );
+                break;
             }
         }
     }
@@ -205,7 +223,7 @@ export default function MainContainer(props){
                 noUserState={noUserState}
                 setNoUserState={setNoUserState}
                 navStack={navStack}
-                resetClientStore={resetClientStore}
+                logOut={logOut}
             />
             {activity}
         </>

@@ -1,5 +1,6 @@
 import './apollo';
 
+import '/imports/api/errorLogger/serverMethod';
 import '/imports/api/account/accountServer';
 import '/imports/api/routes/routes';
 import '/imports/api/feed/feedProxy';

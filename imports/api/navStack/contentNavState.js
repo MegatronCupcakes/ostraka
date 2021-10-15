@@ -44,7 +44,8 @@ export class ContentNavState {
     };
 
     reset(){
-        [this._contentState, this._setContentState] = useState(_defaultNavStack);
+        //[this._contentState, this._setContentState] = useState(_defaultNavStack);
+        this._setContentState(_defaultNavStack);
     };
 
     async restore(){

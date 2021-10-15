@@ -12,9 +12,9 @@ const Share = (props) => {
     const _shareButtonClasses = "bi bi-box-arrow-up";
     const _disabledShareButtonClasses = _shareButtonClasses + " disabled";
     const _shareButton = !props.noninteractive && props.registeredUser ? (
-        <span className={props.displaySize ? `userAction ${props.displaySize}` : "userAction"}>{props.shareCount} <i className={_shareButtonClasses} data-bs-toggle="tooltip" data-bs-placement="top" title="share" data-bs-toggle="modal" data-bs-target={"#" + modalId}></i></span>
+        <span className={props.displaySize ? `userAction_${props.displaySize}` : "userAction"}>{props.shareCount} <i className={_shareButtonClasses} data-bs-toggle="tooltip" data-bs-placement="top" title="share" data-bs-toggle="modal" data-bs-target={"#" + modalId}></i></span>
     ) : (
-        <span className={props.displaySize ? `userAction ${props.displaySize}` : "userAction"}>{props.shareCount} <i className={_disabledShareButtonClasses} data-bs-toggle="tooltip" data-bs-placement="top" title="share"></i></span>
+        <span className={props.displaySize ? `userAction_${props.displaySize}` : "userAction"}>{props.shareCount} <i className={_disabledShareButtonClasses} data-bs-toggle="tooltip" data-bs-placement="top" title="share"></i></span>
     );
     let _preview;
     switch(props.sharedType){

@@ -1,10 +1,11 @@
 import {Meteor} from "meteor/meteor";
 import {check} from 'meteor/check';
+import {logError} from '/imports/api/errorLogger/errorLogger';
 
 Meteor.methods({
     followUser: async function(followedId){
-        this.unblock();
         check(followedId, String);
+        this.unblock();
         const followingId = this.userId;
         return await new Promise((resolve, reject) => {
             try {
@@ -22,6 +23,7 @@ Meteor.methods({
                 }
                 resolve();
             } catch(error){
+                logError(followingId, error, __filename, new Error().stack);
                 reject(error);
             }
         });

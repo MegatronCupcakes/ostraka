@@ -19,7 +19,7 @@ const LoginForm = (props) => {
                     <label className="form-label">password</label>
                 </div>
                 <div className="mb-3" style={{textAlign: "right"}}>
-                    <div className={props.buttonClasses} onClick={props.login}>login <i className="bi bi-door-open"></i></div>
+                    <div className={props.buttonClasses} onClick={props.login} data-bs-toggle="tooltip" data-bs-placement="top" title="login"><i className="bi bi-door-open"></i></div>
                 </div>
             </form>
             <div style={{textAlign: "center"}}>

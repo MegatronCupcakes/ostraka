@@ -42,7 +42,6 @@ const RegisterFormContainer = (props) => {
         validateField(target);
     };
     const handleFirst = ({target}) => {
-        console.log("FIRST:", target.value);
         setFirst(target.value);
         validateField(target);
     };
