@@ -4,9 +4,11 @@ import _ from 'underscore';
 import MeteorCall from '/imports/api/util/callPromise';
 import {validateAccountForm, testPasswordStrength} from '/imports/api/account/validateAccountForm'
 import Settings from '/imports/components/settings/settings';
+import {isBad} from '/imports/api/util/isBad';
 
 const SettingsContainer = (props) => {
     const user = Meteor.user({fields: {profile:1, emails:1}});
+    const [activeMenu, setActiveMenu] = useState(isBad(props.navStack.current.viewContent) ? "profile" : props.navStack.current.viewContent); // profile, password, email, messaging, sharing, notifications
     //profile
     const [first, setFirst] = useState(user.profile.firstName);
     const [last, setLast] = useState(user.profile.lastName);
@@ -27,9 +29,9 @@ const SettingsContainer = (props) => {
     });
     //password
     const [passwordStrength, setPasswordStrength] = useState(null);
-    const [currentPassword, setCurrentPassword] = useState(null);
-    const [newPassword, setNewPassword] = useState(null);
-    const [confirm, setConfirm] = useState(null);
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirm, setConfirm] = useState("");
     const [passwordError, setPasswordError] = useState(null);
     const [passwordButtonEnabled, setPasswordButtonEnabled] = useState(false);
     const [passwordValidity, setPasswordValidity] = useState({
@@ -131,6 +133,8 @@ const SettingsContainer = (props) => {
 
     return (
         <Settings
+            activeMenu={activeMenu}
+            setActiveMenu={setActiveMenu}
             first={first}
             last={last}
             location={location}
@@ -144,10 +148,14 @@ const SettingsContainer = (props) => {
             passwordButtonEnabled={passwordButtonEnabled}
             handle={handle}
             save={save}
+            currentPassword={currentPassword}
+            newPassword={newPassword}
+            confirm={confirm}
+            navStack={props.navStack}
         />
     );
 };
 SettingsContainer.propTypes = {
-
+    navStack: PropTypes.object.isRequired
 };
 export default SettingsContainer;

@@ -1,3 +1,20 @@
+type Message {
+    _id: ID!
+    toId: String!
+    subject: String
+    body: String
+    fromId: String!
+    fromViewId: String!
+    fromName: String
+    fromTag: String!
+    fromImage: String
+    viewId: String!
+    active: Boolean!
+    read: Boolean!
+    notify: Boolean!
+    createdAt: String!
+}
+
 type Dependency {
     userId: String
     sequenceNumber: Int
@@ -136,4 +153,6 @@ type Query {
     getTrendingProfiles (limit: Int, span: String): [User]
     getSharedContent (viewId: String, sharedById: String): SharedContent
     getUserHistory (userId: String): [History]
+    getMessages (query: String): [Message]
+    getMessagesIndicator: [Message]
 }

@@ -9,7 +9,7 @@ import {getProfile, getProfiles, getTrendingProfiles} from '/imports/apollo/reso
 import {getTopic, getTrendingTopics} from '/imports/apollo/resolvers/topics';
 import {getSharedContent} from '/imports/apollo/resolvers/sharedContent';
 import {getUserHistory} from '/imports/apollo/resolvers/history';
-
+import {getMessages, getMessagesIndicator} from '/imports/apollo/resolvers/messages';
 const resolvers = {
     Topic: {
         __resolveType(obj, context, info){
@@ -43,7 +43,9 @@ const resolvers = {
         getTrendingTopics: getTrendingTopics,
         getTrendingProfiles: getTrendingProfiles,
         getSharedContent: getSharedContent,
-        getUserHistory: getUserHistory
+        getUserHistory: getUserHistory,
+        getMessages: getMessages,
+        getMessagesIndicator: getMessagesIndicator
     }
 };
 

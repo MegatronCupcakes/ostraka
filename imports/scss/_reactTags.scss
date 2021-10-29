@@ -1,0 +1,55 @@
+.messagingListTagSearch {
+    margin-top: 1rem;
+    min-width: 100%;
+}
+
+.suggestions {
+    display: inline-flex;
+    font-size: 1rem;
+    background-color: rgb(248, 249, 250);
+    width: 100%;
+}
+.suggestions ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.suggestion {
+    display: inline-flex;
+    background-color: #bbc1c7;
+    padding: 0.25rem;
+    margin: 0.25rem;
+    font-size: 1rem;
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 1px;
+    border-radius: 3px;
+    margin-left: 1rem;
+    width: auto;
+}
+.suggestion:before {
+    content: "@";
+    background-color: #bbc1c7;
+}
+
+.listedProfile {
+    display: inline-flex;
+    text-align: center;
+    font-size: 0.7rem;
+    background-color: rgb(197, 181, 242);
+    border: rgb(197, 181, 242);
+    text-decoration: none;
+    text-shadow: 1px;
+    padding: 0.25rem;
+    margin: 0.25rem;
+    border-radius: 3px;
+    color: #fff;
+    font-weight: bold;
+}
+.listedProfile:before {
+    content: "@";
+}
+.profileListActionIcon {
+    padding-left: 0.5rem;
+}

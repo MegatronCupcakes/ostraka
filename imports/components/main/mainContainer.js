@@ -22,7 +22,9 @@ import TrendingProfilesContainer from '/imports/components/profile/trendingProfi
 import TrendingTopicsContainer from '/imports/components/topics/trendingTopicsContainer';
 import ContentWrapper from '/imports/components/layout/contentWrapper';
 import SettingsContainer from '/imports/components/settings/settingsContainer';
-const cache = new InMemoryCache().restore(window.__APOLLO_STATE__);
+import InboxContainer from '/imports/components/messaging/inboxContainer';
+import {typePolicies} from '/imports/apollo/typePolicies';
+const cache = new InMemoryCache({typePolicies: typePolicies}).restore(window.__APOLLO_STATE__);
 
 MeteorAccountsLink({headerName: 'meteor-login-token'});
 
@@ -166,13 +168,31 @@ export default function MainContainer(props){
                         />
                     );
                     break;
+                case 'Inbox':
+                    activity = (
+                        <>
+                            <Back
+                                navStack={navStack}
+                            />
+                            <ContentWrapper
+                                content={(
+                                    <InboxContainer
+                                        navStack={navStack}
+                                    />
+                                )}
+                            />
+                        </>
+                    );
+                    break;
                 case 'Settings':
                     activity = (
                         <>
                             <Back
                                 navStack={navStack}
                             />
-                            <SettingsContainer />
+                            <SettingsContainer
+                                navStack={navStack}
+                            />
                         </>
                     );
                     break;

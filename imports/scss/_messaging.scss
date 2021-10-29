@@ -1,0 +1,126 @@
+.inboxComponent {
+    min-height: 10rem;
+}
+.composeElement {
+    padding-bottom: 1rem;
+}
+
+.inboxIndicatorMessage {
+
+}
+
+
+.inboxListItem {
+    margin: 0.25rem;
+    padding-bottom: 0.5rem;
+}
+.inboxListItem.selected {
+    color: white;
+    font-weight: bold;
+    background-color: rgb(197, 181, 242);
+    border-color: rgb(197, 181, 242);
+}
+.inboxListItem:hover {
+    background-color: rgb(248, 249, 250);
+    border-color: rgb(248, 249, 250);
+}
+.inboxListItem.selected:hover {
+    color: white;
+    font-weight: bold;
+    background-color: rgb(197, 181, 242);
+    border-color: rgb(197, 181, 242);
+}
+
+
+.inboxIndicatorFrom {
+    color: black;
+    font-size: 0.8rem;
+    text-overflow: ellipsis;
+}
+.inboxIndicatorFrom:before {
+    color: black;
+    font-size: 0.8rem;
+    content: "@";
+}
+.inboxIndicatorFrom.read {
+    color: grey;
+    font-size: 0.8rem;
+    text-overflow: ellipsis;
+}
+.inboxIndicatorFrom.read:before {
+    color: grey;
+    font-size: 0.8rem;
+    content: "@";
+}
+
+.inboxDate {
+    color: black;
+    font-size: 0.6rem;
+    text-overflow: ellipsis;
+}
+.inboxDate.read {
+    color: grey;
+    font-size: 0.6rem;
+    text-overflow: ellipsis;
+}
+
+.inboxIndicatorSubject {
+    color: black;
+    text-overflow: ellipsis;
+}
+.inboxIndicatorSubject.read {
+    color: grey;
+    text-overflow: ellipsis;
+}
+
+
+
+.inboxListItem:hover .inboxIndicatorFrom {
+    color: black;
+}
+.inboxListItem:hover .inboxDate {
+    color: black;
+}
+.inboxListItem:hover .inboxIndicatorFrom:before {
+    color: black;
+    font-size: 0.8rem;
+    content: "@";
+}
+.inboxListItem:hover .inboxIndicatorSubject {
+    color: black;
+    text-overflow: ellipsis;
+}
+
+.inboxListItem.selected .inboxIndicatorFrom {
+    color: white;
+    font-weight: bold;
+}
+.inboxListItem.selected .inboxIndicatorFrom:before {
+    color: white;
+    font-weight: bold;
+    font-size: 0.8rem;
+    content: "@";
+}
+.inboxListItem.selected .inboxIndicatorSubject {
+    color: white;
+    font-weight: bold;
+    text-overflow: ellipsis;
+}
+.inboxListItem.selected .inboxDate {
+    color: white;
+    font-weight: bold;
+    text-overflow: ellipsis;
+}
+
+.messageViewDate {
+    padding-bottom: 1rem;
+    font-size: 0.8rem;
+    color: grey;
+}
+.messageViewSubject {
+    padding-bottom: 1rem;
+    color: grey;
+}
+.messageViewBody {
+    padding-bottom: 1rem;
+}

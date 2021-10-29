@@ -41,7 +41,14 @@ export const registerUser = (email, password, first, last, invitedBy) => {
                 ostracizedBy: [],
                 reputationScore: 100,
                 status: "active",
-                settings: {}
+                settings: {
+                    sharing: {},
+                    messaging: {
+                        allowFromAny: false,
+                        blockedUsers: [],
+                        allowedUsers: []
+                    }
+                }
             }})
             resolve(userId);
         } catch(error){

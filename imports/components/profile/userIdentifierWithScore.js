@@ -42,12 +42,14 @@ const UserIdentifierWithScore = (props) => {
         <div style={{paddingRight: "2rem"}}>
             <Score
                 reputationScore={props.user.reputationScore}
+                displaySize={props.displaySize}
             />
         </div>
     ) : (
         <div style={{paddingRight: "2rem"}} data-bs-toggle="modal" data-bs-target={"#" + modalId}>
             <Score
                 reputationScore={props.user.reputationScore}
+                displaySize={props.displaySize}
             />
         </div>
     );

@@ -1,1 +1,10 @@
 $dropdown-link-active-bg: rgb(197, 181, 242);
+
+
+$nav-link-color: #bbc1c7;
+$nav-tabs-link-active-color: #9232d1;
+$nav-link-hover-color: rgb(197, 181, 242);
+
+.nav-link.active {
+    color: $nav-tabs-link-active-color;
+}

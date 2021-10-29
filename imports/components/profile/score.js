@@ -10,33 +10,31 @@ const Score = (props) => {
     colorGradient.setMidpoint(50);
     const currentColor = colorGradient.getColor(props.reputationScore);
 
-    const radius = 50;
-    const stroke = 10;
-    const normalizedRadius = radius - stroke * 2;
+    const normalizedRadius = _radius(props.displaySize) - _stroke(props.displaySize) * 2;
     const circumference = normalizedRadius * 2 * Math.PI;
     const strokeDashoffset = circumference - props.reputationScore / 100 * circumference;
 
 
     return (
         <svg
-            height={radius * 2}
-            width={radius * 2}
+            height={_radius(props.displaySize) * 2}
+            width={_radius(props.displaySize) * 2}
         >
             <circle
                 fill="transparent"
                 stroke={currentColor}
-                strokeWidth={stroke}
+                strokeWidth={_stroke(props.displaySize)}
                 strokeDasharray={circumference + ' ' + circumference}
                 style={{strokeDashoffset}}
                 r={normalizedRadius}
-                cx={radius}
-                cy={radius}
+                cx={_radius(props.displaySize)}
+                cy={_radius(props.displaySize)}
             />
             <text
                 x="50%"
                 y="60%"
                 textAnchor="middle"
-                fontSize="1.6rem"
+                fontSize={_fontSize(props.displaySize)}
                 stroke={currentColor}
                 strokeWidth="2"
             >
@@ -46,6 +44,57 @@ const Score = (props) => {
     );
 };
 Score.propTypes = {
-    reputationScore: PropTypes.number.isRequired
+    reputationScore: PropTypes.number.isRequired,
+    displaySize: PropTypes.string
 };
 export default Score;
+
+
+const _radius = (displaySize) => {
+    switch(displaySize){
+        case "small":
+            return 30;
+            break;
+        case "medium":
+            return 40;
+            break;
+        case "large":
+            return 50;
+            break;
+        default:
+            return 50;
+            break;
+    }
+};
+const _stroke = (displaySize) => {
+    switch(displaySize){
+        case "small":
+            return 6;
+            break;
+        case "medium":
+            return 8;
+            break;
+        case "large":
+            return 10;
+            break;
+        default:
+            return 10;
+            break;
+    }
+};
+const _fontSize = (displaySize) => {
+    switch(displaySize){
+        case "small":
+            return "0.96rem";
+            break;
+        case "medium":
+            return "1.28rem";
+            break;
+        case "large":
+            return "1.6rem";
+            break;
+        default:
+            return "1.6rem";
+            break;
+    }
+}

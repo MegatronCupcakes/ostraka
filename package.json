@@ -25,6 +25,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-image-crop": "8.6.9",
+    "react-tag-autocomplete": "^6.3.0",
     "react-tiny-link": "^3.6.1",
     "rsync": "^0.6.1",
     "sharp": "^0.28.3",

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Logo from '/imports/components/nav/logo';
+import MessageNavContainer from '/imports/components/messaging/messageNavContainer';
 
 export default function Nav(props){
     return (
@@ -32,7 +33,7 @@ export default function Nav(props){
                     </ul>
                     <div className="nav-item">
                         <form className="d-flex">
-                            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                            <input className="form-control me-2" type="search" placeholder="search" aria-label="search" />
                         </form>
                     </div>
                     <div className="nav-item dropdown navbar-nav" style={{paddingLeft: '1rem'}}>
@@ -50,24 +51,10 @@ export default function Nav(props){
                             <li><a className="dropdown-item">notification 3</a></li>
                         </ul>
                     </div>
-                    <div className="nav-item dropdown navbar-nav" style={{paddingLeft: '1rem'}}>
-                        <a className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i className="bi bi-envelope">
-                                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-                                    6
-                                    <span className="visually-hidden">unread messages</span>
-                                </span>
-                            </i>
-                        </a>
-                        <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a className="dropdown-item">message 1</a></li>
-                            <li><a className="dropdown-item">message 2</a></li>
-                            <li><a className="dropdown-item">message 3</a></li>
-                            <li><a className="dropdown-item">message 4</a></li>
-                            <li><a className="dropdown-item">message 5</a></li>
-                            <li><a className="dropdown-item">message 6</a></li>
-                        </ul>
-                    </div>
+                    <MessageNavContainer
+                        navOnClick={props.navOnClick}
+                        messageOnClick={props.messageOnClick}
+                    />
                     <div className="nav-item dropdown navbar-nav" style={{paddingLeft: '1rem', paddingRight: '1.5rem'}}>
                         <a className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img className="rounded" src={props.profileImage} style={{maxHeight: "2.5rem"}}/>
@@ -76,7 +63,9 @@ export default function Nav(props){
                             <li><a className="dropdown-item" onClick={props.profileOnClick}>profile</a></li>
                             <li><a className="dropdown-item" onClick={props.navOnClick} id="Settings">settings</a></li>
                             <li><a className="dropdown-item" onClick={props.navOnClick} id="Support">support</a></li>
-                            <li><a className="dropdown-item"  onClick={props.logOut}>log out</a></li>
+                            <li><hr className="dropdown-divider" /></li>
+                            <li><a className="dropdown-item" onClick={props.logOut}>log out</a></li>
+
                         </ul>
                     </div>
 
@@ -90,5 +79,6 @@ Nav.propTypes = {
     logOut: PropTypes.func.isRequired,
     profileImage: PropTypes.string.isRequired,
     navOnClick: PropTypes.func.isRequired,
-    profileOnClick: PropTypes.func.isRequired
+    profileOnClick: PropTypes.func.isRequired,
+    messageOnClick: PropTypes.func.isRequired
 }

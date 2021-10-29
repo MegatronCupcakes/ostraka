@@ -81,6 +81,17 @@ export class ContentNavState {
         currentState.tags = tags;
         this._setContentState([...this._contentState, currentState]); //restore current (updated) state
     }
+    /*
+    Some interfaces allow for toggling between viewContent items; in these instances (such as the Messaging Inbox)
+    new objects should not get added to the navStack as the user cycles between viewContent items.  This allows the
+    Back navigation to exit the activity rather than cycling threw all previously viewed viewContent items (e.g. a user
+    can view all messages in the Messaging Inbox and then use Back to exit the Messaging Inbox).
+    */
+    setViewContent(viewContent){
+        const currentState = this._contentState.pop(); // get current state
+        currentState.viewContent = viewContent;
+        this._setContentState([...this._contentState, currentState]); //restore current (updated) state
+    }
 };
 
 const _getTags = (currentUser) => {
