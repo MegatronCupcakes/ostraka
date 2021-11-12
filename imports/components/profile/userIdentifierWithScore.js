@@ -16,7 +16,7 @@ const UserIdentifierWithScore = (props) => {
                 <ShareContainer
                     sharedContent={props.user}
                     sharedType="profile"
-                    displaySize={props.displaySize}
+                    viewSize={`profileAction ${props.viewSize}`}
                     noninteractive={props.noninteractive}
                     navStack={props.navStack}
                 />
@@ -24,14 +24,14 @@ const UserIdentifierWithScore = (props) => {
             <div style={{paddingRight: "2rem", marginTop: "1rem"}}>
                 <FollowContainer
                     user={props.user}
-                    displaySize={props.displaySize}
+                    viewSize={`profileAction ${props.viewSize}`}
                     navStack={props.navStack}
                 />
             </div>
             <div style={{paddingRight: "2rem", marginTop: "1rem"}}>
                 <OstracizeContainer
                     user={props.user}
-                    displaySize={props.displaySize}
+                    viewSize={`profileAction ${props.viewSize}`}
                     noninteractive={props.noninteractive}
                     navStack={props.navStack}
                 />
@@ -42,14 +42,14 @@ const UserIdentifierWithScore = (props) => {
         <div style={{paddingRight: "2rem"}}>
             <Score
                 reputationScore={props.user.reputationScore}
-                displaySize={props.displaySize}
+                viewSize={props.viewSize}
             />
         </div>
     ) : (
         <div style={{paddingRight: "2rem"}} data-bs-toggle="modal" data-bs-target={"#" + modalId}>
             <Score
                 reputationScore={props.user.reputationScore}
-                displaySize={props.displaySize}
+                viewSize={props.viewSize}
             />
         </div>
     );
@@ -79,12 +79,13 @@ const UserIdentifierWithScore = (props) => {
     return (
         <div style={{paddingBottom: "1rem"}}>
             <UserIdentifier
-                displaySize={props.displaySize}
+                viewSize={props.viewSize}
                 postedBy={props.user.profile.firstName + " " + props.user.profile.lastName}
                 postedByTag={props.user.profile.profileTag}
                 postedById={props.user._id}
                 postedByProfilePic={props.user.profile.profileImage}
                 navStack={props.navStack}
+                location={props.user.profile.location}
             />
             <div className="d-flex flex-row-reverse bd-highlight" style={{}}>
                 {profileActions}
@@ -97,7 +98,7 @@ const UserIdentifierWithScore = (props) => {
 UserIdentifierWithScore.propTypes = {
     user: PropTypes.object.isRequired,
     noninteractive: PropTypes.bool.isRequired,
-    displaySize: PropTypes.string,
+    viewSize: PropTypes.string,
     navStack: PropTypes.object.isRequired
 };
 export default UserIdentifierWithScore;

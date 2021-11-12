@@ -11,9 +11,16 @@
 
 .postCaption {
     font-size: 1rem;
+    padding-bottom: 1rem;
 }
 .postCaption.small {
     font-size: 0.75rem;
+}
+.postCaption.medium {
+    font-size: 1rem;
+}
+.postCaption.large {
+    font-size: 1.25rem;
 }
 
 .postTimestamp {

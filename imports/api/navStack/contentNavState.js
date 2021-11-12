@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Meteor} from 'meteor/meteor';
 import {useTracker} from 'meteor/react-meteor-data';
 import _ from 'underscore';
-
+import {isBad} from '/imports/api/util/isBad';
 import {LocalStorage} from '/imports/api/util/localStorageAdapter';
 
 const _defaultNavState = {navState: 'Feed', viewContent: null, activeTag: null, tags: null};
@@ -37,10 +37,13 @@ export class ContentNavState {
         }
     };
     back(){
-        const currentState = this._contentState.pop(); // current state
-        const priorState = this._contentState.pop(); // get prior state
-        //console.log("BACK\nleaving:", currentState, "\nentering:", priorState);
-        this._setContentState([...this._contentState, priorState ? priorState : _defaultNavState]); // restore prior state or default if stack is empty now (as is the case with shared views.)
+        if(this._contentState.length <= 1){
+            this._setContentState(_defaultNavStack); // restore default state if the stack is or will be empty.
+        } else {
+            const currentState = this._contentState.pop(); // remove current state
+            const priorState = this._contentState.pop(); // remove prior state
+            this._setContentState([...this._contentState, priorState]);
+        }
     };
 
     reset(){
@@ -88,9 +91,27 @@ export class ContentNavState {
     can view all messages in the Messaging Inbox and then use Back to exit the Messaging Inbox).
     */
     setViewContent(viewContent){
-        const currentState = this._contentState.pop(); // get current state
+        let currentState = _.last(this._contentState);
+        if(currentState)
+        this._contentState.pop(); // get current state
         currentState.viewContent = viewContent;
         this._setContentState([...this._contentState, currentState]); //restore current (updated) state
+    }
+    // search
+    search(viewContent){
+        const searching = this.current.navState === 'Search';
+        const state = searching ? this._contentState.pop() : {navState: 'Search', viewContent: null, activeTag: null, tags: null};
+        state.viewContent = viewContent;
+        if(searching && isBad(viewContent)){
+            // empty search query; go back
+            this.back();
+        } else {
+            if(
+                ((viewContent.charAt(0) === '@' || viewContent.charAt(0) === '@') && viewContent.length > 1) ||
+                (viewContent.charAt(0) !== '@' && viewContent.charAt(0) !== '@' && viewContent.length > 1)
+            )
+            this._setContentState([...this._contentState, state]);
+        }
     }
 };
 

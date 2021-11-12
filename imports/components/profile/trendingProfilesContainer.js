@@ -20,7 +20,7 @@ const TrendingProfilesContainer = (props) => {
                 <UserIdentifierWithScore
                     user={item}
                     noninteractive={true}
-                    displaySize={props.displaySize}
+                    viewSize={props.viewSize}
                     navStack={props.navStack}
                 />
             );
@@ -33,6 +33,6 @@ const TrendingProfilesContainer = (props) => {
 };
 TrendingProfilesContainer.propTypes = {
     navStack: PropTypes.object.isRequired,
-    displaySize: PropTypes.string
+    viewSize: PropTypes.string
 };
 export default TrendingProfilesContainer;

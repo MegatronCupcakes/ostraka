@@ -86,7 +86,7 @@ const Inbox = (props) => {
                         <div className="row inboxListItem" style={{paddingBottom: "1rem"}}>
                             <input className="form-control me-2" type="search" placeholder="search" aria-label="search" onChange={({target}) => props.inboxQuery(target.value)} />
                         </div>
-                        <div style={{overflowY: "scroll"}}>
+                        <div style={{overflowY: "auto"}}>
                             {inboxList}
                         </div>
                     </div>

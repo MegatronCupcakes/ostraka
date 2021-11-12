@@ -12,3 +12,7 @@ export const getTaggedComments = (parent, args, context, info) => {
 export const getUserComments = (parent, args, context, info) => {
     return CommentCollection.find({postedById: args.postedById, active: true}, {fields: commentReturnFields(context.user._id), sort: {createdAt: -1}});
 };
+
+export const getCommentById = (parent, args, context, info) => {
+    return CommentCollection.findOne({_id: args._id, active: true}, {fields: commentReturnFields(context.user._id)});
+};

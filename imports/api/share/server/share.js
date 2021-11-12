@@ -1,6 +1,8 @@
 import {Meteor} from "meteor/meteor";
 import {check, Match} from 'meteor/check';
+import {logError} from '/imports/api/errorLogger/errorLogger';
 import {createShareUrl} from '/imports/api/share/createShareUrl';
+import {notifyUser} from '/imports/api/notifications/notify';
 import {ostrakaShare} from '/imports/api/share/adapters/ostraka';
 import {facebookShare} from '/imports/api/share/adapters/facebook';
 import {instagramShare} from '/imports/api/share/adapters/instagram';
@@ -31,5 +33,12 @@ Meteor.methods({
         check(userId, String);
 
         return await createShareUrl(contentType, id, userId);
+    },
+    notifyUserOfShare: async function(type, notificationUserId){
+        check(type, String);
+        check(notificationUserId, String);
+
+        return await notifyUser()
+        .catch((error) => logError(userId, error, __filename, new Error().stack))
     }
 });

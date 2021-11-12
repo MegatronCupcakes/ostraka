@@ -17,13 +17,13 @@ const FollowContainer = (props) => {
             followed={props.user.followed}
             followedByCount={props.user.followedByCount}
             handleClick={handleClick}
-            displaySize={props.displaySize}
+            viewSize={props.viewSize}
         />
     )
 };
 FollowContainer.propTypes = {
     user: PropTypes.object.isRequired,
-    displaySize: PropTypes.string,
+    viewSize: PropTypes.string,
     navStack: PropTypes.object.isRequired
 };
 export default FollowContainer;

@@ -9,6 +9,7 @@ export const ProfileFields = gql`
             lastName
             profileTag
             profileImage
+            location
         }
         invitedBy
         invited

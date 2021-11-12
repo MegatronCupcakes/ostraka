@@ -5,6 +5,7 @@ import _ from 'underscore';
 import {SharedContentQuery} from '/imports/api/share/sharedContentQuery';
 import {Loading, Error, Empty} from '/imports/components/loadingStatus/loadingStatus';
 import Back from '/imports/components/nav/back';
+import {goTo} from '/imports/api/navStack/goTo';
 import NavContainer from '/imports/components/nav/navContainer';
 import ContentWrapper from '/imports/components/layout/contentWrapper';
 import SharedViewNav from '/imports/components/share/sharedViewNav';
@@ -13,9 +14,8 @@ import ViewSharedTopic from '/imports/components/share/viewSharedTopic';
 import ViewSharedProfile from '/imports/components/share/viewSharedProfile';
 import ViewSharedComment from '/imports/components/share/viewSharedComment';
 
-
 const ViewSharedContentContainer = (props) => {
-    const {loading, error, data} = useQuery(SharedContentQuery, {variables: {viewId: props.viewId, sharedById: props.sharedById}});
+    const {loading, error, data} = useQuery(SharedContentQuery, {variables: {sharedContentId: props.sharedContentId, viewId: props.viewId, sharedById: props.sharedById}});
     if(loading){
         content = <Loading />
     } else if(error){
@@ -49,16 +49,24 @@ const ViewSharedContentContainer = (props) => {
                 break;
             case "Tag":
                 data.getSharedContent.active = true;
-                content = (
-                    <ViewSharedTopic
-                        tag={data.getSharedContent}
-                        noninteractive={_noninteractive}
-                        viewSize={props.viewType && props.viewType == "embed" ? "small" : "large"}
-                        sharedById={props.sharedById}
-                        viewType={props.viewType}
-                        navStack={props.navStack}
-                    />
-                );
+                if(props.viewType == 'sharedPost'){
+                    content = (
+                        <div className="tags justify-content-center">
+                            <span className="tag shared" onClick={() => goTo(data.getSharedContent, 'tag', props.navStack, props.viewType, props.sharedById)}>#{data.getSharedContent.tag}</span>
+                        </div>
+                    );
+                } else {
+                    content = (
+                        <ViewSharedTopic
+                            tag={data.getSharedContent}
+                            noninteractive={_noninteractive}
+                            viewSize={props.viewType && props.viewType == "embed" ? "small" : "large"}
+                            sharedById={props.sharedById}
+                            viewType={props.viewType}
+                            navStack={props.navStack}
+                        />
+                    );
+                }
                 break;
             case "User":
                 content = (
@@ -83,6 +91,8 @@ const ViewSharedContentContainer = (props) => {
                     <ContentWrapper content={content} />
                 );
                 break;
+            case 'sharedPost':
+                return content;
         }
     } else {
         return (
@@ -95,14 +105,15 @@ const ViewSharedContentContainer = (props) => {
     }
 };
 ViewSharedContentContainer.propTypes = {
-    viewId: PropTypes.string.isRequired,
+    sharedContentId: PropTypes.string,
+    viewId: PropTypes.string,
     sharedById: PropTypes.string.isRequired,
     viewType: PropTypes.string,
     currentUser: PropTypes.object,
     navStack: PropTypes.object.isRequired,
-    noUserState: PropTypes.string.isRequired,
-    setNoUserState: PropTypes.func.isRequired,
-    resetClientStore: PropTypes.func.isRequired
+    noUserState: PropTypes.string,
+    setNoUserState: PropTypes.func,
+    resetClientStore: PropTypes.func
 };
 export default ViewSharedContentContainer;
 

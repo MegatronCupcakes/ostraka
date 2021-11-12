@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'underscore';
 import Logo from '/imports/components/nav/logo';
+import NotificationsNavContainer from '/imports/components/notifications/notificationsNavContainer';
 import MessageNavContainer from '/imports/components/messaging/messageNavContainer';
 
 export default function Nav(props){
+    const _handleQuery = ({target}) => props.handleSearch(target.value);
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
@@ -33,24 +36,13 @@ export default function Nav(props){
                     </ul>
                     <div className="nav-item">
                         <form className="d-flex">
-                            <input className="form-control me-2" type="search" placeholder="search" aria-label="search" />
+                            <input className="form-control me-2" type="search" placeholder="search" aria-label="search" onChange={_handleQuery} value={props.query}/>
                         </form>
                     </div>
-                    <div className="nav-item dropdown navbar-nav" style={{paddingLeft: '1rem'}}>
-                        <a className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i className="bi bi-bell">
-                                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-                                    3
-                                    <span className="visually-hidden">unread notifications</span>
-                                 </span>
-                            </i>
-                        </a>
-                        <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a className="dropdown-item">notification 1</a></li>
-                            <li><a className="dropdown-item">notification 2</a></li>
-                            <li><a className="dropdown-item">notification 3</a></li>
-                        </ul>
-                    </div>
+                    <NotificationsNavContainer
+                        navOnClick={props.navOnClick}
+                        navStack={props.navStack}
+                    />
                     <MessageNavContainer
                         navOnClick={props.navOnClick}
                         messageOnClick={props.messageOnClick}
@@ -65,7 +57,6 @@ export default function Nav(props){
                             <li><a className="dropdown-item" onClick={props.navOnClick} id="Support">support</a></li>
                             <li><hr className="dropdown-divider" /></li>
                             <li><a className="dropdown-item" onClick={props.logOut}>log out</a></li>
-
                         </ul>
                     </div>
 
@@ -79,6 +70,10 @@ Nav.propTypes = {
     logOut: PropTypes.func.isRequired,
     profileImage: PropTypes.string.isRequired,
     navOnClick: PropTypes.func.isRequired,
+    navStack: PropTypes.object.isRequired,
     profileOnClick: PropTypes.func.isRequired,
-    messageOnClick: PropTypes.func.isRequired
+    messageOnClick: PropTypes.func.isRequired,
+
+    query: PropTypes.string,
+    handleSearch: PropTypes.func.isRequired
 }

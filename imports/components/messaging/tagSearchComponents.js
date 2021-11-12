@@ -18,7 +18,7 @@ ProfileTag.propTypes = {
     tag: PropTypes.object.isRequired,
     removeButtonText: PropTypes.string.isRequired,
     onDelete: PropTypes.func.isRequired,
-    replyToActive: PropTypes.bool.isRequired
+    replyToActive: PropTypes.bool
 };
 
 const ProfileSuggestion = (props) => {

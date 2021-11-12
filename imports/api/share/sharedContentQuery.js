@@ -9,8 +9,8 @@ export const SharedContentQuery = gql`
     ${TagFields}
     ${CommentFields}
     ${ProfileFields}
-    query GetSharedContent($viewId: String, $sharedById: String) {
-        getSharedContent(viewId: $viewId, sharedById: $sharedById) {
+    query GetSharedContent($sharedContentId: String, $viewId: String, $sharedById: String) {
+        getSharedContent(sharedContentId: $sharedContentId, viewId: $viewId, sharedById: $sharedById) {
             __typename
             ... on Post {
                 ...PostFields

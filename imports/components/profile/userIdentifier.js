@@ -11,7 +11,7 @@ const UserIdentifier = (props) => {
     };
 
     const displayClasses = (displayClass) => {
-        return props.displaySize ? `${displayClass} ${props.displaySize}` : displayClass;
+        return props.viewSize ? `${displayClass} ${props.viewSize}` : displayClass;
     }
 
     const timeStamp = props.date ? (
@@ -25,6 +25,7 @@ const UserIdentifier = (props) => {
             </div>
             <div style={{float: "left"}}>
                 <div className={displayClasses("userIdentifier_user")} onClick={handleUserClick}>{props.postedBy}</div>
+                {props.location}
                 <div className={displayClasses("userIdentifier_tag")} onClick={handleUserClick}>@{props.postedByTag}</div>
                 {timeStamp}
             </div>
@@ -33,11 +34,12 @@ const UserIdentifier = (props) => {
 
 };
 UserIdentifier.propTypes = {
-    displaySize: PropTypes.string,
+    viewSize: PropTypes.string,
     postedBy: PropTypes.string.isRequired,
     postedByTag: PropTypes.string.isRequired,
     postedById: PropTypes.string.isRequired,
     postedByProfilePic: PropTypes.string.isRequired,
+    location: PropTypes.string,
     noninteractive: PropTypes.bool,
     sharedById: PropTypes.string,
     viewType: PropTypes.string, // "embed" and perhaps other specialized content views.

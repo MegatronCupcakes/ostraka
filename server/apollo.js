@@ -4,12 +4,15 @@ import {WebApp} from 'meteor/webapp';
 import {getUser} from 'meteor/apollo';
 import typeDefs from '/imports/apollo/schema.graphql';
 import {getPost, getPosts, getTaggedPosts, getUserPosts} from '/imports/apollo/resolvers/posts';
-import {getComments, getTaggedComments, getUserComments} from '/imports/apollo/resolvers/comments';
+import {getComments, getTaggedComments, getUserComments, getCommentById} from '/imports/apollo/resolvers/comments';
 import {getProfile, getProfiles, getTrendingProfiles} from '/imports/apollo/resolvers/profiles';
 import {getTopic, getTrendingTopics} from '/imports/apollo/resolvers/topics';
 import {getSharedContent} from '/imports/apollo/resolvers/sharedContent';
 import {getUserHistory} from '/imports/apollo/resolvers/history';
 import {getMessages, getMessagesIndicator} from '/imports/apollo/resolvers/messages';
+import {getNotificationsForIndicator, getNotifications} from '/imports/apollo/resolvers/notifications';
+import {searchSite} from '/imports/apollo/resolvers/search';
+
 const resolvers = {
     Topic: {
         __resolveType(obj, context, info){
@@ -29,9 +32,19 @@ const resolvers = {
             }
         }
     },
+    SearchSite: {
+        __resolveType(obj, context, info){
+            if(obj._type){
+                return obj._type;
+            } else {
+                return null;
+            }
+        }
+    },
     Query: {
         getPost: getPost,
         getPosts: getPosts,
+        getCommentById: getCommentById,
         getComments: getComments,
         getTaggedPosts: getTaggedPosts,
         getTaggedComments: getTaggedComments,
@@ -45,7 +58,10 @@ const resolvers = {
         getSharedContent: getSharedContent,
         getUserHistory: getUserHistory,
         getMessages: getMessages,
-        getMessagesIndicator: getMessagesIndicator
+        getMessagesIndicator: getMessagesIndicator,
+        getNotificationsForIndicator: getNotificationsForIndicator,
+        getNotifications: getNotifications,
+        searchSite: searchSite
     }
 };
 

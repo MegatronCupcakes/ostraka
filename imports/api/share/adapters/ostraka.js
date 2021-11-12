@@ -60,7 +60,7 @@ export const ostrakaShare = (userId, sharedId, sharedContentType, shareType, cap
                 video: ""
             });
             // record that this content was shared by this user
-            sharedCollection.update({_id: sharedContentId},{$push: {sharedBy: userId}});
+            sharedCollection.update({_id: sharedId},{$push: {sharedBy: userId}});
             const post = PostCollection.findOne({_id: postId});
             resolve({
                 shareType: "ostraka",

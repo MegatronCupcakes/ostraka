@@ -18,7 +18,7 @@ const MultipleProfilesContainer = (props) => {
             const userIdentifier = (
                 <UserIdentifierWithScore
                     noninteractive={true}
-                    displaySize={props.displaySize}
+                    viewSize={props.viewSize}
                     user={item}
                     navStack={props.navStack}
                 />
@@ -35,6 +35,6 @@ const MultipleProfilesContainer = (props) => {
 MultipleProfilesContainer.propTypes = {
     navStack: PropTypes.object.isRequired,
     profileIds: PropTypes.array,
-    displaySize: PropTypes.string
+    viewSize: PropTypes.string
 };
 export default MultipleProfilesContainer;

@@ -6,6 +6,12 @@ export const typePolicies = {
             },
             getMessages: {
                 merge: false
+            },
+            getNotifications: {
+                merge: false
+            },
+            getNotificationsForIndicator: {
+                merge: false
             }
         }
     }

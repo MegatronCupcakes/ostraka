@@ -8,7 +8,7 @@ const Message = (props) => {
         <div>
             <UserIdentifierWithScore
                 noninteractive={false}
-                displaySize="small"
+                viewSize="small"
                 user={props.fromUser}
                 navStack={props.navStack}
             />

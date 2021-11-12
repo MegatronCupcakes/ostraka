@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
+import _ from 'underscore';
 import TopicsContainer from '/imports/components/topics/topicsContainer';
 import {iframeResizer} from '/imports/api/share/client/share';
 

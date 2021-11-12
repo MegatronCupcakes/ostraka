@@ -29,7 +29,7 @@ const Profile = (props) => {
             <div className="row">
                 <div style={{display: "inline"}}>
                     <UserIdentifierWithScore
-                        displaySize="large"
+                        viewSize="large"
                         noninteractive={false}
                         user={props.user}
                         navStack={props.navStack}

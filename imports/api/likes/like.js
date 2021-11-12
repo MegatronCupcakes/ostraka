@@ -2,11 +2,12 @@ import { Meteor } from "meteor/meteor";
 import { Accounts } from 'meteor/accounts-base';
 import { check } from 'meteor/check';
 import {logError} from '/imports/api/errorLogger/errorLogger';
+import {notifyUser} from '/imports/api/notifications/notify';
 import PostCollection from '../post/postCollection';
 import CommentCollection from '../comments/commentCollection';
 
 Meteor.methods({
-    likePost: function(likedId, likedType, action){
+    likePost: async function(likedId, likedType, action){
         this.unblock();
         check(likedId, String);
         check(likedType, String);
@@ -16,12 +17,15 @@ Meteor.methods({
         // in case we split post types into seperate collections; currently all
         // post types are stored in PostCollection
         let _collection;
+        let _notificationType;
         switch(likedType.toLowerCase()){
             case 'comment':
                 _collection = CommentCollection;
+                _notificationType = `${action}Comment`;
                 break;
             default:
                 _collection = PostCollection;
+                _notificationType = `${action}Post`;
                 break;
 
         }
@@ -41,10 +45,13 @@ Meteor.methods({
                     updateObj["$pull"][undoAction + 's'] = this.userId;
                 }
                 _collection.update({_id: likedId}, updateObj);
+                notificationPayload = _collection.findOne({_id: likedId});
+                await notifyUser(this.userId, _notificationType, notificationPayload)
+                .catch((error) => logError(userId, error, __filename, new Error().stack));
             }
         } catch(error){
             logError(userId, error, __filename, new Error().stack);
-        }        
+        }
         return;
     }
 });

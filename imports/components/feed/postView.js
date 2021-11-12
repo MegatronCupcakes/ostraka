@@ -49,7 +49,7 @@ export const postContent = (post, props) => {
     const frameId = props.viewType === "embed" ? props.post.viewId + props.sharedById : "";
     const _userIdentifier = props.viewSize !== 'large' ? (
         <UserIdentifierGoToPost
-            displaySize={props.viewSize}
+            viewSize={props.viewSize}
             viewType={props.viewType}
             sharedById={props.sharedById}
             post={post}
@@ -59,7 +59,7 @@ export const postContent = (post, props) => {
         />
     ) : (
         <UserIdentifier
-            displaySize={props.viewSize}
+            viewSize={props.viewSize}
             viewType={props.viewType}
             sharedById={props.sharedById}
             postedBy={post.postedBy}
@@ -76,7 +76,7 @@ export const postContent = (post, props) => {
     ) : (
         <div className="row">
             <PostCaption
-                displaySize={props.viewSize}
+                viewSize={props.viewSize}
                 caption={post.caption}
                 tags={post.tags}
                 tagIds={post.tagIds}

@@ -30,6 +30,14 @@ const ShareContent = (sharedContent, contentType, shareToArray, cleanPost, postT
                     return _clientShareMap[shareType](Meteor.userId(), sharedContent, contentType, shareType, cleanPost, postTags, postMentions);
                 }
             }));
+            await MeteorCall(
+                'notifyUserOfShare',
+                `shared${contentType[0].toUpperCase() + contentType.slice(1)}`,
+                sharedContent.userId || sharedContent.createdBy || sharedContent.postedById || sharedContent._id
+            )
+            .catch((error) => {
+                console.log("NOTIFICATION ERROR:", error);
+            });
             resolve(results);
         } catch(error){
             reject(error);

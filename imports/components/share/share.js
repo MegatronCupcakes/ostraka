@@ -12,9 +12,9 @@ const Share = (props) => {
     const _shareButtonClasses = "bi bi-box-arrow-up";
     const _disabledShareButtonClasses = _shareButtonClasses + " disabled";
     const _shareButton = !props.noninteractive && props.registeredUser ? (
-        <span className={props.displaySize ? `userAction_${props.displaySize}` : "userAction"}>{props.shareCount} <i className={_shareButtonClasses} data-bs-toggle="tooltip" data-bs-placement="top" title="share" data-bs-toggle="modal" data-bs-target={"#" + modalId}></i></span>
+        <span className={props.viewSize ? `userAction ${props.viewSize}` : "userAction"}>{props.shareCount} <i className={_shareButtonClasses} data-bs-toggle="tooltip" data-bs-placement="top" title="share" data-bs-toggle="modal" data-bs-target={"#" + modalId}></i></span>
     ) : (
-        <span className={props.displaySize ? `userAction_${props.displaySize}` : "userAction"}>{props.shareCount} <i className={_disabledShareButtonClasses} data-bs-toggle="tooltip" data-bs-placement="top" title="share"></i></span>
+        <span className={props.viewSize ? `userAction ${props.viewSize}` : "userAction"}>{props.shareCount} <i className={_disabledShareButtonClasses} data-bs-toggle="tooltip" data-bs-placement="top" title="share"></i></span>
     );
     let _preview;
     switch(props.sharedType){
@@ -23,7 +23,7 @@ const Share = (props) => {
                 <div className="col-xs-12">
                     <PostView
                         noninteractive={true}
-                        displaySize="small"
+                        viewSize="small"
                         post={props.sharedContent}
                         navStack={props.navStack}
                     />
@@ -53,7 +53,7 @@ const Share = (props) => {
                 <div className="col-xs-12">
                     <UserIdentifierWithScore
                         noninteractive={true}
-                        displaySize={props.displaySize}
+                        viewSize={props.viewSize}
                         user={props.sharedContent}
                         navStack={props.navStack}
                     />
@@ -119,11 +119,10 @@ Share.propTypes = {
     handleCancel: PropTypes.func.isRequired,
     shareCount: PropTypes.number,
     shareResults: PropTypes.array.isRequired,
-    displaySize: PropTypes.string,
     noninteractive: PropTypes.bool,
     registeredUser: PropTypes.bool.isRequired,
     navStack: PropTypes.object.isRequired,
-    viewSize: PropTypes.string,
-    viewType: PropTypes.string
+    viewType: PropTypes.string,
+    viewSize: PropTypes.string
 };
 export default Share;

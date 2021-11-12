@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
+import _ from 'underscore';
 import ProfileContainer from '/imports/components/profile/profileContainer';
 import {iframeResizer} from '/imports/api/share/client/share';
 

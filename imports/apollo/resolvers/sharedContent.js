@@ -1,12 +1,15 @@
 import {Meteor} from 'meteor/meteor';
 import _ from 'underscore';
+import {isBad} from '/imports/api/util/isBad'
 import PostCollection, {postReturnFields} from '/imports/api/post/postCollection';
 import CommentCollection, {commentReturnFields} from '/imports/api/comments/commentCollection';
 import TagCollection, {tagReturnFields} from '/imports/api/tag/tagCollection';
 import {profileReturnFields} from '/imports/api/profile/profileReturnFields';
 
 export const getSharedContent = (parent, args, context, info) => {
-    const query = {viewId: args.viewId.toLowerCase(), active: true}; // viewId should always be lowercase.
+    // viewId should always be lowercase; if a sharedContentId was provided, use it to find the shared content.
+    // Otherwise, use the viewId.
+    const query = isBad(args.sharedContentId) ? {viewId: args.viewId.toLowerCase(), active: true} : {_id: args.sharedContentId, active: true};
     const userId = context.user ? context.user._id : "";
     const sharedById = args.sharedById; //use to track shared views; not implemented yet.
 

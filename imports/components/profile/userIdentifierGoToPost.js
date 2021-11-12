@@ -14,7 +14,7 @@ const UserIdentifierGoToPost = (props) => {
                 postedByTag={props.post.postedByTag}
                 postedById={props.post.postedById}
                 postedByProfilePic={props.post.postedByProfilePic}
-                displaySize={props.displaySize}
+                viewSize={props.viewSize}
                 noninteractive={props.noninteractive}
                 viewType={props.viewType}
                 sharedById={props.sharedById}
@@ -30,7 +30,7 @@ const UserIdentifierGoToPost = (props) => {
 };
 UserIdentifierGoToPost.propTypes = {
     post: PropTypes.object.isRequired,
-    displaySize: PropTypes.string,
+    viewSize: PropTypes.string,
     noninteractive: PropTypes.bool,
     sharedById: PropTypes.string,
     viewType: PropTypes.string, // "embed" and perhaps other specialized content views.

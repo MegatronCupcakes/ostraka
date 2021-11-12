@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import _ from 'underscore';
 import MeteorCall from '/imports/api/util/callPromise';
 import {validateAccountForm, testPasswordStrength} from '/imports/api/account/validateAccountForm'
-import Settings from '/imports/components/settings/settings';
 import {isBad} from '/imports/api/util/isBad';
+import {getSettings} from '/imports/api/settings/getSettings';
+import Settings from '/imports/components/settings/settings';
 
 const SettingsContainer = (props) => {
+    const userSettings = getSettings();
     const user = Meteor.user({fields: {profile:1, emails:1}});
     const [activeMenu, setActiveMenu] = useState(isBad(props.navStack.current.viewContent) ? "profile" : props.navStack.current.viewContent); // profile, password, email, messaging, sharing, notifications
     //profile
@@ -133,6 +135,7 @@ const SettingsContainer = (props) => {
 
     return (
         <Settings
+            userSettings={userSettings}
             activeMenu={activeMenu}
             setActiveMenu={setActiveMenu}
             first={first}

@@ -52,4 +52,13 @@ export const UserCommentsQuery = gql`
     }
 `;
 
+export const CommentByIdQuery = gql`
+    ${CommentFields}
+    query GetCommentById($_id: String) {
+        getCommentById(_id: $_id) {
+            ...CommentFields
+        }
+    }
+`;
+
 export default CommentQuery;

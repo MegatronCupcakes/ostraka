@@ -5,6 +5,7 @@ import _ from 'underscore';
 import ProfileImageEditorContainer from '/imports/components/settings/profileImageEditorContainer';
 import ShareSettingsContainer from '/imports/components/settings/shareSettingsContainer';
 import MessagingSettingsContainer from '/imports/components/settings/messagingSettingsContainer';
+import NotificationSettingsContainer from '/imports/components/settings/notificationSettingsContainer';
 import ContentWrapper from '/imports/components/layout/contentWrapper';
 import TwitterSettingsContainer from '/imports/components/settings/external/twitterSettingsContainer';
 import {currentUserProfilePic} from '/imports/api/profile/profilePic';
@@ -140,7 +141,9 @@ const Settings = (props) => {
             settingsMenu = (
                 <>
                     <div style={{paddingTop: "1rem"}}>
-                        <MessagingSettingsContainer />
+                        <MessagingSettingsContainer
+                            userSettings={props.userSettings}
+                        />
                     </div>
                 </>
             );
@@ -150,7 +153,11 @@ const Settings = (props) => {
                 <>
                     <div style={{paddingTop: "1rem"}}>
                         <label className="form-label">sharing defaults</label>
-                        <div><ShareSettingsContainer /></div>
+                        <div>
+                            <ShareSettingsContainer
+                                userSettings={props.userSettings}
+                            />
+                        </div>
                     </div>
                     {twitterSettings}
                     {facebookSettings}
@@ -162,8 +169,9 @@ const Settings = (props) => {
             settingsMenu = (
                 <>
                     <div style={{paddingTop: "1rem"}}>
-                        <label className="form-label">notifications</label>
-                        <div>NOTIFICATION SETTINGS GO HERE</div>
+                        <NotificationSettingsContainer
+                            userSettings={props.userSettings}
+                        />
                     </div>
                 </>
             );
@@ -200,6 +208,7 @@ const Settings = (props) => {
     );
 };
 Settings.propTypes = {
+    userSettings: PropTypes.object.isRequired,
     first: PropTypes.string.isRequired,
     last: PropTypes.string.isRequired,
     location: PropTypes.string.isRequired,

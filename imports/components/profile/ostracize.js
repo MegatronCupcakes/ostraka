@@ -4,13 +4,13 @@ import UserIdentifierWithScore from '/imports/components/profile/userIdentifierW
 
 const Ostracize = (props) => {
     const modalId = "ostracizeModal_" + props.user._id;
-    const _ostracizeCountClasses = props.displaySize ? "userAction_" + props.displaySize : "userAction";
+    const _ostracizeCountClasses = props.viewSize ? "userAction " + props.viewSize : "userAction";
     const _ostracizeButtonClasses = "bi bi-person-x";
     const _disabledOstracizeButtonClasses = _ostracizeButtonClasses + " disabled";
     const _ostracizeButton = props.activeButton ? (
-        <span className={_ostracizeCountClasses}>{props.ostracizeCount} <i className={_ostracizeButtonClasses} data-bs-toggle="modal" data-bs-target={"#" + modalId}></i></span>
+        <span className={_ostracizeCountClasses}>{props.ostracizeCount} <i className={_ostracizeButtonClasses} data-bs-toggle="tooltip" data-bs-placement="top" title="ostracize" data-bs-toggle="modal" data-bs-target={"#" + modalId}></i></span>
     ) : (
-        <span className={_ostracizeCountClasses}>{props.ostracizeCount} <i className={_disabledOstracizeButtonClasses}></i></span>
+        <span className={_ostracizeCountClasses}>{props.ostracizeCount} <i className={_disabledOstracizeButtonClasses} data-bs-toggle="tooltip" data-bs-placement="top" title="ostracize"></i></span>
     );
     return (
         <>
@@ -28,7 +28,7 @@ const Ostracize = (props) => {
                                     <UserIdentifierWithScore
                                         noninteractive={true}
                                         user={props.user}
-                                        displaySize={props.displaySize}
+                                        viewSize={props.viewSize}
                                         navStack={props.navStack}
                                     />
                                 </div>
@@ -46,8 +46,9 @@ const Ostracize = (props) => {
 
                         </div>
                         <div className="modal-footer">
+                            <span className={`text-${props.message.class}`} style={{paddingRight: "1rem"}}>{props.message.message}</span>
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={props.handleCancel}><i className="bi bi-x-lg"></i></button>
-                            <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={props.ostracizeUser}><i className="bi bi-person-x"></i></button>
+                            <button type="button" className="btn btn-primary" onClick={props.ostracizeUser}><i className="bi bi-person-x"></i></button>
                         </div>
                     </div>
                 </div>
@@ -61,7 +62,8 @@ Ostracize.propTypes = {
     ostracizeUser: PropTypes.func.isRequired,
     handleCancel: PropTypes.func.isRequired,
     ostracizeCount: PropTypes.number,
-    displaySize: PropTypes.string,
+    message: PropTypes.object.isRequired,
+    viewSize: PropTypes.string,
     noninteractive: PropTypes.bool,
     navStack: PropTypes.object.isRequired
 };

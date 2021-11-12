@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PostView from '/imports/components/feed/postView';
+import ViewSharedContentContainer from '/imports/components/share/viewSharedContentContainer';
 
 const SharedPost = (props) => {
     return (
         <div className="sharedPost">
-            <PostView
+            <ViewSharedContentContainer
                 sharedContentId={props.post.sharedContentId}
                 sharedById={props.post.sharedById}
+                viewType="sharedPost"
                 navStack={props.navStack}
-                viewSize="small"
             />
         </div>
     );

@@ -5,13 +5,18 @@
     flex-flow: row wrap;
     padding-bottom: 2rem;
 }
+.tags.searchResults {
+    /* we don't want bottom padding on tags in search results */
+    padding-bottom: 0rem !important;
+}
 
 .tag {
     -webkit-flex: none;
     flex: none;
     text-align: center;
+    vertical-align: middle;
     font-size: 0.7rem;
-    display: block;
+    display: inline-block;
     background-color: rgb(197, 181, 242);
     text-decoration: none;
     text-shadow: 1px;

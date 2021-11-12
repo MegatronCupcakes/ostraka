@@ -88,7 +88,7 @@ const OstrakaResult = (props) => {
             <div className="col-11">
                 <PostView
                     noninteractive={true}
-                    displaySize="small"
+                    viewSize="small"
                     post={props.post}
                     navStack={props.navStack}
                 />

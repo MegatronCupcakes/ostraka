@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
+import _ from 'underscore';
 import TopicViewComment from '/imports/components/comments/topicViewComment';
 import {iframeResizer} from '/imports/api/share/client/share';
 

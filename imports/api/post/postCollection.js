@@ -20,24 +20,27 @@ IndexCollection(PostCollection, _indexes);
 
 export default PostCollection;
 
-export const createPost = async (userId, post) => {
+export const createPost = (userId, post) => {
+    const callingUserId = this.userId;
     const user = Meteor.users.findOne({_id: userId});
     // Create Post
-    post.viewId = viewId();
-    post.postedByTag = user.profile.profileTag;
-    post.postedBy = user.profile.firstName + " " + user.profile.lastName;
-    post.postedById = user._id;
-    post.postedByProfilePic = user.profile.profileImage;
-    post.tagIds = await TagLookup(post.tags, this.userId);
-    post.mentionIds = await MapMentions(post.mentions);
-    post.comments = [];
-    post.likes = [];
-    post.dislikes = [];
-    post.sharedBy = [];
-    post.active = true;
-    post.createdAt = new Date();
-    return new Promise((resolve, reject) => {
-        PostCollection.insert(post, (error, _id) => {
+    return new Promise(async (resolve, reject) => {
+        PostCollection.insert({
+            ...post,
+            viewId: viewId(),
+            postedByTag: user.profile.profileTag,
+            postedBy: `${user.profile.firstName} ${user.profile.lastName}`,
+            postedById: user._id,
+            postedByProfilePic: user.profile.profileImage,
+            tagIds: await TagLookup(post.tags, callingUserId),
+            mentionIds: await MapMentions(post.mentions),
+            comments: [],
+            likes: [],
+            dislikes: [],
+            sharedBy: [],
+            active: true,
+            createdAt: new Date()
+        }, (error, _id) => {
             if(error){
                 reject(error);
             } else {

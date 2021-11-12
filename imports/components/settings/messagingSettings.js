@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'underscore';
 import ReactTags from 'react-tag-autocomplete';
-import MeteorCall from '/imports/api/util/callPromise';
 import {tagSearchClasses} from '/imports/api/messaging/tagSearchClasses';
 import {ProfileTag, ProfileSuggestion} from '/imports/components/messaging/tagSearchComponents';
 

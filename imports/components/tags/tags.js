@@ -6,17 +6,19 @@ const Tags = (props) => {
     const tags = props.tags.map((tag, index) => {
         return tag == props.activeTag ? (
             <span className="tag active" key={index}>
-                #{tag.tag}
-                <ShareContainer
-                    sharedContent={props.activeTag}
-                    sharedType="tag"
-                    displaySize="small"
-                    noninteractive={false}
-                    navStack={props.navStack}
-                />
+                <span style={{verticalAlign: "middle"}}>#{tag.tag}</span>
+                <span style={{verticalAlign: "middle"}}>
+                    <ShareContainer
+                        sharedContent={props.activeTag}
+                        sharedType="tag"
+                        viewSize="small unpadded"
+                        noninteractive={false}
+                        navStack={props.navStack}
+                    />
+                </span>
             </span>
         ) : (
-            <span className="tag" key={index} onClick={() => {props.handleTagClick(tag)}}>#{tag.tag}</span>
+            <span className="tag" key={index} onClick={() => {props.handleTagClick(tag)}}><span style={{verticalAlign: "middle"}}>#{tag.tag}</span></span>
         );
     });
     return (

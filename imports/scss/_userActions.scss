@@ -6,3 +6,25 @@
     padding-right: 1rem;
     font-size: 0.75rem;
 }
+.userAction.small.unpadded {
+    padding-right: 0 !important;
+}
+
+
+.userAction.profileAction.small {
+    padding-right: 1rem;
+    font-size: 1rem;
+    color: rgb(197, 181, 242);
+}
+
+.userAction.profileAction.medium {
+    padding-right: 1rem;
+    font-size: 2rem;
+    color: rgb(197, 181, 242);
+}
+
+.userAction.profileAction.large {
+    padding-right: 1rem;
+    font-size: 3rem;
+    color: rgb(197, 181, 242);
+}

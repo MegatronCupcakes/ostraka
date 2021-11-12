@@ -1,3 +1,20 @@
+type NavTo {
+    navState: String!
+    viewContent: String
+    activeTag: Tag
+}
+type Notification {
+    _id: ID!
+    viewId: String!
+    userId: String!
+    subject: String!
+    body: String
+    navTo: NavTo
+    active: Boolean!
+    read: Boolean!
+    notify: Boolean!
+    createdAt: String!
+}
 type Message {
     _id: ID!
     toId: String!
@@ -112,6 +129,7 @@ type UserProfile {
     lastName: String
     profileTag: String
     profileImage: String
+    location: String
 }
 
 type Tag {
@@ -119,7 +137,7 @@ type Tag {
     viewId: String!
     tag: String!
     usage: [String]
-    createdBy: String!
+    createdBy: String
     usedBy: [String]
     sharedBy: [String]
     createdAt: String!
@@ -137,10 +155,12 @@ union Topic = Post | Comment
 
 union SharedContent = Tag | Post | Comment | User
 
+union SearchSite = Tag | Post | Comment | User
+
 type Query {
     getPost (_id: String): Post
     getPosts: [Post]
-    getComment (_id: String): Comment
+    getCommentById (_id: String): Comment
     getComments (parentId: String): [Comment]
     getTaggedPosts (tagId: String): [Post]
     getUserPosts (postedById: String): [Post]
@@ -151,8 +171,11 @@ type Query {
     getTopic (tagId: String): [Topic]
     getTrendingTopics (limit: Int, span: String): [Tag]
     getTrendingProfiles (limit: Int, span: String): [User]
-    getSharedContent (viewId: String, sharedById: String): SharedContent
+    getSharedContent (sharedContentId: String, viewId: String, sharedById: String): SharedContent
     getUserHistory (userId: String): [History]
     getMessages (query: String): [Message]
     getMessagesIndicator: [Message]
+    getNotifications: [Notification]
+    getNotificationsForIndicator: [Notification]
+    searchSite (query: String): [SearchSite]
 }

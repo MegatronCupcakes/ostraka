@@ -10,31 +10,31 @@ const Score = (props) => {
     colorGradient.setMidpoint(50);
     const currentColor = colorGradient.getColor(props.reputationScore);
 
-    const normalizedRadius = _radius(props.displaySize) - _stroke(props.displaySize) * 2;
+    const normalizedRadius = _radius(props.viewSize) - _stroke(props.viewSize) * 2;
     const circumference = normalizedRadius * 2 * Math.PI;
     const strokeDashoffset = circumference - props.reputationScore / 100 * circumference;
 
 
     return (
-        <svg
-            height={_radius(props.displaySize) * 2}
-            width={_radius(props.displaySize) * 2}
+        <svg            
+            height={_radius(props.viewSize) * 2}
+            width={_radius(props.viewSize) * 2}
         >
             <circle
                 fill="transparent"
                 stroke={currentColor}
-                strokeWidth={_stroke(props.displaySize)}
+                strokeWidth={_stroke(props.viewSize)}
                 strokeDasharray={circumference + ' ' + circumference}
                 style={{strokeDashoffset}}
                 r={normalizedRadius}
-                cx={_radius(props.displaySize)}
-                cy={_radius(props.displaySize)}
+                cx={_radius(props.viewSize)}
+                cy={_radius(props.viewSize)}
             />
             <text
                 x="50%"
                 y="60%"
                 textAnchor="middle"
-                fontSize={_fontSize(props.displaySize)}
+                fontSize={_fontSize(props.viewSize)}
                 stroke={currentColor}
                 strokeWidth="2"
             >
@@ -45,13 +45,13 @@ const Score = (props) => {
 };
 Score.propTypes = {
     reputationScore: PropTypes.number.isRequired,
-    displaySize: PropTypes.string
+    viewSize: PropTypes.string
 };
 export default Score;
 
 
-const _radius = (displaySize) => {
-    switch(displaySize){
+const _radius = (viewSize) => {
+    switch(viewSize){
         case "small":
             return 30;
             break;
@@ -66,8 +66,8 @@ const _radius = (displaySize) => {
             break;
     }
 };
-const _stroke = (displaySize) => {
-    switch(displaySize){
+const _stroke = (viewSize) => {
+    switch(viewSize){
         case "small":
             return 6;
             break;
@@ -82,8 +82,8 @@ const _stroke = (displaySize) => {
             break;
     }
 };
-const _fontSize = (displaySize) => {
-    switch(displaySize){
+const _fontSize = (viewSize) => {
+    switch(viewSize){
         case "small":
             return "0.96rem";
             break;

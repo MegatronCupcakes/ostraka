@@ -48,7 +48,7 @@ const MessageNav = (props) => {
                     <li><hr className="dropdown-divider" /></li>
                     {messages}
                     <li><hr className="dropdown-divider" /></li>
-                    <li><a className="dropdown-item" style={{textAlign: "center"}} onClick={props.clearMessageNotifications}><i className="bi bi-trash" onClick={props.clearMessageNotifications} data-bs-toggle="tooltip" data-bs-placement="top" title="clear message notifications"></i></a></li>
+                    <li><a className="dropdown-item" style={{textAlign: "center"}} onClick={props.clearMessageNotifications}><i className="bi bi-book" onClick={props.clearMessageNotifications} data-bs-toggle="tooltip" data-bs-placement="top" title="mark all messages as read"></i></a></li>
                 </ul>
             </div>
         );

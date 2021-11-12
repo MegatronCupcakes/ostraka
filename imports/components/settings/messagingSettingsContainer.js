@@ -1,12 +1,10 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import _ from 'underscore';
-import MessagingSettings from '/imports/components/settings/messagingSettings';
 import MeteorCall from '/imports/api/util/callPromise';
-import {getSettings} from '/imports/api/settings/getSettings';
+import MessagingSettings from '/imports/components/settings/messagingSettings';
 
 const MessagingSettingsContainer = (props) => {
-    let settings = getSettings();
     const [blockMatches, setBlockMatches] = useState([]);
     const [allowMatches, setAllowMatches] = useState([]);
     const [profileTagSearchError, setProfileTagSearchError] = useState(null);
@@ -38,7 +36,7 @@ const MessagingSettingsContainer = (props) => {
     return (
         <MessagingSettings
             saveSettingChange={saveSettingChange}
-            settings={settings.messaging}
+            settings={props.userSettings.messaging}
             userQuery={userQuery}
             blockMatches={blockMatches}
             allowMatches={allowMatches}
@@ -47,6 +45,6 @@ const MessagingSettingsContainer = (props) => {
     );
 };
 MessagingSettingsContainer.propTypes = {
-
+    userSettings: PropTypes.object.isRequired
 };
 export default MessagingSettingsContainer;

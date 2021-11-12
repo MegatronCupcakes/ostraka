@@ -23,6 +23,9 @@ import TrendingTopicsContainer from '/imports/components/topics/trendingTopicsCo
 import ContentWrapper from '/imports/components/layout/contentWrapper';
 import SettingsContainer from '/imports/components/settings/settingsContainer';
 import InboxContainer from '/imports/components/messaging/inboxContainer';
+import NotificationsContainer from '/imports/components/notifications/notificationsContainer';
+import ViewCommentContainer from '/imports/components/comments/viewCommentContainer';
+import SearchContainer from '/imports/components/search/searchContainer';
 import {typePolicies} from '/imports/apollo/typePolicies';
 const cache = new InMemoryCache({typePolicies: typePolicies}).restore(window.__APOLLO_STATE__);
 
@@ -108,8 +111,21 @@ export default function MainContainer(props){
             );
         } else {
             switch(navStack.current.navState){
-                case 'Loading':
-                    activity = <Loading />;
+                case 'Search':
+                    activity = (
+                        <>
+                            <Back
+                                navStack={navStack}
+                            />
+                            <ContentWrapper
+                                content={(
+                                    <SearchContainer
+                                        navStack={navStack}
+                                    />
+                                )}
+                            />
+                        </>
+                    );
                     break;
                 case 'Feed':
                     activity = (
@@ -184,6 +200,22 @@ export default function MainContainer(props){
                         </>
                     );
                     break;
+                case 'Notifications':
+                    activity = (
+                        <>
+                            <Back
+                                navStack={navStack}
+                            />
+                            <ContentWrapper
+                                content={(
+                                    <NotificationsContainer
+                                        navStack={navStack}
+                                    />
+                                )}
+                            />
+                        </>
+                    );
+                    break;
                 case 'Settings':
                     activity = (
                         <>
@@ -230,7 +262,19 @@ export default function MainContainer(props){
                             />
                         </>
                     );
-                break;
+                    break;
+                case 'CommentView':
+                    activity = (
+                        <>
+                            <Back navStack={navStack} />
+                            <ContentWrapper
+                                content={(
+                                    <ViewCommentContainer navStack={navStack} />
+                                )}
+                            />
+                        </>
+                    );
+                    break;
             }
         }
     }
