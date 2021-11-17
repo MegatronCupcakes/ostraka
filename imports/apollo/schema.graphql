@@ -157,9 +157,22 @@ union SharedContent = Tag | Post | Comment | User
 
 union SearchSite = Tag | Post | Comment | User
 
+type SearchResult {
+    count: Int
+    results: [SearchSite]
+    pageSize: Int
+}
+
+type SearchResults {
+    User: SearchResult
+    Tag: SearchResult
+    Post: SearchResult
+    Comment: SearchResult
+}
+
 type Query {
     getPost (_id: String): Post
-    getPosts: [Post]
+    getPosts (offset: Int): [Post]
     getCommentById (_id: String): Comment
     getComments (parentId: String): [Comment]
     getTaggedPosts (tagId: String): [Post]
@@ -177,5 +190,5 @@ type Query {
     getMessagesIndicator: [Message]
     getNotifications: [Notification]
     getNotificationsForIndicator: [Notification]
-    searchSite (query: String): [SearchSite]
+    searchSite (query: String, tagOffset: Int, postOffset: Int, commentOffset: Int, userOffset: Int): SearchResults
 }

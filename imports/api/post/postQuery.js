@@ -31,8 +31,8 @@ export const PostFields = gql`
 
 export const PostQuery = gql`
     ${PostFields}
-    query GetPosts {
-        getPosts {
+    query GetPosts($offset: Int) {
+        getPosts(offset: $offset) {
             ...PostFields
         }
     }

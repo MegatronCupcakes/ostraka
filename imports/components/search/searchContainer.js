@@ -1,5 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {useQuery} from '@apollo/client';
 import _ from 'underscore';
@@ -8,7 +8,36 @@ import {Loading, Error, Empty} from '/imports/components/loadingStatus/loadingSt
 import Search from '/imports/components/search/search';
 
 const SearchContainer = (props) => {
-    const {loading, error, data} = useQuery(SearchQuery, {variables: {query: props.navStack.current.viewContent}, pollInterval: 1000});
+    const [tagOffset, setTagOffset] = useState(0);
+    const [postOffset, setPostOffset] = useState(0);
+    const [commentOffset, setCommentOffset] = useState(0);
+    const [userOffset, setUserOffset] = useState(0);
+
+    const {loading, error, data, fetchMore} = useQuery(SearchQuery, {variables: {
+        query: props.navStack.current.viewContent
+    }, pollInterval: 1000});
+
+    useEffect(() => {
+        /*
+        console.log("calling fetchMore with variables:", {
+            tagOffset: tagOffset,
+            postOffset: postOffset,
+            commentOffset: commentOffset,
+            userOffset: userOffset
+        });
+        */
+        fetchMore({
+            variables: {
+                tagOffset: tagOffset,
+                postOffset: postOffset,
+                commentOffset: commentOffset,
+                userOffset: userOffset
+            }
+        });
+
+    }, [tagOffset, postOffset, commentOffset, userOffset])
+
+
     let alternativeMessage;
     if(loading){
         alternativeMessage = <Loading />;
@@ -16,7 +45,7 @@ const SearchContainer = (props) => {
         alternativeMessage = <Error />;
         console.log("ERROR:", error);
     } else if(data && data.searchSite){
-        if(data.searchSite.length < 1){
+        if(_.keys(data.searchSite).length < 1){
             alternativeMessage = <Empty message="no results found"/>;
         } else {
             alternativeMessage = null;
@@ -28,8 +57,26 @@ const SearchContainer = (props) => {
         <Search
             searchQuery={props.navStack.current.viewContent}
             alternativeMessage={alternativeMessage}
-            searchResults={data && data.searchSite ? _.groupBy(data.searchSite, '__typename') : {}}
+            searchResults={data && data.searchSite ? data.searchSite : {}}
             navStack={props.navStack}
+            offsetMap={{
+                Tag: {
+                    value: tagOffset,
+                    set: setTagOffset
+                },
+                Post: {
+                    value: postOffset,
+                    set: setPostOffset
+                },
+                Comment: {
+                    value: commentOffset,
+                    set: setCommentOffset
+                },
+                User: {
+                    value: userOffset,
+                    set: setUserOffset
+                }
+            }}
         />
     );
 };

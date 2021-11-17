@@ -9,20 +9,49 @@ export const SearchQuery = gql`
     ${TagFields}
     ${CommentFields}
     ${ProfileFields}
-    query SearchSite($query: String) {
-        searchSite(query: $query) {
-            __typename
-            ... on Post {
-                ...PostFields
-            }
-            ... on Tag {
-                ...TagFields
-            }
-            ... on Comment {
-                ...CommentFields
-            }
-            ... on User {
-                ...ProfileFields
+    query SearchSite($query: String, $tagOffset: Int, $postOffset: Int, $commentOffset: Int, $userOffset: Int) {
+        searchSite(query: $query, tagOffset: $tagOffset, postOffset: $postOffset, commentOffset: $commentOffset, userOffset: $userOffset) {
+            ... on SearchResults {
+                Post {
+                    count
+                    results {
+                        __typename
+                        ... on Post {
+                            ...PostFields
+                        }
+                    }
+                    pageSize
+                }
+                Tag {
+                    count
+                    results {
+                        __typename
+                        ... on Tag {
+                            ...TagFields
+                        }
+                    }
+                    pageSize
+                }
+                Comment {
+                    count
+                    results {
+                        __typename
+                        ... on Comment {
+                            ...CommentFields
+                        }
+                    }
+                    pageSize
+                }
+                User {
+                    count
+                    results {
+                        __typename
+                        ... on User {
+                            ...ProfileFields
+                        }
+                    }
+                    pageSize
+                }
             }
         }
     }

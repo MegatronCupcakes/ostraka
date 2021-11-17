@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useRef, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {useQuery} from '@apollo/client';
 import _ from 'underscore';
+import {useOnScreen} from '/imports/api/util/useOnScreen';
 import {Loading, Error, Empty} from '/imports/components/loadingStatus/loadingStatus';
 import {GetPostById} from '/imports/api/post/postQuery';
 import PostSupplementals from '/imports/components/feed/postSupplementals';
@@ -15,6 +16,13 @@ import Video from '/imports/components/feed/video';
 import SharedPost from '/imports/components/feed/sharedPost';
 
 const PostView = (props) => {
+    const elementRef = useRef(null);
+    const isOnScreen = useOnScreen(elementRef);
+
+    useEffect(() => {
+        if(props.visibleCallback && isOnScreen) props.visibleCallback();
+    }, [isOnScreen]);
+    
     let content;
     // if no post is specified (we only have an ID) then fetch the post via Apollo before displaying;
     if(!props.post && (props.sharedContentId || _.isString(props.navStack.current.viewContent))){
@@ -27,12 +35,17 @@ const PostView = (props) => {
         } else if(data && data.getPost){
             content = postContent(data.getPost, props);
         }else {
-            content = <Empty message="oops, something went wrong :-("/>;
+            content = <Empty message="oops, something went wrong :-(" />;
         }
     } else {
         content = postContent(props.post ? props.post : props.navStack.current.viewContent, props);
     }
-    return content;
+    return (
+        <>
+            {content}
+             <div ref={elementRef}></div>
+        </>
+    );
 };
 PostView.propTypes = {
     post: PropTypes.object,
@@ -41,7 +54,8 @@ PostView.propTypes = {
     viewType: PropTypes.string, // "embed" and perhaps other specialized content views.
     sharedContentId: PropTypes.string,
     sharedById: PropTypes.string,
-    navStack: PropTypes.object
+    navStack: PropTypes.object,
+    visibleCallback: PropTypes.func
 };
 export default PostView;
 

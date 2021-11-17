@@ -5,73 +5,60 @@ import {goTo} from '/imports/api/navStack/goTo';
 import PostView from '/imports/components/feed/postView';
 import TopicViewComment from '/imports/components/comments/topicViewComment';
 import UserIdentifierWithScore from '/imports/components/profile/userIdentifierWithScore';
+import BottomSpacer from '/imports/components/layout/bottomSpacer';
+import PaginationContainer from '/imports/components/pagination/paginationContainer';
 
 const Search = (props) => {
     if(props.alternativeMessage){
         return props.alternativeMessage;
     } else {
-        const resultTypes = _.keys(props.searchResults);
-        if(resultTypes.length > 1){
-            return (
-                <>
-                    <div style={{paddingBottom: "1rem"}}>Results for "{props.searchQuery}"</div>
-                    <div className="accordion">
-                    {resultTypes.map((resultType, typeIndex) => {
-                        return (
-                            <div key={typeIndex} className="accordion-item">
-                                <h2 className="accordion-header" id={`resultsHeader${resultType}`}>
-                                    <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#${resultType}Results`} aria-expanded="true" aria-controls="collapseOne">
-                                        {props.searchResults[resultType].length} {props.searchResults[resultType].length > 1 ? `${resultType}s` : resultType}
-                                    </button>
-                                </h2>
-                                <div id={`${resultType}Results`} className="accordion-collapse collapse show" aria-labelledby={`resultsHeader${resultType}`} data-bs-parent="#accordionExample">
-                                    <div className={resultType === 'Tag' ? "accordion-body justify-content-center tags" : "accordion-body"}>
-                                        {props.searchResults[resultType].map((result, resultIndex) => {
+        const resultTypes = _.filter(_.keys(props.searchResults), (key) => {
+            // props.searchResults[key] can be null if a type is not searched (like when searching hashtags)
+            return props.searchResults[key] && props.searchResults[key].count && props.searchResults[key].count > 0;
+        });
+        return (
+            <>
+                <div style={{paddingBottom: "1rem"}}>Results for "{props.searchQuery}"</div>
+                <div className="accordion">
+                {resultTypes.map((resultType, typeIndex) => {
+                    return (
+                        <div key={typeIndex} className="accordion-item">
+                            <h2 className="accordion-header" id={`resultsHeader${resultType}`}>
+                                <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#${resultType}Results`} aria-expanded="true" aria-controls="collapseOne">
+                                    {props.searchResults[resultType].count} {props.searchResults[resultType].count > 1 ? `${resultType}s` : resultType}
+                                </button>
+                            </h2>
+                            <div id={`${resultType}Results`} className="accordion-collapse collapse show" aria-labelledby={`resultsHeader${resultType}`} data-bs-parent="#accordionExample">
+                                <div className={resultType === 'Tag' ? "accordion-body justify-content-center tags" : "accordion-body"}>
+                                    <PaginationContainer
+                                        count={props.searchResults[resultType].count}
+                                        pageSize={props.searchResults[resultType].pageSize}
+                                        offset={props.offsetMap[resultType].value}
+                                        setOffset={props.offsetMap[resultType].set}
+                                        content={props.searchResults[resultType].results.map((result, resultIndex) => {
                                             return (
                                                 <div key={resultIndex}>
                                                     {_getContentDisplay(result, resultType, props.navStack)}
                                                 </div>
                                             );
                                         })}
-                                    </div>
+                                    />
                                 </div>
                             </div>
-                        );
-                    })}
-                    </div>
-                </>
-            );
-        } else {
-            return (
-                <>
-                    <div>SEARCH: {props.searchQuery}</div>
-                    <div>
-                        {resultTypes.map((resultType, typeIndex) => {
-                            return (
-                                <div key={typeIndex}>
-                                    <div>type: {props.searchResults[resultType].length} {props.searchResults[resultType].length > 1 ? `${resultType}s` : resultType}</div>
-                                    <div>
-                                        {props.searchResults[resultType].map((result, resultIndex) => {
-                                            return (
-                                                <div key={resultIndex}>
-                                                    {_getContentDisplay(result, resultType, props.navStack)}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </>
-            );
-        }
+                        </div>
+                    );
+                })}
+                </div>
+                <BottomSpacer />
+            </>
+        );
     }
 };
 Search.propTypes = {
     searchQuery: PropTypes.string,
     alternativeMessage: PropTypes.object,
     searchResults: PropTypes.object,
+    offsetMap: PropTypes.object.isRequired,
     navStack: PropTypes.object.isRequired
 };
 export default Search;
