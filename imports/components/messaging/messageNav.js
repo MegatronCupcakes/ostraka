@@ -26,19 +26,27 @@ const MessageNav = (props) => {
                 </ul>
             </div>
         );
-    } else if(messages.length < 1){
+    } else if(props.messageCount < 1){
         nav = (
             <div className="nav-item navbar-nav" style={{paddingLeft: '1rem'}}>
                 <i className="bi bi-envelope" id="Inbox" onClick={props.navOnClick}></i>
             </div>
         );
     } else {
+        const moreMessage = props.messageCount > props.messages.length ? (
+            <>
+                <li><hr className="dropdown-divider" /></li>
+                <li><a className="dropdown-item" style={{textAlign: "center"}} id="Inbox" onClick={props.navOnClick}>{props.messageCount - props.messages.length} more message{props.messageCount - props.messages.length > 1 ? "s" : ""}...</a></li>
+            </>
+        ) : (
+            <></>
+        );
         nav = (
             <div className="nav-item dropdown navbar-nav" style={{paddingLeft: '1rem'}}>
                 <a className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i className="bi bi-envelope">
                         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-                            {messages.length}
+                            {props.messageCount}
                             <span className="visually-hidden">unread messages</span>
                         </span>
                     </i>
@@ -47,6 +55,7 @@ const MessageNav = (props) => {
                     <li><a className="dropdown-item" id="Inbox" style={{textAlign: "center"}} onClick={props.navOnClick}><i className="bi bi-inbox" onClick={props.navOnClick} data-bs-toggle="tooltip" data-bs-placement="top" title="inbox"></i></a></li>
                     <li><hr className="dropdown-divider" /></li>
                     {messages}
+                    {moreMessage}
                     <li><hr className="dropdown-divider" /></li>
                     <li><a className="dropdown-item" style={{textAlign: "center"}} onClick={props.clearMessageNotifications}><i className="bi bi-book" onClick={props.clearMessageNotifications} data-bs-toggle="tooltip" data-bs-placement="top" title="mark all messages as read"></i></a></li>
                 </ul>
@@ -56,6 +65,8 @@ const MessageNav = (props) => {
     return nav;
 };
 MessageNav.propTypes = {
+    pageSize: PropTypes.number,
+    messageCount: PropTypes.number,
     messages: PropTypes.array,
     alternativeMessage: PropTypes.object,
     messageOnClick: PropTypes.func.isRequired,

@@ -1,5 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {useQuery} from '@apollo/client';
 import _ from 'underscore';
@@ -12,6 +12,8 @@ import {dismissModals} from '/imports/api/util/dismissModals';
 import Inbox from '/imports/components/messaging/inbox';
 
 const InboxContainer = (props) => {
+    // inbox pagination
+    const [offset, setOffset] = useState(0);
     // new message state
     const [addressSuggestions, setAddressSuggestions] = useState([]);
     const [toAddress, setToAddress] = useState([]);
@@ -25,7 +27,11 @@ const InboxContainer = (props) => {
     // inbox query state
     const [inboxQueryString, setInboxQueryString] = useState(null);
 
-    const {loading, error, data} = useQuery(MessageQuery, {variables: {query: inboxQueryString}, pollInterval: 1000});
+    const {loading, error, data, fetchMore} = useQuery(MessageQuery, {variables: {query: inboxQueryString}, pollInterval: 1000});
+
+    useEffect(() => {
+        fetchMore({variables: {offset: offset}});
+    }, [offset]);
 
     const onSettingsClick = () => {
         props.navStack.update({navState: 'Settings', viewContent: 'messaging', activeTag: null});
@@ -137,7 +143,11 @@ const InboxContainer = (props) => {
             handleMessageDelete={handleMessageDelete}
             handleSendReplyCancel={handleSendReplyCancel}
             alternativeMessage={alternativeMessage}
-            messages={data && data.getMessages ? data.getMessages : []}
+            pageSize={data && data.getMessages && data.getMessages.pageSize ? data.getMessages.pageSize : null}
+            messageCount={data && data.getMessages && data.getMessages.count ? data.getMessages.count : null}
+            messages={data && data.getMessages && data.getMessages.messages ? data.getMessages.messages : []}
+            inboxOffset={offset}
+            setInboxOffset={setOffset}
             navStack={props.navStack}
         />
     );

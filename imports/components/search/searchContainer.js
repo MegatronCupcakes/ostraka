@@ -18,14 +18,6 @@ const SearchContainer = (props) => {
     }, pollInterval: 1000});
 
     useEffect(() => {
-        /*
-        console.log("calling fetchMore with variables:", {
-            tagOffset: tagOffset,
-            postOffset: postOffset,
-            commentOffset: commentOffset,
-            userOffset: userOffset
-        });
-        */
         fetchMore({
             variables: {
                 tagOffset: tagOffset,
@@ -34,9 +26,7 @@ const SearchContainer = (props) => {
                 userOffset: userOffset
             }
         });
-
     }, [tagOffset, postOffset, commentOffset, userOffset])
-
 
     let alternativeMessage;
     if(loading){

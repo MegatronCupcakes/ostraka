@@ -6,13 +6,17 @@ import Pagination from '/imports/components/pagination/pagination';
 
 const PaginationContainer = (props) => {
     const pageCount = Math.ceil(props.count / props.pageSize);
-    const handleSetCurrentPage = useCallback(_.debounce((page, _currentPage) => {
-        if(page === 'previous'){
-            if(_currentPage > 1) props.setOffset(Number(_currentPage) - 1);
-        } else if(page === 'next'){
-            if(_currentPage < pageCount) props.setOffset(Number(_currentPage));
+    const handleSetCurrentPage = useCallback(_.debounce((_page, _currentPage) => {
+        if(_page === 'previous'){
+            if(_currentPage > 1){
+                props.setOffset(Number(_currentPage) - 2);
+            }
+        } else if(_page === 'next'){
+            if(_currentPage < pageCount){
+                props.setOffset(Number(_currentPage));
+            }
         } else {
-            props.setOffset(Number(page) - 1);
+            props.setOffset(Number(_page) - 1);
         }
     }, 400, true));
     return (

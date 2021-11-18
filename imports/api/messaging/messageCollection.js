@@ -130,3 +130,10 @@ export const markMessageAsDeleted = (userId, messageId) => {
         }
     });
 };
+
+/*
+MessageCollection.find({}).forEach((message) => {
+    delete message._id;
+    MessageCollection.insert(message);
+});
+*/

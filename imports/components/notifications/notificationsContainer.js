@@ -1,5 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {useQuery} from '@apollo/client';
 import _ from 'underscore';
@@ -11,15 +11,23 @@ import {dateFormatter} from '/imports/api/util/dateFormatter';
 import Notifications from '/imports/components/notifications/notifications';
 
 const NotificationsContainer = (props) => {
-    const {loading, error, data} = useQuery(NotificationsQuery, {pollInterval: 1000});
+    const [offset, setOffset] = useState(0);
     const [activeNotification, setActiveNotification] = useState(null);
+    const {loading, error, data, fetchMore} = useQuery(NotificationsQuery, {variables: {offset: offset}, pollInterval: 1000});
+
+    useEffect(() => {
+        fetchMore({variables: {
+            offset: offset
+        }});
+    }, [offset]);
+
     let alternativeMessage;
     if(loading){
         alternativeMessage = <Loading />;
     } else if(error){
         alternativeMessage = <Error />;
         console.log("ERROR:", error);
-    } else if(data && data.getNotifications){
+    } else if(data && data.getNotifications && data.getNotifications.notifications){
         if(data.getNotifications.length < 1){
             alternativeMessage = <Empty message="no notifications"/>;
         } else {
@@ -43,10 +51,14 @@ const NotificationsContainer = (props) => {
     return (
         <Notifications
             alternativeMessage={alternativeMessage}
-            notifications={data && data.getNotifications ? data.getNotifications : []}
+            notificationCount={data && data.getNotifications && data.getNotifications.count ? data.getNotifications.count : null}
+            notificationPageSize={data && data.getNotifications && data.getNotifications.pageSize ? data.getNotifications.pageSize : null}
+            notifications={data && data.getNotifications && data.getNotifications.notifications ? data.getNotifications.notifications : []}
             activeNotification={activeNotification}
             handleNotificationClick={handleNotificationClick}
             markAllRead={markAllRead}
+            offset={offset}
+            setOffset={setOffset}
         />
     );
 };

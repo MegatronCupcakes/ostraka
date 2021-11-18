@@ -15,6 +15,11 @@ type Notification {
     notify: Boolean!
     createdAt: String!
 }
+type Notifications {
+    count: Int
+    notifications: [Notification]
+    pageSize: Int
+}
 type Message {
     _id: ID!
     toId: String!
@@ -30,6 +35,11 @@ type Message {
     read: Boolean!
     notify: Boolean!
     createdAt: String!
+}
+type Messages {
+    count: Int
+    messages: [Message]
+    pageSize: Int
 }
 
 type Dependency {
@@ -186,9 +196,9 @@ type Query {
     getTrendingProfiles (limit: Int, span: String): [User]
     getSharedContent (sharedContentId: String, viewId: String, sharedById: String): SharedContent
     getUserHistory (userId: String): [History]
-    getMessages (query: String): [Message]
-    getMessagesIndicator: [Message]
-    getNotifications: [Notification]
-    getNotificationsForIndicator: [Notification]
+    getMessages (query: String, offset: Int): Messages
+    getMessagesIndicator: Messages
+    getNotifications (offset: Int): Notifications
+    getNotificationsForIndicator: Notifications
     searchSite (query: String, tagOffset: Int, postOffset: Int, commentOffset: Int, userOffset: Int): SearchResults
 }

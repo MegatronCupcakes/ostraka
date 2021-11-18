@@ -33,16 +33,24 @@ export const NotificationsIndicatorQuery = gql`
     ${NotificationFields}
     query GetNotificationForIndicator {
         getNotificationsForIndicator {
-            ...NotificationFields
+            count
+            notifications {
+                ...NotificationFields
+            }
+            pageSize
         }
     }
 `;
 
 export const NotificationsQuery = gql`
     ${NotificationFields}
-    query GetNotifications {
-        getNotifications {
-            ...NotificationFields
+    query GetNotifications($offset: Int) {
+        getNotifications(offset: $offset) {
+            count
+            notifications {
+                ...NotificationFields
+            }
+            pageSize
         }
     }
 `;

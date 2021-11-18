@@ -29,7 +29,9 @@ const MessageNavContainer = (props) => {
     return (
         <MessageNav
             navOnClick={props.navOnClick}
-            messages={data && data.getMessagesIndicator ? data.getMessagesIndicator : []}
+            messageCount={data && data.getMessagesIndicator && data.getMessagesIndicator.count ? data.getMessagesIndicator.count : null}
+            pageSize={data && data.getMessagesIndicator && data.getMessagesIndicator.pageSize ? data.getMessagesIndicator.pageSize : null}
+            messages={data && data.getMessagesIndicator && data.getMessagesIndicator.messages ? data.getMessagesIndicator.messages : []}
             alternativeMessage={alternativeMessage}
             messageOnClick={props.messageOnClick}
             clearMessageNotifications={handleClearMessageNotifications}

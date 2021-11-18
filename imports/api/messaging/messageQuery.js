@@ -37,16 +37,24 @@ export const MessageIndicatorQuery = gql`
     ${MessageIndicatorFields}
     query GetMessagesForIndicator {
         getMessagesIndicator {
-            ...MessageIndicatorFields
+            count
+            messages {
+                ...MessageIndicatorFields
+            }
+            pageSize
         }
     }
 `;
 
 export const MessageQuery = gql`
     ${MessageFields}
-    query GetMessages($query: String) {
-        getMessages(query: $query) {
-            ...MessageFields
+    query GetMessages($query: String, $offset: Int) {
+        getMessages(query: $query, offset: $offset) {
+            count
+            messages {
+                ...MessageFields
+            }
+            pageSize
         }
     }
 `;

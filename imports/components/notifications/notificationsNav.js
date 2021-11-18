@@ -22,12 +22,20 @@ const NotificationsNav = (props) => {
             </div>
         )
     } else {
+        const moreMessage = props.notificationCount > props.notifications.length ? (
+            <>
+                <li><a className="dropdown-item" style={{textAlign: "center"}} id="Notifications" onClick={props.navOnClick}>{props.notificationCount - props.notifications.length} more notification{props.notificationCount - props.notifications.length > 1 ? "s" : ""}...</a></li>
+                <li><hr className="dropdown-divider" /></li>
+            </>
+        ) : (
+            <></>
+        );
         return (
             <div className="nav-item dropdown navbar-nav" style={{paddingLeft: '1rem'}}>
                 <a className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i className="bi bi-bell">
                         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-                            {props.notifications.length}
+                            {props.notificationCount}
                             <span className="visually-hidden">unread notifications</span>
                          </span>
                     </i>
@@ -44,6 +52,7 @@ const NotificationsNav = (props) => {
                         )
                     })}
                     <li><hr className="dropdown-divider" /></li>
+                    {moreMessage}
                     <li><a className="dropdown-item" style={{textAlign: "center"}}><i className="bi bi-book" onClick={props.markAllRead} data-bs-toggle="tooltip" data-bs-placement="top" title="mark all notifications as read"></i></a></li>
                 </ul>
             </div>
@@ -53,6 +62,7 @@ const NotificationsNav = (props) => {
 NotificationsNav.propTyps = {
     navOnClick: PropTypes.func.isRequired,
     alternativeMessage: PropTypes.object,
+    notificationCount: PropTypes.number,
     notifications: PropTypes.array.isRequired,
     handleNotificationClick: PropTypes.func.isRequired,
     markAllRead: PropTypes.func.isRequired

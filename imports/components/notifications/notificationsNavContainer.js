@@ -42,7 +42,8 @@ const NotificationsNavContainer = (props) => {
         <NotificationsNav
             navOnClick={props.navOnClick}
             alternativeMessage={alternativeMessage}
-            notifications={data && data.getNotificationsForIndicator ? data.getNotificationsForIndicator : []}
+            notificationCount={data && data.getNotificationsForIndicator && data.getNotificationsForIndicator.count ? data.getNotificationsForIndicator.count : null}
+            notifications={data && data.getNotificationsForIndicator && data.getNotificationsForIndicator.notifications ? data.getNotificationsForIndicator.notifications : []}
             handleNotificationClick={handleNotificationClick}
             markAllRead={markAllRead}
         />

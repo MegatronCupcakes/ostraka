@@ -7,6 +7,7 @@ import {dateFormatter} from '/imports/api/util/dateFormatter';
 import {ProfileTag, ProfileSuggestion} from '/imports/components/messaging/tagSearchComponents';
 import {Empty} from '/imports/components/loadingStatus/loadingStatus';
 import MessageContainer from '/imports/components/messaging/messageContainer';
+import PaginationContainer from '/imports/components/pagination/paginationContainer';
 
 const Inbox = (props) => {
     const selectedMessage = _.findWhere(props.messages, {_id: props.activeMessage});
@@ -50,15 +51,23 @@ const Inbox = (props) => {
     } else if(props.messages.length < 1){
         inboxList = <Empty message="no messages found"/>;
     } else {
-        inboxList = props.messages.map((message, index) => {
-            return (
-                <div key={index} className={message._id === props.activeMessage ? "row inboxListItem selected" : "row inboxListItem"} onClick={() => props.handleMessageClick(message)}>
-                    <span className={message.read ? "inboxIndicatorFrom read" : "inboxIndicatorFrom"}>{message.fromTag}</span>
-                    <span className={message.read ? "inboxDate read" : "inboxDate"}>{dateFormatter(message.createdAt)}</span>
-                    <span className={message.read ? "inboxIndicatorSubject read" : "inboxIndicatorSubject"}>{message.subject}</span>
-                </div>
-            );
-        });
+        inboxList = (
+            <PaginationContainer
+                count={props.messageCount}
+                pageSize={props.pageSize}
+                offset={props.inboxOffset}
+                setOffset={props.setInboxOffset}
+                content={props.messages.map((message, index) => {
+                    return (
+                        <div key={index} className={message._id === props.activeMessage ? "row inboxListItem selected" : "row inboxListItem"} onClick={() => props.handleMessageClick(message)}>
+                            <span className={message.read ? "inboxIndicatorFrom read" : "inboxIndicatorFrom"}>{message.fromTag}</span>
+                            <span className={message.read ? "inboxDate read" : "inboxDate"}>{dateFormatter(message.createdAt)}</span>
+                            <span className={message.read ? "inboxIndicatorSubject read" : "inboxIndicatorSubject"}>{message.subject}</span>
+                        </div>
+                    );
+                })}
+            />
+        )
     }
     const activeMessage = props.activeMessage && selectedMessage ? (
         <MessageContainer
@@ -150,7 +159,11 @@ Inbox.propTypes = {
     handleMessageDelete: PropTypes.func.isRequired,
     handleSendReplyCancel: PropTypes.func.isRequired,
     alternativeMessage: PropTypes.object,
+    pageSize: PropTypes.number,
+    messageCount: PropTypes.number,
     messages: PropTypes.array.isRequired,
+    inboxOffset: PropTypes.number.isRequired,
+    setInboxOffset: PropTypes.func.isRequired,
     navStack: PropTypes.object.isRequired
 };
 export default Inbox;
