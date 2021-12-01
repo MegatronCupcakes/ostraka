@@ -1,3 +1,11 @@
+const _infiniteScroll = (existing, incoming, {args: {offset = 0}}) => {
+    const merged = existing ? existing.slice(0) : [];
+    for (let i = 0; i < incoming.length; ++i) {
+        merged[offset + i] = incoming[i];
+    }
+    return merged;
+}
+
 export const typePolicies = {
     Query: {
         fields: {
@@ -15,15 +23,27 @@ export const typePolicies = {
             },
             getPosts: {
                 keyArgs: [],
-                merge(existing, incoming, {args: {offset = 0}}) {
-                    // Slicing is necessary because the existing data is
-                    // immutable, and frozen in development.
-                    const merged = existing ? existing.slice(0) : [];
-                    for (let i = 0; i < incoming.length; ++i) {
-                        merged[offset + i] = incoming[i];
-                    }
-                    return merged;
-                }
+                merge: _infiniteScroll
+            },
+            getUserPosts: {
+                keyArgs: ['postedById'],
+                merge: _infiniteScroll
+            },
+            getComments: {
+                keyArgs: ['parentId'],
+                merge: _infiniteScroll
+            },
+            getUserComments: {
+                keyArgs: ['postedById'],
+                merge: _infiniteScroll
+            },
+            getProfiles: {
+                keyArgs: ['userIds'],
+                merge: _infiniteScroll
+            },
+            getTopic: {
+                keyArgs: ['tagId'],
+                merge: _infiniteScroll
             },
             searchSite: {
                 keyArgs: [],

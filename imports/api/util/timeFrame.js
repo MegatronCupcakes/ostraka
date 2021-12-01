@@ -15,5 +15,5 @@ export default TimeFrame = (span) => {
         _then = new Date(_now.getTime() - (24 * 60 * 60 * 1000));
         break;
     };
-    return [_now, _then];
+    return {now: _now, then: _then};
 };

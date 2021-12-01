@@ -62,6 +62,7 @@ export const TagLookup = (tagArray, userId) => {
 }
 
 export const tagReturnFields = (userId) => {
+    const _followedTopics = Meteor.users.findOne({_id: userId},{followedTopics:1}).followedTopics;
     return {
         _id: 1,
         viewId: 1,
@@ -73,6 +74,7 @@ export const tagReturnFields = (userId) => {
         useCount: {$size: "$usage"},
         used: {$in: [userId, "$usage"]},
         shareCount: {$size: "$sharedBy"},
-        shared: {$in: [userId, "$sharedBy"]}
+        shared: {$in: [userId, "$sharedBy"]},
+        followed: {$in: ["$_id", _followedTopics]}
     }
 }

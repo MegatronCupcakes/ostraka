@@ -22,7 +22,7 @@ const PostView = (props) => {
     useEffect(() => {
         if(props.visibleCallback && isOnScreen) props.visibleCallback();
     }, [isOnScreen]);
-    
+
     let content;
     // if no post is specified (we only have an ID) then fetch the post via Apollo before displaying;
     if(!props.post && (props.sharedContentId || _.isString(props.navStack.current.viewContent))){
@@ -42,8 +42,9 @@ const PostView = (props) => {
     }
     return (
         <>
-            {content}
-             <div ref={elementRef}></div>
+            <div ref={elementRef}>
+                {content}
+            </div>
         </>
     );
 };

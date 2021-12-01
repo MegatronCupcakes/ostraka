@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import TopicViewComment from '/imports/components/comments/topicViewComment';
 
@@ -10,6 +10,7 @@ const ProfileCommentView = (props) => {
                 navStack={props.navStack}
                 viewSize={props.viewSize}
                 viewType={props.viewType}
+                visibleCallback={props.visibleCallback}
             />
         </div>
     )
@@ -18,6 +19,7 @@ ProfileCommentView.propTypes = {
     comment: PropTypes.object.isRequired,
     navStack: PropTypes.object.isRequired,
     viewSize: PropTypes.string,
-    viewType: PropTypes.string
+    viewType: PropTypes.string,
+    visibleCallback: PropTypes.func
 };
 export default ProfileCommentView;

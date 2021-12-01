@@ -1,4 +1,5 @@
 import {Mongo} from 'meteor/mongo';
+import _ from 'underscore';
 import IndexCollection from '../util/indexCollection';
 
 const CommentCollection = new Mongo.Collection('comments');
@@ -41,3 +42,12 @@ export const commentReturnFields = (userId) => {
         createdAt: 1
     };
 };
+
+if(false){
+    const comment = CommentCollection.findOne({_id: "MavcnHpP7SWomxmY2"});
+    _.times(10, (number) =>{
+        delete comment._id;
+        comment.createdAt = new Date();
+        CommentCollection.insert(comment);
+    });
+}

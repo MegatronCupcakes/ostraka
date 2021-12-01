@@ -2,22 +2,35 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {useQuery} from '@apollo/client';
 import _ from 'underscore';
-import {TrendingTopicQuery} from '/imports/api/tag/tagQuery';
+import {TrendingTopicsQuery} from '/imports/api/tag/tagQuery';
 import {Loading, Error, Empty} from '/imports/components/loadingStatus/loadingStatus';
 import TopicsContainer from '/imports/components/topics/topicsContainer';
 
 const TrendingTopicsContainer = (props) => {
-    let content;
-    const {loading, error, data} = useQuery(TrendingTopicQuery, {variables: {limit: 10, span: "year"}, pollInterval: 1000000000});
-    if(loading){
-        content = <Loading />;
-    } else if(error){
+    let content = <Loading />;
+
+    const {error, data} = useQuery(TrendingTopicsQuery, {pollInterval: 1000000000});
+
+    useEffect(() => {
+        if(data && data.getTrendingTopics.length > 0){
+            const trendingTags = data.getTrendingTopics.map((tag, index) => {
+                // set "active" value for tag if undefined (here "active" determines display)
+                return {...tag, active: _.isUndefined(tag.active) ? tag.active = index === 0 : tag.active};
+            });
+            props.navStack.setTags(trendingTags);
+        }
+    }, [data]);
+
+    if(error){
+        console.log("ERROR:", error);
         content = <Error />;
-    } else if(data && data.getTrendingTopics.length > 0){
-        console.log("data.getTrendingTopics:", data.getTrendingTopics);
-        props.navStack.setTags(data.getTrendingTopics);
-    } else {
-        content = <></>;
+    }
+    if(props.navStack.current.tags){
+        content = (
+            <TopicsContainer
+                navStack={props.navStack}
+            />
+        );
     }
     return content;
 };

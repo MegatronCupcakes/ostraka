@@ -40,8 +40,8 @@ export const ProfileQuery = gql`
 
 export const MultipleProfilesQuery = gql`
     ${ProfileFields}
-    query GetProfiles($userIds: [String]) {
-        getProfiles(userIds: $userIds) {
+    query GetProfiles($userIds: [String], $offset: Int) {
+        getProfiles(userIds: $userIds, offset: $offset) {
             ...ProfileFields
         }
     }
@@ -49,8 +49,8 @@ export const MultipleProfilesQuery = gql`
 
 export const TrendingProfilesQuery = gql`
     ${ProfileFields}
-    query GetTrendingProfiles($limit: Int, $span: String) {
-        getTrendingProfiles(limit: $limit, span: $span) {
+    query GetTrendingProfiles {
+        getTrendingProfiles {
             ...ProfileFields
         }
     }

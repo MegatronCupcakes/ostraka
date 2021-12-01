@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {Random} from 'meteor/random';
+import {useOnScreen} from '/imports/api/util/useOnScreen';
 import UserIdentifier from '/imports/components/profile/userIdentifier';
 import Score from '/imports/components/profile/score';
 import ShareContainer from '/imports/components/share/shareContainer';
@@ -9,6 +10,13 @@ import OstracizeContainer from '/imports/components/profile/ostracizeContainer';
 import ScoreHistoryContainer from '/imports/components/profile/scoreHistoryContainer';
 
 const UserIdentifierWithScore = (props) => {
+    const elementRef = useRef(null);
+    const isOnScreen = useOnScreen(elementRef);
+
+    useEffect(() => {
+        if(props.visibleCallback && isOnScreen) props.visibleCallback();
+    }, [isOnScreen]);
+
     const modalId = Random.id();
     const profileActions = props.noninteractive ? (<></>) : (
         <>
@@ -77,7 +85,7 @@ const UserIdentifierWithScore = (props) => {
         </div>
     );
     return (
-        <div style={{paddingBottom: "1rem"}}>
+        <div ref={elementRef} style={{paddingBottom: "1rem"}}>
             <UserIdentifier
                 viewSize={props.viewSize}
                 postedBy={props.user.profile.firstName + " " + props.user.profile.lastName}
@@ -99,6 +107,7 @@ UserIdentifierWithScore.propTypes = {
     user: PropTypes.object.isRequired,
     noninteractive: PropTypes.bool.isRequired,
     viewSize: PropTypes.string,
+    visibleCallback: PropTypes.func,
     navStack: PropTypes.object.isRequired
 };
 export default UserIdentifierWithScore;

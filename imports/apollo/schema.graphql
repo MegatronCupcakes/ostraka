@@ -184,16 +184,16 @@ type Query {
     getPost (_id: String): Post
     getPosts (offset: Int): [Post]
     getCommentById (_id: String): Comment
-    getComments (parentId: String): [Comment]
+    getComments (parentId: String, offset: Int): [Comment]
     getTaggedPosts (tagId: String): [Post]
-    getUserPosts (postedById: String): [Post]
+    getUserPosts (postedById: String, offset: Int): [Post]
     getTaggedComments (tagId: String): [Comment]
-    getUserComments (postedById: String): [Comment]
+    getUserComments (postedById: String, offset: Int): [Comment]
     getProfile (_id: String): User
-    getProfiles (userIds: [String]): [User]
-    getTopic (tagId: String): [Topic]
-    getTrendingTopics (limit: Int, span: String): [Tag]
-    getTrendingProfiles (limit: Int, span: String): [User]
+    getProfiles (userIds: [String], offset: Int): [User]
+    getTopic (tagId: String, offset: Int): [Topic]
+    getTrendingTopics: [Tag]
+    getTrendingProfiles: [User]
     getSharedContent (sharedContentId: String, viewId: String, sharedById: String): SharedContent
     getUserHistory (userId: String): [History]
     getMessages (query: String, offset: Int): Messages

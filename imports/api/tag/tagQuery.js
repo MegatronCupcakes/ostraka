@@ -5,19 +5,14 @@ export const TagFields = gql`
         _id
         viewId
         tag
-        usage
-        createdBy
-        usedBy
-        sharedBy
         createdAt
-        active
     }
 `;
 
-export const TrendingTopicQuery = gql`
+export const TrendingTopicsQuery = gql`
     ${TagFields}
-    query GetTrendingTopics($limit: Int, $span: String) {
-        getTrendingTopics(limit: $limit, span: $span) {
+    query GetTrendingTopics {
+        getTrendingTopics {
             ...TagFields
         }
     }

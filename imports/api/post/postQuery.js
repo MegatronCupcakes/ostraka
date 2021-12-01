@@ -58,8 +58,8 @@ export const TaggedPostsQuery = gql`
 
 export const UserPostsQuery = gql`
     ${PostFields}
-    query GetUserPosts($postedById: String) {
-        getUserPosts(postedById: $postedById) {
+    query GetUserPosts($postedById: String, $offset: Int) {
+        getUserPosts(postedById: $postedById, offset: $offset) {
             ...PostFields
         }
     }

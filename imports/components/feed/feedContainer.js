@@ -23,7 +23,7 @@ const FeedContainer = (props) => {
         fetchMore({
             variables: {offset: count}
         });
-    }, 1000, true), []);
+    }, 100, true), []);
     let feedContent;
     if(loading){
         feedContent = <Loading />;
@@ -37,7 +37,11 @@ const FeedContainer = (props) => {
                     post={post}
                     viewSize="medium"
                     navStack={props.navStack}
-                    visibleCallback={() => {if(index === data.getPosts.length - 1) moreChunks(data.getPosts.length)}}
+                    visibleCallback={() => {
+                        if(index === data.getPosts.length - 1){
+                            moreChunks(data.getPosts.length);
+                        }
+                    }}
                 />
             );
             return (
@@ -47,7 +51,7 @@ const FeedContainer = (props) => {
     } else {
         feedContent = (
             <Empty
-                message="Looks like you don't have anything in your feed yet.  Try posting something or following some people and topics."
+                message="Looks like you don't have anything in your feed yet. Try posting something or following some people and topics."
             />
         );
     }
@@ -64,8 +68,3 @@ FeedContainer.propTypes = {
     navStack: PropTypes.object.isRequired
 };
 export default FeedContainer;
-
-
-function _capitalizeFirstLetter(string) {
-    return string[0].toUpperCase() + string.slice(1);
-}

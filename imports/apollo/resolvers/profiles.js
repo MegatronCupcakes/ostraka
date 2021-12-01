@@ -5,17 +5,20 @@ import PostCollection from '/imports/api/post/postCollection';
 import CommentCollection from '/imports/api/comments/commentCollection';
 import {profileReturnFields} from '/imports/api/profile/profileReturnFields';
 
+const _userLimit = Meteor.settings.content.trendingUsers.limit;
+const _userSpan = Meteor.settings.content.trendingUsers.span;
+
 export const getProfile = (parent, args, context, info) => {
     return Meteor.users.findOne({_id: args._id, active: true},{fields: profileReturnFields(context.user._id)});
 }
 
 export const getProfiles = (parent, args, context, info) => {
-    return Meteor.users.find({_id: {$in: args.userIds}, active: true},{fields: profileReturnFields(context.user._id)});
+    return Meteor.users.find({_id: {$in: args.userIds}, active: true},{fields: profileReturnFields(context.user._id), skip: args.offset, limit: _userLimit});
 }
 
 export const getTrendingProfiles = async (parent, args, context, info) => {
     // find profiles with the most tags and comments in the last 24 hours.
-    const [now, then] = TimeFrame(args.span);
+    const {now, then} = TimeFrame(_userSpan);
     const [recentShares, recentPosts, recentComments, recentMentions] = await Promise.all([
         new Promise((resolve, reject) => {
             // count recent shares
@@ -69,6 +72,6 @@ export const getTrendingProfiles = async (parent, args, context, info) => {
     let sortedCountArray = _.sortBy(_.keys(countById).map((key) => {
         return {_id: key, count: countById[key]};
     }), 'count');
-    const trendingIds = _.first(sortedCountArray, args.limit).map((item) => {return item._id})
+    const trendingIds = _.first(sortedCountArray, _userLimit).map((item) => {return item._id})
     return Meteor.users.find({_id: {$in: trendingIds}, active: true}, {fields: profileReturnFields(context.user._id)});
 }

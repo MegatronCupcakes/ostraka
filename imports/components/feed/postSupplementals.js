@@ -47,15 +47,17 @@ const PostSupplementals = (props) => {
                         navStack={props.navStack}
                     />
                 </div>
-                <div className="row" style={{paddingTop: "1rem"}}>
-                    <CommentsContainer
-                        parentId={props.post._id}
-                        viewType={props.viewType}
-                        sharedById={props.sharedById}
-                        viewSize={props.viewSize}
-                        noninteractive={props.noninteractive}
-                        navStack={props.navStack}
-                    />
+                <div className="">
+                    <div className={props.viewSize ? `comments ${props.viewSize}` : 'comments'}>
+                        <CommentsContainer
+                            parentId={props.post._id}
+                            viewType={props.viewType}
+                            sharedById={props.sharedById}
+                            viewSize={props.viewSize}
+                            noninteractive={props.noninteractive}
+                            navStack={props.navStack}
+                        />
+                    </div>
                 </div>
             </>
         );

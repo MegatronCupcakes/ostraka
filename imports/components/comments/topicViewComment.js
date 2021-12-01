@@ -42,6 +42,7 @@ const TopicViewComment = (props) => {
                         viewType={props.viewType}
                         sharedById={props.sharedById}
                         navStack={props.navStack}
+                        visibleCallback={props.visibleCallback}
                     />
                     {userInteractions}
                 </div>
@@ -59,6 +60,7 @@ TopicViewComment.propTypes = {
     viewSize: PropTypes.string,
     viewType: PropTypes.string,
     sharedById: PropTypes.string,
+    visibleCallback: PropTypes.func,
     navStack: PropTypes.object.isRequired
 };
 export default TopicViewComment;

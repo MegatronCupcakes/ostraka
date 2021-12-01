@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import {useQuery} from '@apollo/client';
 import _ from 'underscore';
@@ -13,7 +13,14 @@ import TopicViewComment from '/imports/components/comments/topicViewComment';
 const TopicsContainer = (props) => {
     if(props.navStack.currentTag || props.tag){
         const _tagId = props.tag ? props.tag._id : props.navStack.currentTag._id;
-        const {loading, error, data} = useQuery(TopicQuery, {variables: {tagId: _tagId}, pollInterval: 1000});
+        const {loading, error, data, fetchMore} = useQuery(TopicQuery, {variables: {tagId: _tagId}, pollInterval: 1000});
+
+        const moreChunks = useCallback(_.debounce((count) => {
+            fetchMore({
+                variables: {offset: count}
+            });
+        }, 1000, true), []);
+
         if(loading){
             topicContent = <Loading />;
         } else if(error){
@@ -31,6 +38,7 @@ const TopicsContainer = (props) => {
                                 viewSize="small"
                                 noninteractive={props.noninteractive}
                                 navStack={props.navStack}
+                                visibleCallback={() => {if(index === data.getTopic.length - 1) moreChunks(data.getTopic.length)}}
                             />
                         );
                         break;
@@ -44,6 +52,7 @@ const TopicsContainer = (props) => {
                                 navStack={props.navStack}
                                 viewSize={props.viewSize}
                                 viewType={props.viewType}
+                                visibleCallback={() => {if(index === data.getTopic.length - 1) moreChunks(data.getTopic.length)}}
                             />
                         );
                         break;

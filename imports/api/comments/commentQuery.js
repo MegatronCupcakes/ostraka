@@ -27,8 +27,8 @@ export const CommentFields = gql`
 
 const CommentQuery = gql`
     ${CommentFields}
-    query GetComments($parentId: String) {
-        getComments(parentId: $parentId) {
+    query GetComments($parentId: String, $offset: Int) {
+        getComments(parentId: $parentId, offset: $offset) {
             ...CommentFields
         }
     }
@@ -45,8 +45,8 @@ export const TaggedCommentsQuery = gql`
 
 export const UserCommentsQuery = gql`
     ${CommentFields}
-    query GetUserComments($postedById: String) {
-        getUserComments(postedById: $postedById) {
+    query GetUserComments($postedById: String, $offset: Int) {
+        getUserComments(postedById: $postedById, offset: $offset) {
             ...CommentFields
         }
     }

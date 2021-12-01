@@ -16,5 +16,5 @@ export const getTaggedPosts = (parent, args, context, info) => {
 };
 
 export const getUserPosts = (parent, args, context, info) => {
-    return PostCollection.find({postedById: args.postedById, active: true}, {fields: postReturnFields(context.user._id), sort: {createdAt: -1}});
+    return PostCollection.find({postedById: args.postedById, active: true}, {fields: postReturnFields(context.user._id), sort: {createdAt: -1}, skip: args.offset, limit: _chunkSize});
 };

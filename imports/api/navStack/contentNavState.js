@@ -73,7 +73,7 @@ export class ContentNavState {
         const currentState = this._contentState.pop(); // get current state
         currentState.tags = currentState.tags.map((_tag, index) => {
             // set all tags to inactive unless it's the provided tag.
-            _tag.active = _tag == tag;
+            _tag.active = _tag._id == tag._id;
             return _tag;
         });
         this._setContentState([...this._contentState, currentState]); //restore current (updated) state

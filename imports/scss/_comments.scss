@@ -1,47 +1,41 @@
+/* comments container */
 .comments {
-    padding-top: 0.25rem;
-    max-height: 8rem;
-    overflow: auto;
-}
-
-.comments_small {
-    padding-top: 0.25rem;
-    max-height: 8rem;
-    overflow: auto;
-}
-
-.comments_medium {
-    padding-top: 0.25rem;
-    max-height: 16rem;
-    overflow: auto;
-}
-
-.comments_large {
-    padding-top: 0.25rem;
     height: 100%;
     overflow: auto;
 }
 
+.comments.small {
+    max-height: 12rem;
+}
+.comments.medium {
+    max-height: 16rem;
+}
+.comments.large {
+    max-height: 24rem;
+}
+
+/* individual comments */
 .comment {
-    font-size: small;
-    margin-bottom: 1rem;
+    padding-top: 1rem;
 }
+.comment.small {
 
-.comment_large {
-    font-size: large;
-    margin-bottom: 1rem;
 }
+.comment.medium {
 
+}
+.comment.large {
+
+}
+/* comment supplementals */
 .commentUserId {
     font-weight: bold;
     padding-right: 1rem;
 }
-
 .commentUserTag {
     color: #bbc1c7;
     font-weight: bold;
 }
-
 .commentTimestamp {
     color: #bbc1c7;
 }

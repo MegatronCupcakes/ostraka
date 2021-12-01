@@ -13,9 +13,14 @@ const Image = (props) => {
         <div id={carouselId} className="carousel slide" data-bs-ride="carousel">
             <div className="carousel-inner">
                 {props.post.images.map((image, index) => {
-                    const _classes = index === 0 ? 'carousel-item active' : 'carousel-item';
+                    const _classes = () => {
+                        let _classList = 'carousel-item imagePost';
+                        if(index === 0) _classList = `${_classList} active`;
+                        //if(props.viewSize) _classList = `${_classList} ${props.viewSize}`;
+                        return _classList;
+                    };
                     return (
-                        <div className={_classes} key={index} >
+                        <div className={_classes()} key={index} >
                             <img src={image} className="d-block w-100 rounded" alt="oops... couldn't load this image :-(" onClick={_handlePostClick} />
                         </div>
                     );

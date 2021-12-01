@@ -163,19 +163,11 @@ export default function MainContainer(props){
                     );
                     break;
                 case 'Trending Topics':
-                    if(navStack.currentTag){
-                        activity = (
-                            <TopicsContainer
-                                navStack={navStack}
-                            />
-                        );
-                    } else {
-                        activity = (
-                            <TrendingTopicsContainer
-                                navStack={navStack}
-                            />
-                        );
-                    }
+                    activity = (
+                        <TrendingTopicsContainer
+                            navStack={navStack}
+                        />
+                    );
                     break;
                 case 'Trending Users':
                     activity = (
