@@ -34,10 +34,10 @@ import {createNotification} from '/imports/api/notifications/notificationCollect
         ]
     payload: Post, Profile, Comment, or Vote
 */
-export const notifyUser = (notifiedUserId, notificationType, payload) => {
+export const notifyUser = (triggeringUserId, notificationType, payload) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const triggeringUserId = payload.postedById || payload.JzzE7goHv6PhqNbJY || payload.userId;
+            const notifiedUserId = payload.postedById || payload.userId;
             const userNotificationPreferences = getSettings(payload.userId).notifications;
             // create notification if the triggering user is not the same as the user to be notified
             // AND the user to be notified has notifications enabled for this type of notification.

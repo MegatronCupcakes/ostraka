@@ -1,63 +1,95 @@
-import HistoryCollection from '/imports/api/history/historyCollection';
-
 const RuleSets = [
     {
         version: 1.0,
-        triggers: {
-            like: (userId, postedById, type) => {
-                return new Promise((resolve, reject) => {
-                    try {
-                        resolve();
-                    } catch(error){
-                        reject(error);
-                    }
-                });
+        depthModifiers: {
+            1: 1,
+            2: 0.25,
+            3: 0.005,
+            4: 0.0001,
+            5: 0.000001
+        },
+        values: {
+            like: {
+                acting: {
+                    value: 0.0025,
+                    depth: 3
+                },
+                target: {
+                    value: 0.001,
+                    depth: 3
+                }
             },
-            dislike: (userId, postedById, type) => {
-                return new Promise((resolve, reject) => {
-                    try {
-                        resolve();
-                    } catch(error){
-                        reject(error);
-                    }
-                });
+            unlike: {
+                acting: {
+                    value: -0.0025,
+                    depth: 3
+                },
+                target: {
+                    value: -0.001,
+                    depth: 3
+                }
             },
-            follow: (userId, followedUserId) => {
-                return new Promise((resolve, reject) => {
-                    try {
-                        resolve();
-                    } catch(error){
-                        reject(error);
-                    }
-                });
+            dislike: {
+                acting: {
+                    value: -0.0025,
+                    depth: 3
+                },
+                target: {
+                    value: -0.005,
+                    depth: 3
+                }
             },
-            unfollow: (userId, followedUserId) => {
-                return new Promise((resolve, reject) => {
-                    try {
-                        resolve();
-                    } catch(error){
-                        reject(error);
-                    }
-                });
+            undislike: {
+                acting: {
+                    value: 0.0025,
+                    depth: 3
+                },
+                target: {
+                    value: 0.005,
+                    depth: 3
+                }
             },
-            share: (userId, followedUserId) => {
-                return new Promise((resolve, reject) => {
-                    try {
-                        resolve();
-                    } catch(error){
-                        reject(error);
-                    }
-                });
+            follow: {
+                acting: {
+                    value: 0,
+                    depth: 3
+                },
+                target: {
+                    value: 0.01,
+                    depth: 3
+                }
             },
-            ostracize: (userId, ostracizedUserId) => {
-                return new Promise((resolve, reject) => {
-                    try {
-                        resolve();
-                    } catch(error){
-                        reject(error);
-                    }
-                });
+            unfollow: {
+                acting: {
+                    value: 0,
+                    depth: 3
+                },
+                target: {
+                    value: -0.01,
+                    depth: 3
+                }
+            },
+            share: {
+                acting: {
+                    value: 0.0001,
+                    depth: 3
+                },
+                target: {
+                    value: 0.005,
+                    depth: 3
+                }
+            },
+            ostracize: {
+                acting: {
+                    value: -0.5,
+                    depth: 3
+                },
+                target: {
+                    value: -0.5,
+                    depth: 3
+                }
             }
         }
     }
-]
+];
+export default RuleSets;

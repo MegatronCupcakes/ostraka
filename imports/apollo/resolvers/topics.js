@@ -7,7 +7,6 @@ import TagCollection, {tagReturnFields} from '/imports/api/tag/tagCollection';
 
 const _topicLimit = Meteor.settings.content.trendingTopics.limit;
 const _topicSpan = Meteor.settings.content.trendingTopics.span;
-
 const _chunkSize = Meteor.settings.pagination.topics.chunkSize;
 
 export const getTopic = async (parent, args, context, info) => {

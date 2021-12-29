@@ -8,8 +8,8 @@ const Pagination = (props) => {
             <div className="col-12">
                 {props.content}
             </div>
-            <div className="col-12" style={{textAlign: "center"}}>
-                <ul className="pagination">
+            <div className="col-12">
+                <ul className="pagination justify-content-center">
                     <li className={props.currentPage === 1 ? "page-item disabled" : "page-item"} onClick={() => props.setCurrentPage("previous", props.currentPage)}>
                         <a className="page-link" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
@@ -31,7 +31,7 @@ const Pagination = (props) => {
     );
 };
 Pagination.propTypes = {
-    content: PropTypes.array.isRequired,
+    //content: PropTypes.array.isRequired, // not always an array; score history, for example, is a table.
     pageCount: PropTypes.number.isRequired,
     currentPage: PropTypes.number.isRequired,
     setCurrentPage: PropTypes.func.isRequired

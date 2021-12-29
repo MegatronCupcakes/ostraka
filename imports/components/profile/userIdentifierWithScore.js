@@ -1,6 +1,5 @@
 import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
-import {Random} from 'meteor/random';
 import {useOnScreen} from '/imports/api/util/useOnScreen';
 import UserIdentifier from '/imports/components/profile/userIdentifier';
 import Score from '/imports/components/profile/score';
@@ -17,7 +16,7 @@ const UserIdentifierWithScore = (props) => {
         if(props.visibleCallback && isOnScreen) props.visibleCallback();
     }, [isOnScreen]);
 
-    const modalId = Random.id();
+    const modalId = "scoreModal";
     const profileActions = props.noninteractive ? (<></>) : (
         <>
             <div style={{marginTop: "1rem"}}>

@@ -16,7 +16,7 @@ const Score = (props) => {
 
 
     return (
-        <svg            
+        <svg
             height={_radius(props.viewSize) * 2}
             width={_radius(props.viewSize) * 2}
         >
@@ -37,8 +37,9 @@ const Score = (props) => {
                 fontSize={_fontSize(props.viewSize)}
                 stroke={currentColor}
                 strokeWidth="2"
+                filter="brightness(65%)"
             >
-                {props.reputationScore}
+                {props.reputationScore.toFixed(2)}
             </text>
         </svg>
     );

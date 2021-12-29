@@ -20,6 +20,9 @@ const LikesContainer = (props) => {
     const [dislikeThumbClass, setDislikeThumbClass] = useState(
         !Meteor.userId() || props.userId === Meteor.userId() || props.noninteractive ? _disabledDislike : (props.disliked ? _clickedDislike :_unclickedDislike)
     );
+    // use local state for optimistic UI updating
+    const [likeCount, setLikeCount] = useState(props.likeCount);
+    const [dislikeCount, setDislikeCount] = useState(props.dislikeCount);
 
     const handleLikeClick = ({target}) => {
         // new post previews don't contain a likedId (because the post hasn't been posted yet);
@@ -34,6 +37,7 @@ const LikesContainer = (props) => {
             .then(() => {
                 setLikeThumbClass(likeThumbClass === _unclickedLike ? _clickedLike : _unclickedLike);
                 setDislikeThumbClass(_unclickedDislike);
+                setLikeCount(action === "like" ? props.likeCount + 1 : props.likeCount);
             });
         }
     }
@@ -50,6 +54,7 @@ const LikesContainer = (props) => {
             .then(() => {
                 setDislikeThumbClass(dislikeThumbClass === _unclickedDislike ? _clickedDislike : _unclickedDislike);
                 setLikeThumbClass(_unclickedLike);
+                setDislikeCount(action === "dislike" ? props.dislikeCount + 1 : props.dislikeCount);
             });
         }
     }
@@ -57,14 +62,14 @@ const LikesContainer = (props) => {
     return (
         <>
             <Likes
-                count={props.likeCount}
+                count={likeCount}
                 thumbClass={likeThumbClass}
                 thumbClick={handleLikeClick}
                 viewSize={props.viewSize}
                 label="like"
             />
             <Likes
-                count={props.dislikeCount}
+                count={dislikeCount}
                 thumbClass={dislikeThumbClass}
                 thumbClick={handleDislikeClick}
                 viewSize={props.viewSize}

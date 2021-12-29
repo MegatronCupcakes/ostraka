@@ -29,7 +29,7 @@ const PaginationContainer = (props) => {
     );
 };
 PaginationContainer.propTypes = {
-    content: PropTypes.array.isRequired,
+    //content: PropTypes.array.isRequired,
     count: PropTypes.number,
     pageSize: PropTypes.number.isRequired,
     offset: PropTypes.number.isRequired,

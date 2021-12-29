@@ -4,6 +4,10 @@ import {registerUser} from '/imports/api/account/register';
 import PostCollection, {createPost} from '/imports/api/post/postCollection';
 import CommentCollection from '/imports/api/comments/commentCollection';
 import TagCollection from '/imports/api/tag/tagCollection';
+import MessageCollection from '/imports/api/messaging/messageCollection';
+import HistoryCollection from '/imports/api/history/historyCollection';
+import NotificationCollection from '/imports/api/notifications/notificationCollection';
+import {ErrorCollection} from '/imports/api/errorLogger/errorLogger';
 
 const mainUserId = 'JzzE7goHv6PhqNbJY';
 const testRecordCount = 10;
@@ -18,15 +22,27 @@ export const seedTestData = async () => {
 
 const _cleanUp = () => {
     return new Promise((resolve, reject) => {
-        // remove invited ids from main user
-        Meteor.users.update({_id: mainUserId},{$set: {invited: []}});
-        const seededUserIds = Meteor.users.find({_id: {$ne: mainUserId}},{_id: 1}).map((user) => {return user._id});
-        // remove all content created by previously seeded users
-        PostCollection.remove({postedById: {$in: seededUserIds}});
-        CommentCollection.remove({postedById: {$in: seededUserIds}});
-        TagCollection.remove({createdBy: {$in: seededUserIds}});
+        // clean main user; remove invited ids from main user
+        Meteor.users.update({_id: mainUserId},{
+            $set: {
+                invited: [],
+                followedUsers: [],
+                followedBy: [],
+                followedTopics: [],
+                settings: {},
+                reputationScore: 100.00
+            }
+        });
+        // remove all content
+        PostCollection.remove({});
+        CommentCollection.remove({});
+        TagCollection.remove({});
+        MessageCollection.remove({});
+        HistoryCollection.remove({});
+        NotificationCollection.remove({});
+        ErrorCollection.remove({});
         // remove previously seeded users
-        Meteor.users.remove({_id: {$in: seededUserIds}});
+        Meteor.users.remove({_id: {$ne: mainUserId}});
         resolve();
     });
 }

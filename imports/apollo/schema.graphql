@@ -43,13 +43,22 @@ type Messages {
 }
 
 type Dependency {
-    userId: String
+    userId: String!
+    userTag: String!
+    userName: String!
     sequenceNumber: Int
 }
 
 type Trigger {
     action: String
-    dependentUser: String
+    actingUserId: String!
+    actingUserName: String!
+    actingUserTag: String!
+    targetUserId: String!
+    targetUserName: String!
+    targetUserTag: String!
+    targetContentId: String
+    targetContentType: String
     dependentRelationship: [Dependency]
 }
 
@@ -59,9 +68,15 @@ type History {
     trigger: Trigger!
     description: String
     appliedValue: Float!
-    ruleSet: String!
+    ruleSet: Float!
     active: Boolean!
     createdAt: String!
+}
+
+type HistoryResults {
+    count: Int!
+    results: [History]
+    pageSize: Int!
 }
 
 type Post {
@@ -195,7 +210,7 @@ type Query {
     getTrendingTopics: [Tag]
     getTrendingProfiles: [User]
     getSharedContent (sharedContentId: String, viewId: String, sharedById: String): SharedContent
-    getUserHistory (userId: String): [History]
+    getUserHistory (userId: String, offset: Int): HistoryResults
     getMessages (query: String, offset: Int): Messages
     getMessagesIndicator: Messages
     getNotifications (offset: Int): Notifications

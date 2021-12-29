@@ -14,7 +14,7 @@ const FeedContainer = (props) => {
     const [scrollChunkCount, setScrollChunkCount] = useState(1);
     const {loading, error, data, fetchMore} = useQuery(PostQuery, {
         variables: {offset: 0},
-        fetchPolicy: "cache-first",
+        //fetchPolicy: "cache-first",
         pollInterval: 1000
     });
     const moreChunks = useCallback(_.debounce((count) => {

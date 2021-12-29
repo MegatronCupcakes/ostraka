@@ -1,6 +1,7 @@
 import {Mongo} from 'meteor/mongo';
 import IndexCollection from '/imports/api/util/indexCollection';
-const ErrorCollection = new Mongo.Collection('errors');
+
+export const ErrorCollection = new Mongo.Collection('errors');
 
 IndexCollection(ErrorCollection, [
     {fileName: "text"},

@@ -6,9 +6,18 @@ export const HistoryFields = gql`
         userId
         trigger {
             action
-            dependentUser
+            actingUserId
+            actingUserName
+            actingUserTag
+            targetUserId
+            targetUserName
+            targetUserTag
+            targetContentId
+            targetContentType
             dependentRelationship {
                 userId
+                userTag
+                userName
                 sequenceNumber
             }
         }
@@ -22,9 +31,13 @@ export const HistoryFields = gql`
 
 export const HistoryQuery = gql`
     ${HistoryFields}
-    query GetUserHistory {
-        getUserHistory {
-            ...HistoryFields
+    query GetUserHistory($userId: String, $offset: Int) {
+        getUserHistory(userId: $userId, offset: $offset) {
+            count
+            results {
+                ...HistoryFields
+            }
+            pageSize
         }
     }
 `;
