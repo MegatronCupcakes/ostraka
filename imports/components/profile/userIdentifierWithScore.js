@@ -1,5 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
+import {Meteor} from 'meteor/meteor';
 import {useOnScreen} from '/imports/api/util/useOnScreen';
 import UserIdentifier from '/imports/components/profile/userIdentifier';
 import Score from '/imports/components/profile/score';
@@ -16,7 +17,7 @@ const UserIdentifierWithScore = (props) => {
         if(props.visibleCallback && isOnScreen) props.visibleCallback();
     }, [isOnScreen]);
 
-    const modalId = "scoreModal";
+    const modalId = props.user.viewId;
     const profileActions = props.noninteractive ? (<></>) : (
         <>
             <div style={{marginTop: "1rem"}}>
@@ -67,7 +68,7 @@ const UserIdentifierWithScore = (props) => {
             <div className="modal-dialog modal-lg">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title" id={modalId + "_ScoreHistory"}>score history</h5>
+                        <h5 className="modal-title" id={modalId + "_ScoreHistory"}>{_modalUserDisplay(Meteor.userId(), props.user)} score history</h5>
                         <button type="button" className="btn-close dismissModal" aria-label="Close" data-bs-dismiss="modal"></button>
                     </div>
                     <div className="modal-body">
@@ -110,3 +111,7 @@ UserIdentifierWithScore.propTypes = {
     navStack: PropTypes.object.isRequired
 };
 export default UserIdentifierWithScore;
+
+const _modalUserDisplay = (currentUserId, modalUser) => {
+    return currentUserId === modalUser._id ? 'your' : `@${modalUser.profile.profileTag}'s`;
+}

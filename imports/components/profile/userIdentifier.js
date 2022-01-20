@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'underscore';
 import {goTo} from '/imports/api/navStack/goTo';
 import {userProfilePic} from '/imports/api/profile/profilePic';
 import {dateFormatter} from '/imports/api/util/dateFormatter';
@@ -45,6 +46,11 @@ UserIdentifier.propTypes = {
     viewType: PropTypes.string, // "embed" and perhaps other specialized content views.
     viewSize: PropTypes.string,
     navStack: PropTypes.object.isRequired,
-    date: PropTypes.string
+    date: (props, propName, componentName) => {
+        if(!_.isUndefined(props[propName]) && !_.isDate(props[propName]) && !_.isString(props[propName])){
+            console.log("props:", props);
+            return new Error(`Invalid prop ${propName} (${props[propName]}) supplied to ${componentName}. Validation failed. poop.`)
+        }
+    }
 };
 export default UserIdentifier;

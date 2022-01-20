@@ -8,7 +8,7 @@ import Profile from '/imports/components/profile/profile';
 import ProfileQuery from '/imports/api/profile/profileQuery';
 
 const MessageContainer = (props) => {
-    const {loading, error, data} = useQuery(ProfileQuery, {variables: {_id: props.message.fromId}, pollInterval: 1000});
+    const {loading, error, data} = useQuery(ProfileQuery, {variables: {_id: props.message.fromId}, pollInterval: Meteor.settings.public.pollInterval});
     let content;
     if(loading){
         content = <Loading />

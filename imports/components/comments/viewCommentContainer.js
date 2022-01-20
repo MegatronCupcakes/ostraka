@@ -7,7 +7,7 @@ import {Loading, Error, Empty} from '/imports/components/loadingStatus/loadingSt
 import TopicViewComment from '/imports/components/comments/topicViewComment';
 
 const ViewCommentContainer = (props) => {
-    const {loading, error, data} = useQuery(CommentByIdQuery, {variables: {_id: props.navStack.current.viewContent}, pollInterval: 1000});
+    const {loading, error, data} = useQuery(CommentByIdQuery, {variables: {_id: props.navStack.current.viewContent}, pollInterval: Meteor.settings.public.pollInterval});
     let alternativeMessage;
     if(loading){
         return <Loading />;

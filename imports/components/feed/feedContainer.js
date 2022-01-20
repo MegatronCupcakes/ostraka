@@ -15,7 +15,7 @@ const FeedContainer = (props) => {
     const {loading, error, data, fetchMore} = useQuery(PostQuery, {
         variables: {offset: 0},
         //fetchPolicy: "cache-first",
-        pollInterval: 1000
+        pollInterval: Meteor.settings.public.pollInterval
     });
     const moreChunks = useCallback(_.debounce((count) => {
         // fetch more when the last post is visible.  Debouncing prevents recalling

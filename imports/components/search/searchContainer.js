@@ -15,7 +15,7 @@ const SearchContainer = (props) => {
 
     const {loading, error, data, fetchMore} = useQuery(SearchQuery, {variables: {
         query: props.navStack.current.viewContent
-    }, pollInterval: 1000});
+    }, pollInterval: Meteor.settings.public.pollInterval});
 
     useEffect(() => {
         fetchMore({

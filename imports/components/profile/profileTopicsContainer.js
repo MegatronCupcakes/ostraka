@@ -12,7 +12,7 @@ const ProfileTopicsContainer = (props) => {
     const [activeTag, setActiveTag] = useState(props.profileTags[0]);
     let topicContent;
     if(activeTag){
-        const {loading, error, data, fetchMore} = useQuery(TopicQuery, {variables: {tagId: activeTag._id, offset: 0}, pollInterval: 1000});
+        const {loading, error, data, fetchMore} = useQuery(TopicQuery, {variables: {tagId: activeTag._id, offset: 0}, pollInterval: Meteor.settings.public.pollInterval});
         const moreChunks = useCallback(_.debounce((count) => {
             fetchMore({
                 variables: {

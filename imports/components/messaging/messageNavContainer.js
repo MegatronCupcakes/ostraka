@@ -8,7 +8,7 @@ import {Loading, Error, Empty} from '/imports/components/loadingStatus/loadingSt
 import MessageNav from '/imports/components/messaging/messageNav';
 
 const MessageNavContainer = (props) => {
-    const {loading, error, data} = useQuery(MessageIndicatorQuery, {pollInterval: 1000});
+    const {loading, error, data} = useQuery(MessageIndicatorQuery, {pollInterval: Meteor.settings.public.pollInterval});
     let alternativeMessage;
     if(loading){
         alternativeMessage = <Loading />;

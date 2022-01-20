@@ -25,7 +25,15 @@ const ShareContent = (sharedContent, contentType, shareToArray, cleanPost, postT
         try {
             const results = await Promise.all(shareToArray.map((shareType) => {
                 if(_.contains(serverTypes, shareType)){
-                    return MeteorCall('share', sharedContent._id, contentType, shareType, cleanPost, postTags, postMentions);
+                    return MeteorCall(
+                        'share',
+                        sharedContent._id,
+                        sharedContent.type == 'shared' ? 'shared' : contentType,
+                        shareType,
+                        cleanPost,
+                        postTags,
+                        postMentions
+                    );
                 } else {
                     return _clientShareMap[shareType](Meteor.userId(), sharedContent, contentType, shareType, cleanPost, postTags, postMentions);
                 }
@@ -33,7 +41,9 @@ const ShareContent = (sharedContent, contentType, shareToArray, cleanPost, postT
             await MeteorCall(
                 'notifyUserOfShare',
                 `shared${contentType[0].toUpperCase() + contentType.slice(1)}`,
-                sharedContent.userId || sharedContent.createdBy || sharedContent.postedById || sharedContent._id
+                sharedContent.userId || sharedContent.createdBy || sharedContent.postedById || sharedContent._id,
+                sharedContent._id,
+                contentType
             )
             .catch((error) => {
                 console.log("NOTIFICATION ERROR:", error);

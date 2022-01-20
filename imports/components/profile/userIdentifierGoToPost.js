@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'underscore';
 import UserIdentifier from '/imports/components/profile/userIdentifier';
 import {goTo} from '/imports/api/navStack/goTo';
 
 const UserIdentifierGoToPost = (props) => {
     const goToPost = () => {
         goTo(props.post, "post", props.navStack, props.viewType, props.sharedById);
-    };    
+    };
     return (
         <>
             <UserIdentifier
@@ -35,6 +36,11 @@ UserIdentifierGoToPost.propTypes = {
     sharedById: PropTypes.string,
     viewType: PropTypes.string, // "embed" and perhaps other specialized content views.
     navStack: PropTypes.object.isRequired,
-    date: PropTypes.string
+    date: (props, propName, componentName) => {
+        if(!_.isUndefined(props[propName]) && !_.isDate(props[propName]) && !_.isString(props[propName])){
+            console.log("props:", props);
+            return new Error(`Invalid prop ${propName} (${props[propName]}) supplied to ${componentName}. Validation failed. poop.`)
+        }
+    }
 };
 export default UserIdentifierGoToPost;

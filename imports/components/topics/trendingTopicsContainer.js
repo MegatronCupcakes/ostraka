@@ -9,7 +9,7 @@ import TopicsContainer from '/imports/components/topics/topicsContainer';
 const TrendingTopicsContainer = (props) => {
     let content = <Loading />;
 
-    const {error, data} = useQuery(TrendingTopicsQuery, {pollInterval: 1000000000});
+    const {error, data} = useQuery(TrendingTopicsQuery, {pollInterval: Meteor.settings.public.pollInterval000000});
 
     useEffect(() => {
         if(data && data.getTrendingTopics.length > 0){

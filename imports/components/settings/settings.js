@@ -154,9 +154,7 @@ const Settings = (props) => {
                     <div style={{paddingTop: "1rem"}}>
                         <label className="form-label">sharing defaults</label>
                         <div>
-                            <ShareSettingsContainer
-                                userSettings={props.userSettings}
-                            />
+                            <ShareSettingsContainer />
                         </div>
                     </div>
                     {twitterSettings}

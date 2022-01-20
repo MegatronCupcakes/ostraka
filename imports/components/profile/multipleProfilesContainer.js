@@ -9,7 +9,7 @@ import UserIdentifierWithScore from '/imports/components/profile/userIdentifierW
 
 const MultipleProfilesContainer = (props) => {
     let content;
-    const {loading, error, data, fetchMore} = useQuery(MultipleProfilesQuery, {variables: {userIds: props.profileIds, offset: 0}, pollInterval: 1000});
+    const {loading, error, data, fetchMore} = useQuery(MultipleProfilesQuery, {variables: {userIds: props.profileIds, offset: 0}, pollInterval: Meteor.settings.public.pollInterval});
     const moreChunks = useCallback(_.debounce((count) => {
         fetchMore({
             variables: {
@@ -26,7 +26,7 @@ const MultipleProfilesContainer = (props) => {
         content = data.getProfiles.map((item, index) => {
             const userIdentifier = (
                 <UserIdentifierWithScore
-                    noninteractive={true}
+                    noninteractive={false}
                     viewSize={props.viewSize}
                     user={item}
                     navStack={props.navStack}

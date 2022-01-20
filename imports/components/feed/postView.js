@@ -27,7 +27,7 @@ const PostView = (props) => {
     // if no post is specified (we only have an ID) then fetch the post via Apollo before displaying;
     if(!props.post && (props.sharedContentId || _.isString(props.navStack.current.viewContent))){
         const lookUpId = props.sharedContentId ? props.sharedContentId : props.navStack.current.viewContent;
-        const {loading, error, data} = useQuery(GetPostById, {variables: {_id: lookUpId}, pollInterval: 1000});
+        const {loading, error, data} = useQuery(GetPostById, {variables: {_id: lookUpId}, pollInterval: Meteor.settings.public.pollInterval});
         if(loading){
             content = <Loading />
         } else if(error){

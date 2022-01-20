@@ -13,7 +13,7 @@ import Notifications from '/imports/components/notifications/notifications';
 const NotificationsContainer = (props) => {
     const [offset, setOffset] = useState(0);
     const [activeNotification, setActiveNotification] = useState(null);
-    const {loading, error, data, fetchMore} = useQuery(NotificationsQuery, {variables: {offset: offset}, pollInterval: 1000});
+    const {loading, error, data, fetchMore} = useQuery(NotificationsQuery, {variables: {offset: offset}, pollInterval: Meteor.settings.public.pollInterval});
 
     useEffect(() => {
         fetchMore({variables: {

@@ -9,7 +9,10 @@ import {dismissModals} from '/imports/api/util/dismissModals';
 
 const ScoreHistoryContainer = (props) => {
     const [offset, setOffset] = useState(0);
-    const {loading, error, data, fetchMore} = useQuery(HistoryQuery, {variables: {userId: props.userId, offset: offset}});
+    const {loading, error, data, fetchMore} = useQuery(HistoryQuery, {
+        variables: {userId: props.userId, offset: offset},
+        pollInterval: Meteor.settings.public.pollInterval
+    });
 
     useEffect(() => {
         fetchMore({

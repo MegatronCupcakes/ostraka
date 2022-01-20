@@ -1,12 +1,9 @@
 import {Meteor} from 'meteor/meteor';
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {useQuery} from '@apollo/client';
 import _ from 'underscore';
 import Share from '/imports/components/share/share';
-
 import ShareContent from '/imports/api/share/client/share';
-
 import AnalyzeNewPost from '/imports/api/post/analyzeNewPost';
 import {getSettings} from '/imports/api/settings/getSettings';
 import {dismissModals} from '/imports/api/util/dismissModals';
@@ -18,6 +15,13 @@ const ShareContainer = (props) => {
     const [postTags, setPostTags] = useState([]);
     const [postErrors, setPostErrors] = useState([]);
     const [shareResults, setShareResults] = useState([]);
+
+    const sharingSettings = getSettings().sharing;
+    const [shareEnabled, setShareEnabled] = useState(
+        _.some(_.keys(sharingSettings), (key) => {
+            return sharingSettings[key];
+        })
+    );
 
     const handleCaptionChange = ({target}) => {
         const _post = target.value;
@@ -32,7 +36,8 @@ const ShareContainer = (props) => {
 
     const shareContent = () => {
         if(Meteor.userId()){
-            const shareSettings = _.clone(getSettings().sharing);
+            console.log("props.sharedContent.type:", props.sharedContent.type);
+            const shareSettings = getSettings().sharing;
             const shareToArray = _.filter(_.keys(shareSettings), (key) => {return shareSettings[key]});
             ShareContent(props.sharedContent, props.sharedType, shareToArray, cleanPost, postTags, postMentions)
             .then((_shareResults) => {
@@ -45,7 +50,7 @@ const ShareContainer = (props) => {
         }
     };
     const handleCancel = () => {
-
+        // any special cancellation handling goes here
     };
 
     return (
@@ -61,6 +66,9 @@ const ShareContainer = (props) => {
             viewSize={props.viewSize}
             registeredUser={Meteor.userId() ? true : false}
             navStack={props.navStack}
+
+            shareEnabled={shareEnabled}
+            setShareEnabled={setShareEnabled}
         />
     )
 };

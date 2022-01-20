@@ -9,7 +9,7 @@ import {Loading, Error, Empty} from '/imports/components/loadingStatus/loadingSt
 
 const CommentsContainer = (props) => {
 
-    const {loading, error, data, fetchMore} = useQuery(CommentQuery, {variables: {parentId: props.parentId}, pollInterval: 1000});
+    const {loading, error, data, fetchMore} = useQuery(CommentQuery, {variables: {parentId: props.parentId}, pollInterval: Meteor.settings.public.pollInterval});
 
     const moreChunks = useCallback(_.debounce((count) => {
         fetchMore({

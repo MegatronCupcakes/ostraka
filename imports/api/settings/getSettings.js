@@ -6,8 +6,8 @@ const shareTypes = _.keys(Meteor.settings.public.sharing);
 const messagingSettings = _.keys(Meteor.settings.public.messagingDefaults);
 const notificationSettings = _.keys(Meteor.settings.public.notificationDefaults);
 
-export const getSettings = (userId) => {
-    let settings = _getSettings(userId);
+export const getSettings = (userId, settings) => {
+    settings = settings ? settings : _getSettings(userId);
     if(!settings.sharing) settings.sharing = {};
     shareTypes.forEach((type) => {
         if(!settings.sharing[type]) settings[type] = false;

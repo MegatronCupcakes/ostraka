@@ -27,7 +27,7 @@ const InboxContainer = (props) => {
     // inbox query state
     const [inboxQueryString, setInboxQueryString] = useState(null);
 
-    const {loading, error, data, fetchMore} = useQuery(MessageQuery, {variables: {query: inboxQueryString}, pollInterval: 1000});
+    const {loading, error, data, fetchMore} = useQuery(MessageQuery, {variables: {query: inboxQueryString}, pollInterval: Meteor.settings.public.pollInterval});
 
     useEffect(() => {
         fetchMore({variables: {offset: offset}});

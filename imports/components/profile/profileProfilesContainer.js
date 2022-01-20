@@ -9,6 +9,7 @@ const ProfileProfilesContainer = (props) => {
             <MultipleProfilesContainer
                 navStack={props.navStack}
                 profileIds={props.profileIds}
+                viewSize={"medium"}
             />
         );
     } else {

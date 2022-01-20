@@ -11,7 +11,7 @@ import {dateFormatter} from '/imports/api/util/dateFormatter';
 import NotificationsNav from '/imports/components/notifications/notificationsNav';
 
 const NotificationsNavContainer = (props) => {
-    const {loading, error, data} = useQuery(NotificationsIndicatorQuery, {pollInterval: 1000});
+    const {loading, error, data} = useQuery(NotificationsIndicatorQuery, {pollInterval: Meteor.settings.public.pollInterval});
     let alternativeMessage;
     if(loading){
         alternativeMessage = <Loading />;

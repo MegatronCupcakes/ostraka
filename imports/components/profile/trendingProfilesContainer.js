@@ -7,7 +7,7 @@ import UserIdentifierWithScore from '/imports/components/profile/userIdentifierW
 import ContentWrapper from '/imports/components/layout/contentWrapper';
 
 const TrendingProfilesContainer = (props) => {
-    const {loading, error, data} = useQuery(TrendingProfilesQuery, {pollInterval: 1000000000});
+    const {loading, error, data} = useQuery(TrendingProfilesQuery, {pollInterval: Meteor.settings.public.pollInterval000000});
     let content;
     if(loading){
         content = <Loading />

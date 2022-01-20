@@ -8,9 +8,9 @@
     "visualize": "meteor --production --extra-packages bundle-visualizer"
   },
   "dependencies": {
-    "@apollo/client": "^3.5.6",
-    "@babel/runtime": "^7.16.5",
-    "@popperjs/core": "^2.11.0",
+    "@apollo/client": "^3.5.7",
+    "@babel/runtime": "^7.16.7",
+    "@popperjs/core": "^2.11.2",
     "adblock-detect-react": "^1.0.5",
     "apollo-boost": "^0.4.9",
     "apollo-server-express": "^2.25.3",

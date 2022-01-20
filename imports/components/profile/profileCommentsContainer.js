@@ -7,7 +7,7 @@ import {Loading, Error, Empty} from '/imports/components/loadingStatus/loadingSt
 import ProfileCommentView from '/imports/components/profile/profileCommentView';
 
 const ProfileCommentsContainer = (props) => {
-    const {loading, error, data, fetchMore} = useQuery(UserCommentsQuery, {variables: {postedById: props.userId, offset: 0}, pollInterval: 1000});
+    const {loading, error, data, fetchMore} = useQuery(UserCommentsQuery, {variables: {postedById: props.userId, offset: 0}, pollInterval: Meteor.settings.public.pollInterval});
     const moreChunks = useCallback(_.debounce((count) => {
         fetchMore({
             variables: {

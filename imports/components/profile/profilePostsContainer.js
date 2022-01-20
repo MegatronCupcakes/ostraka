@@ -14,7 +14,7 @@ const ProfilePostsContainer = (props) => {
             offset: 0
         },
         fetchPolicy: "cache-first",
-        pollInterval: 10000
+        pollInterval: Meteor.settings.public.pollInterval0
     });
     const moreChunks = useCallback(_.debounce((count) => {
         fetchMore({
@@ -27,7 +27,7 @@ const ProfilePostsContainer = (props) => {
     } else if(error){
         content = <Error />
         console.log("ERROR:", error);
-    } else if(data && data.getUserPosts){
+    } else if(data && data.getUserPosts && data.getUserPosts.length > 0){
         content = data.getUserPosts.map((post, index) => {
             return <SimpleSpacer
                 content={(
@@ -45,8 +45,8 @@ const ProfilePostsContainer = (props) => {
                 key={index}
             />
         });
-    }else {
-        content = <Empty message="oops, we couldn't find what you're looking for :-("/>;
+    } else {
+        content = <Empty message="no posts found"/>;;
     }
     return content;
 };

@@ -33,7 +33,7 @@ if [ "$2" = "ios" ] || [ "$2" = "android" ]; then
 fi
 
 # we always run the server itself on port 3002
-FLAGS="--port 3002"
+FLAGS="--port 3002 --allow-superuser"
 FLAGS="${FLAGS} --settings ${SETTINGSFILE}"
 
 echo Using Settings File ${SETTINGSFILE}

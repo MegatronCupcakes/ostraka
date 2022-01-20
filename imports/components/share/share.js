@@ -91,7 +91,9 @@ const Share = (props) => {
                             </div>
                             <div className="row">
                                 <div className="col-xs-12" style={{textAlign: "center", paddingTop: "1rem", marginTop: "1rem", color: "black"}}>
-                                    <ShareSettingsContainer />
+                                    <ShareSettingsContainer
+                                        setShareEnabled={props.setShareEnabled}
+                                    />
                                 </div>
                             </div>
                             <div className="row">
@@ -102,7 +104,7 @@ const Share = (props) => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={props.handleCancel}><i className="bi bi-x-lg"></i></button>
-                            <button type="button" className="btn btn-primary" onClick={props.shareContent}><i className="bi bi-box-arrow-up"></i></button>
+                            <button type="button" className={(!props.shareEnabled || props.shareResults.length > 0) ? "btn btn-primary disabled" : "btn btn-primary"} onClick={props.shareContent}><i className="bi bi-box-arrow-up"></i></button>
                         </div>
                     </div>
                 </div>
@@ -123,6 +125,9 @@ Share.propTypes = {
     registeredUser: PropTypes.bool.isRequired,
     navStack: PropTypes.object.isRequired,
     viewType: PropTypes.string,
-    viewSize: PropTypes.string
+    viewSize: PropTypes.string,
+
+    shareEnabled: PropTypes.bool.isRequired,
+    setShareEnabled: PropTypes.func.isRequired
 };
 export default Share;

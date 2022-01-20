@@ -8,30 +8,35 @@ import _ from 'underscore';
 
 const OstracizeContainer = (props) => {
     const [message, setMessage] = useState({message: null, class: null});
+    const [disableButton, setDisableButton] = useState(false);
     const handleCancel = () => {
 
     };
     const ostracizeUser = () => {
-        MeteorCall('ostracizeUser', props.user._id)
-        .catch((error) => {
-            console.log("OSTRACIZE ERROR:", error);
-            setMessage({...message, ...{message: "oops, something went wrong...", class: "danger"}});
-        })
-        .then(() => {
-            setMessage({...message, ...{message: "vote cast successfully", class: "success"}});
-            _.delay(() => {
-                setMessage({...message, ...{message: null, class: null}});
-                dismissModals();
-            }, 3000);
-        });
+        if(!props.user.ostracized){
+            setDisableButton(true);
+            MeteorCall('ostracizeUser', props.user._id)
+            .then(() => {
+                setMessage({...message, ...{message: "vote cast successfully", class: "success"}});
+                _.delay(() => {
+                    setMessage({...message, ...{message: null, class: null}});
+                    setDisableButton(false);
+                    dismissModals();
+                }, 3000);
+            })
+            .catch((error) => {
+                console.log("OSTRACIZE ERROR:", error);
+                setMessage({...message, ...{message: "oops, something went wrong...", class: "danger"}});
+            });
+        }
     };
     return (
         <Ostracize
             user={props.user}
-            activeButton={!props.noninteractive && !_.isUndefined(Meteor.userId()) && !_.isNull(Meteor.userId()) && Meteor.userId() !== props.user._id}
+            activeButton={!props.noninteractive && !_.isUndefined(Meteor.userId()) && !_.isNull(Meteor.userId()) && Meteor.userId() !== props.user._id && !props.user.ostracized}
+            disableButton={disableButton}
             ostracizeUser={ostracizeUser}
             handleCancel={handleCancel}
-            ostracizeCount={props.user.ostracizedBy ? props.user.ostracizedBy.length : 0}
             message={message}
             viewSize={props.viewSize}
             noninteractive={props.noninteractive}

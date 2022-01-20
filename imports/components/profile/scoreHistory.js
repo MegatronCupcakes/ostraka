@@ -74,19 +74,36 @@ const _actionDisplay = (trigger, currentUserId) => {
             _targetType = trigger.targetContentType;
             break;
     }
-    return `${trigger.actingUserId == currentUserId ? 'you' : '@' + trigger.actingUserTag} ${trigger.action}d ${trigger.targetUserId == currentUserId ? 'your' : '@' + trigger.targetUserTag + '\'s'} ${_targetType}`;
+    return `${trigger.actingUserId == currentUserId ? 'you' : '@' + trigger.actingUserTag} ${_verbDisplay(trigger.action)} ${_directObjectDisplay(trigger, currentUserId, _targetType)}`;
 };
 
 const _dependencyDisplay = (record, currentUserId) => {
     if(record.trigger.dependentRelationship.length > 1){
         return record.trigger.dependentRelationship.map((relationShip, index) => {
             if(index === record.trigger.dependentRelationship.length - 1){
-                return (<span key={index}>{relationShip.userTag}</span>);
+                return (<span key={index}>{relationShip.userId === currentUserId ? 'you' : relationShip.userTag}</span>);
             } else {
                 return (
-                    <span key={index}>{relationShip.userTag} <i className={"bi bi-arrow-right-short"}></i> </span>
+                    <span key={index}>{relationShip.userId === currentUserId ? 'you' : relationShip.userTag} <i className={"bi bi-arrow-right-short"}></i> </span>
                 );
             }
-        });        
+        });
     }
 };
+
+const _verbDisplay = (verb) => {
+    if(verb === 'ostracize'){
+        return 'voted to ostracize';
+    } else {
+        return `${verb}${verb.charAt(verb.length - 1) === 'e' ? 'd' : 'ed'}`    ;
+    }
+};
+
+const _directObjectDisplay = (trigger, currentUserId, targetType) => {
+    if(targetType === 'profile'){
+        return currentUserId === trigger.targetUserId ? 'you' : '@' + trigger.targetUserTag;
+    } else {
+        return `${trigger.targetUserId == currentUserId ? 'your' : '@' + trigger.targetUserTag + '\'s'} ${targetType}`;
+    }
+
+}

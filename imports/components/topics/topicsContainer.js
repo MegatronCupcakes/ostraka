@@ -13,7 +13,7 @@ import TopicViewComment from '/imports/components/comments/topicViewComment';
 const TopicsContainer = (props) => {
     if(props.navStack.currentTag || props.tag){
         const _tagId = props.tag ? props.tag._id : props.navStack.currentTag._id;
-        const {loading, error, data, fetchMore} = useQuery(TopicQuery, {variables: {tagId: _tagId}, pollInterval: 1000});
+        const {loading, error, data, fetchMore} = useQuery(TopicQuery, {variables: {tagId: _tagId}, pollInterval: Meteor.settings.public.pollInterval});
 
         const moreChunks = useCallback(_.debounce((count) => {
             fetchMore({

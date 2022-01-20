@@ -284,7 +284,7 @@ export default function MainContainer(props){
             {activity}
         </>
     );
-    return (
+    return (        
         <ApolloProvider client={client}>
             {appContent}
         </ApolloProvider>

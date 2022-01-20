@@ -8,9 +8,9 @@ const Ostracize = (props) => {
     const _ostracizeButtonClasses = "bi bi-person-x";
     const _disabledOstracizeButtonClasses = _ostracizeButtonClasses + " disabled";
     const _ostracizeButton = props.activeButton ? (
-        <span className={_ostracizeCountClasses}>{props.ostracizeCount} <i className={_ostracizeButtonClasses} data-bs-toggle="tooltip" data-bs-placement="top" title="ostracize" data-bs-toggle="modal" data-bs-target={"#" + modalId}></i></span>
+        <span className={_ostracizeCountClasses}>{props.user.ostracizeCount} <i className={_ostracizeButtonClasses} data-bs-toggle="tooltip" data-bs-placement="top" title="ostracize" data-bs-toggle="modal" data-bs-target={"#" + modalId}></i></span>
     ) : (
-        <span className={_ostracizeCountClasses}>{props.ostracizeCount} <i className={_disabledOstracizeButtonClasses} data-bs-toggle="tooltip" data-bs-placement="top" title="ostracize"></i></span>
+        <span className={_ostracizeCountClasses}>{props.user.ostracizeCount} <i className={_disabledOstracizeButtonClasses} data-bs-toggle="tooltip" data-bs-placement="top" title="ostracize"></i></span>
     );
     return (
         <>
@@ -48,7 +48,7 @@ const Ostracize = (props) => {
                         <div className="modal-footer">
                             <span className={`text-${props.message.class}`} style={{paddingRight: "1rem"}}>{props.message.message}</span>
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={props.handleCancel}><i className="bi bi-x-lg"></i></button>
-                            <button type="button" className="btn btn-primary" onClick={props.ostracizeUser}><i className="bi bi-person-x"></i></button>
+                            <button type="button" className={props.disableButton ? "btn btn-primary disabled" : "btn btn-primary"} onClick={props.ostracizeUser}><i className="bi bi-person-x"></i></button>
                         </div>
                     </div>
                 </div>
@@ -59,9 +59,9 @@ const Ostracize = (props) => {
 Ostracize.propTypes = {
     user: PropTypes.object.isRequired,
     activeButton: PropTypes.bool.isRequired,
+    disableButton: PropTypes.bool.isRequired,
     ostracizeUser: PropTypes.func.isRequired,
     handleCancel: PropTypes.func.isRequired,
-    ostracizeCount: PropTypes.number,
     message: PropTypes.object.isRequired,
     viewSize: PropTypes.string,
     noninteractive: PropTypes.bool,

@@ -8,7 +8,7 @@ import Profile from '/imports/components/profile/profile';
 import ProfileQuery from '/imports/api/profile/profileQuery';
 
 const ProfileContainer = (props) => {
-    const {loading, error, data} = useQuery(ProfileQuery, {variables: {_id: props.navStack.current.viewContent}, pollInterval: 1000});
+    const {loading, error, data} = useQuery(ProfileQuery, {variables: {_id: props.navStack.current.viewContent}, pollInterval: Meteor.settings.public.pollInterval});
     const [activeTab, setActiveTab] = useState('posts');
 
     let content;
